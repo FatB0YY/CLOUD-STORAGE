@@ -1,0 +1,43 @@
+version: "3"
+services:
+
+# mongodb
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db 
+    restart: always
+    ports:
+      - "27017:27017"
+
+# server
+  server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    restart: always
+    environment:
+      - PORT=8080,
+      - MONGODB_URI=mongodb://mongodb:27017,
+      - DB_NAME=CLOUDSTORAGE
+
+# # client
+#   client:
+#     build: ./client
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - ./client:/app
+#       - /app/node_modules
+#     stdin_open: true
+#     tty: true
+#     depends_on:
+#       - server
+volumes:
+  data: 
+    driver: local

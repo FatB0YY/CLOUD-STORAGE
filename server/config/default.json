@@ -1,5 +1,7 @@
 {
     "PORT": 8080,
     "MONGODB_URI": "mongodb://mongodb:27017",
-    "DB_NAME": "CLOUDSTORAGE"
+    "DB_NAME": "CLOUDSTORAGE",
+    "JWT_ACCESS_SECRET": "5Aa6f#b2I1Z8X9Pt4y38gEjYm*6#m^",
+    "JWT_REFRESH_SECRET": "4Ir5R#h2n6xuQ5Wutu^SNy@RXmYEp3"
 }

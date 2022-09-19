@@ -1,9 +1,17 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const congif = require("config")
+const cookieParser = require("cookie-parser")
+const cors = require("cors")
+const router = require("./router/index")
 
 const app = express()
 const PORT = congif.get('PORT')
+
+app.use(express.json())
+app.use(cookieParser())
+app.use(cors())
+app.use('/api', router)
 
 const start = async () => {
     try {

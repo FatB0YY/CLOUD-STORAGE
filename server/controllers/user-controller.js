@@ -1,4 +1,5 @@
 const userService = require('../service/user-service')
+const congif = require("config")
 
 class UserController {
   async registration(req, res, next) {
@@ -24,7 +25,12 @@ class UserController {
   }
   async activate(req, res, next) {
     try {
-    } catch (error) {}
+      const activationLink = req.params.link
+      await userService.activate(activationLink)
+      return res.redirect(congif.get('CLIENT_URL'))
+    } catch (error) {
+      console.log(error)
+    }
   }
   async refresh(req, res, next) {
     try {

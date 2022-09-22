@@ -8,5 +8,6 @@
     "SMTP_PORT": 587,
     "SMTP_USER": "cloudstoragemaill@gmail.com",
     "SMTP_PASSWORD": "qT7U9V1ZcTQk2",
-    "API_URL": "http://localhost:3000"
+    "API_URL": "http://localhost:8080",
+    "CLIENT_URL": "http://localhost:3000"
 }

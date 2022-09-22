@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 const mailService = require('../service/mail-service')
 const TokenService = require('../service/token-service')
 const UserDto = require('../dtos/user-dto')
+const congif = require('config')
 
 class UserService {
   async registration(email, password) {
@@ -22,7 +23,10 @@ class UserService {
       password: hashPassword,
       activationLink,
     })
-    await mailService.sendActivationMail(email, activationLink)
+    await mailService.sendActivationMail(
+      email,
+      `${congif.get('API_URL')}/api/activate/${activationLink}`
+    )
 
     const userDto = new UserDto(user) // email, id, isActivated
     const tokens = TokenService.generateTokens({ ...userDto })

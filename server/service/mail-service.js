@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer")
 const congif = require("config")
-const UserModel = require("../models/User")
 
 class MailService {
   constructor(){
@@ -29,15 +28,6 @@ class MailService {
             </div>
           `
     })
-  }
-
-  async activate(activationLink){
-    const user = await UserModel.findOne({activationLink})
-    if(!user){
-      throw new Error('Неккоректная ссылка для активации')
-    }
-    user.isActivated = true
-    await user.save()
   }
 }
 

@@ -5,7 +5,7 @@ const tokenModel = require('../models/Token')
 class TokenService {
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, congif.get('JWT_ACCESS_SECRET'), {
-      expiresIn: '1h',
+      expiresIn: '30s',
     })
     const refreshToken = jwt.sign(payload, congif.get('JWT_REFRESH_SECRET'), {
       expiresIn: '60d',
@@ -25,6 +25,36 @@ class TokenService {
     const token = await tokenModel.create({ user: userId, refreshToken })
     return token
   }
+
+  async removeToken(refreshToken) {
+    const tokenData = await tokenModel.deleteOne(refreshToken)
+    return tokenData
+  }
+
+  async findToken(refreshToken) {
+    const tokenData = await tokenModel.findOne(refreshToken)
+    return tokenData
+  }
+
+  validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, congif.get('JWT_ACCESS_SECRET'))
+      return userData
+    } catch (error) {
+      return null
+    }
+  }
+
+  validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, congif.get('JWT_REFRESH_SECRET'))
+      return userData
+    } catch (error) {
+      return null
+    }
+  }
+
+
 }
 
 module.exports = new TokenService()

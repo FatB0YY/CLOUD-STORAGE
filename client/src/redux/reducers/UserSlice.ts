@@ -1,36 +1,40 @@
 import { IUser } from '../../models/response/IUser'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { login, logout, registration } from './ActionCreators'
+import {
+  checkAuth,
+  login,
+  logout,
+  registration,
+  getUsers,
+} from './ActionCreators'
 
 interface UserState {
   user: IUser
   isLoading: boolean
   error: string
   isAuth: boolean
+  users: Array<IUser>
 }
 
 const initialState: UserState = {
   user: {
     email: '',
     isActivated: false,
-    id: '',
+    _id: '',
+    diskSpace: 10737418240,
+    files: [],
+    usedSpace: 0
   },
   isLoading: false,
   error: '',
   isAuth: false,
+  users: [],
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    setAuth(state, action: PayloadAction<boolean>) {
-      state.isAuth = action.payload
-    },
-    setUser(state, action: PayloadAction<IUser>) {
-      state.user = action.payload
-    },
-  },
+  reducers: {},
   extraReducers: {
     // ожидание
     [login.pending.type]: (state) => {
@@ -38,17 +42,15 @@ export const userSlice = createSlice({
       state.error = ''
     },
     // успешная загрузка
-    [login.fulfilled.type]: (state, action: PayloadAction<IUser>) => {
+    [login.fulfilled.type]: (state, action: any) => {
       state.isLoading = false
       state.error = ''
-      console.log(action.payload)
       state.user = action.payload
       state.isAuth = true
     },
     // ошибка
-    [login.rejected.type]: (state, action: PayloadAction<string>) => {
+    [login.rejected.type]: (state, action: any) => {
       state.isLoading = false
-      console.log(action.payload)
       state.error = action.payload
     },
     // ожидание
@@ -57,17 +59,15 @@ export const userSlice = createSlice({
       state.error = ''
     },
     // успешная загрузка
-    [logout.fulfilled.type]: (state, action: PayloadAction<IUser>) => {
+    [logout.fulfilled.type]: (state, action: any) => {
       state.isLoading = false
       state.error = ''
-      console.log(action.payload)
       state.user = action.payload
       state.isAuth = false
     },
     // ошибка
-    [logout.rejected.type]: (state, action: PayloadAction<string>) => {
+    [logout.rejected.type]: (state, action: any) => {
       state.isLoading = false
-      console.log(action.payload)
       state.error = action.payload
     },
     // ожидание
@@ -76,17 +76,48 @@ export const userSlice = createSlice({
       state.error = ''
     },
     // успешная загрузка
-    [registration.fulfilled.type]: (state, action: PayloadAction<IUser>) => {
+    [registration.fulfilled.type]: (state, action: any) => {
       state.isLoading = false
       state.error = ''
-      console.log(action.payload)
       state.user = action.payload
       state.isAuth = true
     },
     // ошибка
-    [registration.rejected.type]: (state, action: PayloadAction<string>) => {
+    [registration.rejected.type]: (state, action: any) => {
       state.isLoading = false
-      console.log(action.payload)
+      state.error = action.payload
+    },
+    // ожидание
+    [checkAuth.pending.type]: (state) => {
+      state.isLoading = true
+      state.error = ''
+    },
+    // успешная загрузка
+    [checkAuth.fulfilled.type]: (state, action: any) => {
+      state.isLoading = false
+      state.error = ''
+      state.user = action.payload
+      state.isAuth = true
+    },
+    // ошибка
+    [checkAuth.rejected.type]: (state, action: any) => {
+      state.isLoading = false
+      state.error = action.payload
+    },
+    // ожидание
+    [getUsers.pending.type]: (state) => {
+      state.isLoading = true
+      state.error = ''
+    },
+    // успешная загрузка
+    [getUsers.fulfilled.type]: (state, action: any) => {
+      state.isLoading = false
+      state.error = ''
+      state.users = action.payload
+    },
+    // ошибка
+    [getUsers.rejected.type]: (state, action: any) => {
+      state.isLoading = false
       state.error = action.payload
     },
   },

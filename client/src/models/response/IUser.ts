@@ -1,5 +1,8 @@
 export interface IUser {
     email: string
+    _id: string
     isActivated: boolean
-    id: string
+    diskSpace: number
+    usedSpace: number
+    files: Array<any>
 }

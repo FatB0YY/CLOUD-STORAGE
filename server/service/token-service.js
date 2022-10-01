@@ -5,10 +5,10 @@ const tokenModel = require('../models/Token')
 class TokenService {
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, congif.get('JWT_ACCESS_SECRET'), {
-      expiresIn: '30s',
+      expiresIn: '30m',
     })
     const refreshToken = jwt.sign(payload, congif.get('JWT_REFRESH_SECRET'), {
-      expiresIn: '60d',
+      expiresIn: '30d',
     })
     return {
       accessToken,
@@ -27,12 +27,12 @@ class TokenService {
   }
 
   async removeToken(refreshToken) {
-    const tokenData = await tokenModel.deleteOne(refreshToken)
+    const tokenData = await tokenModel.deleteOne({refreshToken})
     return tokenData
   }
 
   async findToken(refreshToken) {
-    const tokenData = await tokenModel.findOne(refreshToken)
+    const tokenData = await tokenModel.findOne({refreshToken})
     return tokenData
   }
 

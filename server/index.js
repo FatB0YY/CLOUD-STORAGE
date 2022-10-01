@@ -18,7 +18,6 @@ app.use(
   })
 )
 app.use('/api', router)
-// последний!
 app.use(errorMiddleware)
 
 const start = async () => {

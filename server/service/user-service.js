@@ -55,10 +55,7 @@ class UserService {
   async login(email, password) {
     const user = await UserModel.findOne({ email })
     if (!user) {
-      try {
-      } catch (error) {
-        throw ApiError.BadRequest('Пользователь с таким email не найден')
-      }
+      throw ApiError.BadRequest('Пользователь с таким email не найден')
     }
     const isPassEquals = await bcrypt.compare(password, user.password)
     if (!isPassEquals) {
@@ -99,13 +96,11 @@ class UserService {
     }
   }
 
-  async getAllUsers(){
+  async getAllUsers() {
     const users = await UserModel.find()
+    console.log('users', users);
     return users
   }
 }
 
 module.exports = new UserService()
-
-
-// refresh, getUsers-authMiddleware

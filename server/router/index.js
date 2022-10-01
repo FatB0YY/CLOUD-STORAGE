@@ -10,11 +10,18 @@ router.post(
   body('password').isLength({ min: 8, max: 64 }),
   userController.registration
 )
-router.post('/login', userController.login)
+router.post(
+  '/login',
+  body('email').isEmail(),
+  body('password').isLength({ min: 8, max: 64 }),
+  userController.login
+)
 router.post('/logout', userController.logout)
 router.get('/activate/:link', userController.activate)
 router.get('/refresh', userController.refresh)
-// test
 router.get('/users', authMiddleware, userController.getUsers)
 
 module.exports = router
+
+// 1. email не приходит
+// 2. пользователь не авторизован

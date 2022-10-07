@@ -20,7 +20,7 @@ const initialState: UserState = {
   user: {
     email: '',
     isActivated: false,
-    _id: '',
+    id: '',
     diskSpace: 10737418240,
     files: [],
     usedSpace: 0

@@ -20,7 +20,6 @@ module.exports = function (req, res, next) {
     }
 
     console.log('userData', userData);
-
     req.user = userData
     next()
   } catch (error) {

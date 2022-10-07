@@ -1,13 +1,20 @@
 import React, { useEffect } from 'react'
-import LoginForm from './components/LoginForm'
 import { useAppDispatch, useAppSelector } from './hooks/redux'
-import { checkAuth, logout, getUsers } from './redux/reducers/ActionCreators'
+import { checkAuth } from './redux/reducers/ActionCreators'
+
+import { Routes, Route, Navigate } from 'react-router-dom'
+import NotFoundPage from './components/notfound/404'
+import Layout from './components/Layout'
+import RequireAuth from './components/hoc/RequireAuth'
+
+import './App.scss'
+import RegistrationForm from './components/registrationForm/RegistrationForm'
+import LoginForm from './components/loginForm/LoginForm'
+import Disk from './components/disk/Disk'
 
 function App() {
   const dispatch = useAppDispatch()
-  const { isAuth, user, isLoading, error, users } = useAppSelector(
-    (store) => store.userReducer
-  )
+  const { isAuth, user} = useAppSelector((store) => store.userReducer)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -15,42 +22,35 @@ function App() {
     }
   }, [])
 
-  if (isLoading) {
-    return <div>Загрузка...</div>
-  }
 
-  if (!isAuth) {
-    return (
-      <div>
-        <button className="rounded-full" onClick={() => dispatch(getUsers())}>Получить пользователей (не работает)</button>
-        <LoginForm />
-        <div>{error ? error : null}</div>
-      </div>
-    )
-  }
+  console.log('isAuth', isAuth);
+  console.log('user', user);
+  
+  
 
   return (
-    <div className='App'>
-      <h1>
-        {isAuth ? `Пользователь авторизован ${user.email}` : 'авторизуйтесь пж'}
-      </h1>
-      <h1>
-        {user.isActivated ? 'Аккаунт активирован' : 'активируйте пж'}
-      </h1>
-      <button className="rounded-full" onClick={() => dispatch(logout())}>Выйти</button>
-      <div>
-        <button className="rounded-full" onClick={() => dispatch(getUsers())}>Получить пользователей</button>
-        {users ? users.map((user) => {
-          console.log(user);
-          
-          return (
-            <div key={user._id}>{user.email}</div>
-          )
+    <Routes>
+      {!isAuth ? (
+        <>
+          <Route path='/login' element={<LoginForm />} />
+          <Route path='/registration' element={<RegistrationForm />} />
+        </>
+      ) : null}
+
+      <Route path='*' element={<NotFoundPage />} />
+
+      <Route
+        path='/disk'
+        element={
+          <RequireAuth>
+            <Disk />
+          </RequireAuth>
         }
-        ) : <div>Пользователей нет</div>}
-      </div>
-    </div>
+      />
+    </Routes>
   )
 }
 
 export default App
+
+// rafce

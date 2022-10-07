@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const congif = require('config')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const router = require('./router/index')
+const authRouter = require('./router/auth.routes')
+const fileRouter = require('./router/file.routes')
 const errorMiddleware = require('./middleware/error-middleware')
 
 const app = express()
@@ -17,7 +18,8 @@ app.use(
     origin: congif.get('CLIENT_URL'),
   })
 )
-app.use('/api', router)
+app.use('/api/auth', authRouter)
+app.use('/api/files', fileRouter)
 app.use(errorMiddleware)
 
 const start = async () => {

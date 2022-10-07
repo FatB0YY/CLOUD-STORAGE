@@ -1,6 +1,6 @@
 export interface IUser {
     email: string
-    _id: string
+    id: string
     isActivated: boolean
     diskSpace: number
     usedSpace: number

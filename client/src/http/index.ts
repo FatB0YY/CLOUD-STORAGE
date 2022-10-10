@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { AuthResponse } from '../models/response/AuthResponse'
+import Cookies from 'js-cookie'
 
 export const API_URL = 'http://localhost:8080/api'
 
@@ -17,7 +18,7 @@ $api.interceptors.request.use((config: AxiosRequestConfig) => {
   }
 
   // перед каждый запросом устанавливаем header.Authorization
-  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+  config.headers.Authorization = `Bearer ${Cookies.get('token')}`
   return config
 
   // получение ответа от сервера. смотрим на статус код:
@@ -41,7 +42,7 @@ $api.interceptors.response.use(
         originalRequest._isRetry = true
         // переделать
         const response = await $api.get<AuthResponse>('/auth/refresh')
-        localStorage.setItem('token', response.data.accessToken)
+        Cookies.set('token', response.data.accessToken, { expires: 7 })
         return $api.request(originalRequest)
       } catch (error) {
         console.log('НЕ АВТОРИЗОВАН')

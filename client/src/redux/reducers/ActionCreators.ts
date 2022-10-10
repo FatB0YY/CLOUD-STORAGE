@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import $api from '../../http'
 
+import Cookies from 'js-cookie'
+
 interface UserData {
   email: string
   password: string
@@ -38,7 +40,7 @@ export const login = createAsyncThunk(
 
     try {
       const response = await AuthService.login(email, password)
-      localStorage.setItem('token', response.data.accessToken)
+      Cookies.set('token', response.data.accessToken, {expires: 7})
       notifySuccess()
       return response.data.user
     } catch (error: any) {
@@ -74,7 +76,7 @@ export const registration = createAsyncThunk(
 
     try {
       const response = await AuthService.registration(email, password)
-      localStorage.setItem('token', response.data.accessToken)
+      Cookies.set('token', response.data.accessToken, {expires: 7})
       notifySuccess()
       return response.data.user
     } catch (error: any) {
@@ -87,7 +89,7 @@ export const registration = createAsyncThunk(
 export const logout = createAsyncThunk('logout', async (_, thunkAPI) => {
   try {
     const response = await AuthService.logout()
-    localStorage.removeItem('token')
+    Cookies.remove('token')
     return {}
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response?.data?.message)
@@ -97,7 +99,7 @@ export const logout = createAsyncThunk('logout', async (_, thunkAPI) => {
 export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI) => {
   try {
     const response = await $api.get<AuthResponse>('/auth/refresh')    
-    localStorage.setItem('token', response.data.accessToken)
+    Cookies.set('token', response.data.accessToken, {expires: 7})
     return response.data.user
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response?.data?.message)
@@ -119,7 +121,7 @@ export const getFiles = createAsyncThunk(
     try {
       const response = await $api.get(
         `/files${dirId ? '?parent=' + dirId : ''}`, {
-          headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+          headers: {Authorization: `Bearer ${Cookies.get('token')}`}
         }
       )
       console.log('response.data', response.data)

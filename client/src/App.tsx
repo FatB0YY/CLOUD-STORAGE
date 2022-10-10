@@ -12,12 +12,14 @@ import RegistrationForm from './components/registrationForm/RegistrationForm'
 import LoginForm from './components/loginForm/LoginForm'
 import Disk from './components/disk/Disk'
 
+import Cookies from 'js-cookie'
+
 function App() {
   const dispatch = useAppDispatch()
   const { isAuth } = useAppSelector((store) => store.userReducer)
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (Cookies.get('token')) {
       dispatch(checkAuth())
     }
   }, [])
@@ -52,4 +54,3 @@ function App() {
 export default App
 
 // rafce
-// axios, Access в куках. Js-cookie npm, effector

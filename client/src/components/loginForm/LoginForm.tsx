@@ -5,6 +5,8 @@ import { login } from '../../redux/reducers/ActionCreators'
 import './login.scss'
 import Loader from '../Loader'
 import { Link } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const LoginForm: FC = () => {
   const [email, setEmail] = useState('')
@@ -12,8 +14,27 @@ const LoginForm: FC = () => {
   const { isLoading } = useAppSelector((state) => state.userReducer)
   const dispatch = useAppDispatch()
 
+  const loginAccount = (event: any) => {
+    event.preventDefault()
+    dispatch(login({ email, password }))
+  }
+
   return (
     <form className='login'>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
+      {/* Same as */}
+      <ToastContainer />
       <h2 className='login__header'>Вход в аккаунт</h2>
       <Input
         setValue={setEmail}
@@ -32,7 +53,7 @@ const LoginForm: FC = () => {
         placeholder='Введите пароль'
       />
       <button
-        onClick={() => dispatch(login({ email, password }))}
+        onClick={(event) => loginAccount(event)}
         className='login__btn'
       >
         Войти

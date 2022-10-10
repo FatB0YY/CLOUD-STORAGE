@@ -39,14 +39,13 @@ $api.interceptors.response.use(
       try {
         // чтобы не было цикла
         originalRequest._isRetry = true
-        const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {
-          withCredentials: true,
-        })
+        // переделать
+        const response = await $api.get<AuthResponse>('/auth/refresh')
         localStorage.setItem('token', response.data.accessToken)
         return $api.request(originalRequest)
       } catch (error) {
         console.log('НЕ АВТОРИЗОВАН')
-        console.log(error)
+        console.log('error (http index):', error)
       }
     } else {
       throw error

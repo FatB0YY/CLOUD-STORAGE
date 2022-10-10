@@ -14,7 +14,7 @@ import Disk from './components/disk/Disk'
 
 function App() {
   const dispatch = useAppDispatch()
-  const { isAuth, user} = useAppSelector((store) => store.userReducer)
+  const { isAuth } = useAppSelector((store) => store.userReducer)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -22,31 +22,29 @@ function App() {
     }
   }, [])
 
-
-  console.log('isAuth', isAuth);
-  console.log('user', user);
-  
-  
-
   return (
     <Routes>
-      {!isAuth ? (
-        <>
-          <Route path='/login' element={<LoginForm />} />
-          <Route path='/registration' element={<RegistrationForm />} />
-        </>
-      ) : null}
+      <Route>
+        <Route index element={<Layout />} />
 
-      <Route path='*' element={<NotFoundPage />} />
+        {!isAuth ? (
+          <>
+            <Route path='/login' element={<LoginForm />} />
+            <Route path='/registration' element={<RegistrationForm />} />
+          </>
+        ) : null}
 
-      <Route
-        path='/disk'
-        element={
-          <RequireAuth>
-            <Disk />
-          </RequireAuth>
-        }
-      />
+        <Route path='*' element={<NotFoundPage />} />
+
+        <Route
+          path='/disk'
+          element={
+            <RequireAuth>
+              <Disk />
+            </RequireAuth>
+          }
+        />
+      </Route>
     </Routes>
   )
 }
@@ -54,3 +52,4 @@ function App() {
 export default App
 
 // rafce
+// axios, Access в куках. Js-cookie npm, effector

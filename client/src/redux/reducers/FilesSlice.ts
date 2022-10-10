@@ -9,7 +9,8 @@ const initialState = {
 export const filesSlice = createSlice({
   name: 'files',
   initialState,
-  reducers: {},
+  reducers: {
+  },
   extraReducers: {
     // успешная загрузка
     [getFiles.fulfilled.type]: (state, action: any) => {

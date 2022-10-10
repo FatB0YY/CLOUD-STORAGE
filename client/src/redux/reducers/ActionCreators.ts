@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { API_URL } from '../../http'
 import { AuthResponse } from '../../models/response/AuthResponse'
 import AuthService from '../../service/AuthService'
 import UserService from '../../service/UserServise'
 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import $api from '../../http'
 
 interface UserData {
   email: string
@@ -97,9 +96,7 @@ export const logout = createAsyncThunk('logout', async (_, thunkAPI) => {
 
 export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI) => {
   try {
-    const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {
-      withCredentials: true,
-    })
+    const response = await $api.get<AuthResponse>('/auth/refresh')    
     localStorage.setItem('token', response.data.accessToken)
     return response.data.user
   } catch (error: any) {
@@ -120,8 +117,8 @@ export const getFiles = createAsyncThunk(
   'getFiles',
   async (dirId: any, thunkAPI): Promise<any> => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/files${dirId ? '?parent=' + dirId : ''}`, {
+      const response = await $api.get(
+        `/files${dirId ? '?parent=' + dirId : ''}`, {
           headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
         }
       )

@@ -5,7 +5,7 @@ const tokenModel = require('../models/Token')
 class TokenService {
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, congif.get('JWT_ACCESS_SECRET'), {
-      expiresIn: '30m',
+      expiresIn: '7d',
     })
     const refreshToken = jwt.sign(payload, congif.get('JWT_REFRESH_SECRET'), {
       expiresIn: '30d',

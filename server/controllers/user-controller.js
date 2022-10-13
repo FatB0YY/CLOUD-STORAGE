@@ -1,7 +1,9 @@
 const userService = require('../service/user-service')
 const congif = require('config')
 const { validationResult } = require('express-validator')
-const ApiError = require('../exeptions/api-error')
+const ApiError = require('../exceptions/api-error')
+const fileService = require('../service/file-service')
+const File = require('../models/File')
 
 class UserController {
   async registration(req, res, next) {
@@ -18,6 +20,8 @@ class UserController {
         maxAge: 60 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       })
+
+      await fileService.createDir(new File({user: userData.user.id, name: ''}))
       return res.json(userData)
     } catch (error) {
       next(error)

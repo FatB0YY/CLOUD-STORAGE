@@ -1,7 +1,7 @@
 const userService = require('../service/user-service')
 const congif = require('config')
 const { validationResult } = require('express-validator')
-const ApiError = require('../exeptions/api-error')
+const ApiError = require('../exceptions/api-error')
 const fileService = require('../service/file-service')
 const File = require('../models/File')
 

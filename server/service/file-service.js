@@ -1,5 +1,4 @@
 const fs = require('fs')
-const path = require('path')
 const config = require('config')
 const File = require('../models/File')
 
@@ -18,6 +17,7 @@ class FileService {
           return reject({ message: 'File already exist' })
         }
       } catch (error) {
+        console.log(error)
         return reject({ message: 'File error' })
       }
     })

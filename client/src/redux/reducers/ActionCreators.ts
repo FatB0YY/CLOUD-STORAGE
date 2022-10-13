@@ -2,11 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AuthResponse } from '../../models/response/AuthResponse'
 import AuthService from '../../service/AuthService'
 import UserService from '../../service/UserServise'
-
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import $api from '../../http'
-
 import Cookies from 'js-cookie'
 
 interface UserData {
@@ -17,35 +13,17 @@ interface UserData {
 export const login = createAsyncThunk(
   'login',
   async ({ email, password }: UserData, thunkAPI) => {
-    const notifySuccess = () =>
-      toast.success('Вход в аккаунт выполнен успешно!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-    const notifyError = (error: string) =>
-      toast.error(`${error}`, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-
     try {
       const response = await AuthService.login(email, password)
-      Cookies.set('token', response.data.accessToken, {expires: 7})
-      notifySuccess()
+      localStorage.setItem('token', response.data.accessToken)
+      // { expires: 7 }
       return response.data.user
     } catch (error: any) {
-      notifyError(error.response?.data?.message)
-      return thunkAPI.rejectWithValue(error.response?.data?.message)
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+      } else {
+        return thunkAPI.rejectWithValue(error.message)
+      }
     }
   }
 )
@@ -53,35 +31,17 @@ export const login = createAsyncThunk(
 export const registration = createAsyncThunk(
   'registration',
   async ({ email, password }: UserData, thunkAPI) => {
-    const notifySuccess = () =>
-      toast.success('Пользователь создан!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-    const notifyError = (error: string) =>
-      toast.error(`${error}`, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-
     try {
       const response = await AuthService.registration(email, password)
-      Cookies.set('token', response.data.accessToken, {expires: 7})
-      notifySuccess()
+      localStorage.setItem('token', response.data.accessToken)
+      // { expires: 7 }
       return response.data.user
     } catch (error: any) {
-      notifyError(error.response?.data?.message)
-      return thunkAPI.rejectWithValue(error.response?.data?.message)
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+      } else {
+        return thunkAPI.rejectWithValue(error.message)
+      }
     }
   }
 )
@@ -89,20 +49,29 @@ export const registration = createAsyncThunk(
 export const logout = createAsyncThunk('logout', async (_, thunkAPI) => {
   try {
     const response = await AuthService.logout()
-    Cookies.remove('token')
+    localStorage.removeItem('token')
     return {}
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response?.data?.message)
+    if (error.response && error.response.data.message) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    } else {
+      return thunkAPI.rejectWithValue(error.message)
+    }
   }
 })
 
 export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI) => {
   try {
-    const response = await $api.get<AuthResponse>('/auth/refresh')    
-    Cookies.set('token', response.data.accessToken, {expires: 7})
+    const response = await $api.get<AuthResponse>('/auth/refresh')
+    localStorage.setItem('token', response.data.accessToken)
+    //{ expires: 7 }
     return response.data.user
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response?.data?.message)
+    if (error.response && error.response.data.message) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    } else {
+      return thunkAPI.rejectWithValue(error.message)
+    }
   }
 })
 
@@ -111,7 +80,11 @@ export const getUsers = createAsyncThunk('getUsers', async (_, thunkAPI) => {
     const response = await UserService.fetchUsers()
     return response.data ? response.data : response
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response?.data?.message)
+    if (error.response && error.response.data.message) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    } else {
+      return thunkAPI.rejectWithValue(error.message)
+    }
   }
 })
 
@@ -120,14 +93,18 @@ export const getFiles = createAsyncThunk(
   async (dirId: any, thunkAPI): Promise<any> => {
     try {
       const response = await $api.get(
-        `/files${dirId ? '?parent=' + dirId : ''}`, {
-          headers: {Authorization: `Bearer ${Cookies.get('token')}`}
+        `/files${dirId ? '?parent=' + dirId : ''}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
       )
-      console.log('response.data', response.data)
       return response.data
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message)
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+      } else {
+        return thunkAPI.rejectWithValue(error.message)
+      }
     }
   }
 )

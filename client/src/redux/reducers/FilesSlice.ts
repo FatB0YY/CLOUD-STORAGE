@@ -4,6 +4,7 @@ import { getFiles } from './ActionCreators'
 const initialState = {
   files: [],
   currentDir: null,
+  error: null
 }
 
 export const filesSlice = createSlice({
@@ -20,12 +21,12 @@ export const filesSlice = createSlice({
     // ожидание
     [getFiles.pending.type]: (state) => {
       // state.isLoading = true
-      // state.error = ''
+      state.error = null
     },
     // ошибка
     [getFiles.rejected.type]: (state, action: any) => {
       // state.isLoading = false
-      // state.error = action.payload
+      state.error = action.payload
     },
   },
 })

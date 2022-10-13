@@ -1,68 +1,121 @@
-import { FC, useState } from 'react'
-import Input from '../../utils/input/Input'
+import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { registration } from '../../redux/reducers/ActionCreators'
-import './registration.scss'
-import { Link } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { registration, checkAuth } from '../../redux/reducers/ActionCreators'
+import { Link, useNavigate } from 'react-router-dom'
 import Loader from '../Loader'
+import { useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form/dist/types'
+import { useWindowSize } from '@react-hook/window-size'
+import Confetti from 'react-confetti'
+import Swal from 'sweetalert2'
+import './registration.scss'
+
+interface IAuthForm {
+  email: string
+  password: string
+}
 
 const RegistrationForm: FC = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const { isLoading } = useAppSelector((state) => state.userReducer)
+  const { isLoading, error, registrationAccess, isAuth } = useAppSelector(
+    (state) => state.userReducer
+  )
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const [width, height] = useWindowSize()
 
-  const createAccount = (event: any) => {
-    event.preventDefault()
+  useEffect(() => {
+    // возможен цикл
+    if (localStorage.getItem('token')) {
+      dispatch(checkAuth())
+    }
+
+    // редирект если пользователь вошел в аккаунт
+    if (isAuth){
+      Swal.fire({
+        icon: 'success',
+        title: 'Аккаунт успешно создан!',
+        showConfirmButton: false,
+        timer: 5000
+      })
+      setTimeout(() => {
+        navigate('/disk')
+      }, 5000)
+    } 
+  }, [navigate, registrationAccess, isAuth, dispatch]) 
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm<IAuthForm>({
+    mode: 'onBlur',
+  })
+
+  const onSubmit: SubmitHandler<IAuthForm> = ({ email, password }) => {
+    email = email.toLowerCase()
     dispatch(registration({ email, password }))
+    reset()
   }
 
   return (
-    <form className='registration'>
-      <ToastContainer
-        position='top-right'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
-      {/* Same as */}
-      <ToastContainer />
-
+    <form className='registration' onSubmit={handleSubmit(onSubmit)}>
+      {registrationAccess ? <Confetti width={width} height={height} /> : null}
       <h2 className='registration__header'>Регистрация</h2>
-      <Input
-        setValue={setEmail}
-        value={email}
-        id='email-address'
-        name='email'
+
+      <input
+        {...register('email', {
+          required: 'Поле обязательно к заполнению',
+          maxLength: {
+            value: 128,
+            message: 'Максимум 128 символов',
+          },
+          pattern: {
+            value:
+              /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
+            message: 'Некорректный email',
+          },
+        })}
         type='email'
+        id='email-address'
         placeholder='Введите email'
       />
-      <Input
-        setValue={setPassword}
-        value={password}
-        id='password'
-        name='password'
+      <div style={{ height: 20 }}>
+        {errors?.email && (
+          <p>{errors?.email?.message || 'Неизвестная ошибка'}</p>
+        )}
+      </div>
+
+      <input
+        {...register('password', {
+          required: 'Поле обязательно к заполнению',
+          minLength: {
+            value: 8,
+            message: 'Минимум 8 символов',
+          },
+          maxLength: {
+            value: 128,
+            message: 'Максимум 128 символов',
+          },
+        })}
         type='password'
+        id='password'
         placeholder='Введите пароль'
       />
-      <button
-        onClick={(event) => createAccount(event)}
-        className='registration__btn'
-      >
+      <div style={{ height: 40 }}>
+        {errors?.password && (
+          <p>{errors?.password?.message || 'Неизвестная ошибка'}</p>
+        )}
+      </div>
+
+      <button disabled={isLoading} type='submit' className='registration__btn'>
         Создать аккаунт
       </button>
 
       <Link to={'/login'}>Есть аккаунта? Войти</Link>
 
       {isLoading ? <Loader /> : null}
+      {error ? error : null}
     </form>
   )
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { AuthResponse } from '../models/response/AuthResponse'
+import Cookies from 'js-cookie'
 
 export const API_URL = 'http://localhost:8080/api'
 
@@ -39,14 +40,14 @@ $api.interceptors.response.use(
       try {
         // чтобы не было цикла
         originalRequest._isRetry = true
-        const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {
-          withCredentials: true,
-        })
+        // переделать
+        const response = await $api.get<AuthResponse>('/auth/refresh')
         localStorage.setItem('token', response.data.accessToken)
+        // { expires: 7 }
         return $api.request(originalRequest)
       } catch (error) {
         console.log('НЕ АВТОРИЗОВАН')
-        console.log(error)
+        console.log('error (http index):', error)
       }
     } else {
       throw error

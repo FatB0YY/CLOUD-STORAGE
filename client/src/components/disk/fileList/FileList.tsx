@@ -6,8 +6,8 @@ import './fileList.scss'
 const FileList = () => {
   const { files } = useAppSelector((state) => state.filesReducer)
 
-  const fileList = files.map((file: IFile) => <File file={file} key={file.id}/>)
-
+  const fileList = files.map((file: IFile) => <File file={file} key={file._id}/>)
+  
   return (
     <div className='fileList'>
       <div className='fileList__header'>

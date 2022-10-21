@@ -21,6 +21,8 @@ class UserController {
         httpOnly: true,
       })
 
+
+
       await fileService.createDir(new File({user: userData.user.id, name: ''}))
       return res.json(userData)
     } catch (error) {

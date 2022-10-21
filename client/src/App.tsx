@@ -7,14 +7,12 @@ import MainRoutes from './Routes'
 
 function App() {
   const dispatch = useAppDispatch()
-  const {isAuth, registrationAccess} = useAppSelector((store) => store.userReducer)
-
-
+  
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(checkAuth())
     }
-  }, [dispatch, registrationAccess, isAuth])
+  }, [dispatch])
     
   return <MainRoutes />
 }

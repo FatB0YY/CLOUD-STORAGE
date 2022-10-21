@@ -2,35 +2,39 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AuthResponse } from '../../models/response/AuthResponse'
 import AuthService from '../../service/AuthService'
 import UserService from '../../service/UserServise'
+import FileService from '../../service/FileService'
 import $api from '../../http'
 import Cookies from 'js-cookie'
 
-interface UserData {
-  email: string
+
+interface UserData{
+  email: string,
   password: string
 }
 
-export const login = createAsyncThunk(
-  'login',
-  async ({ email, password }: UserData, thunkAPI) => {
-    try {
-      const response = await AuthService.login(email, password)
-      localStorage.setItem('token', response.data.accessToken)
-      // { expires: 7 }
-      return response.data.user
-    } catch (error: any) {
-      if (error.response && error.response.data.message) {
-        return thunkAPI.rejectWithValue(error.response.data.message)
-      } else {
-        return thunkAPI.rejectWithValue(error.message)
-      }
+interface DirData{
+  currentDir: string | null | undefined,
+  name: string
+}
+
+export const login = createAsyncThunk('login', async ({ email, password }: UserData, thunkAPI): Promise<any> => {
+  try {
+    const response = await AuthService.login(email, password)
+    localStorage.setItem('token', response.data.accessToken)
+    // { expires: 7 }
+    return response.data.user
+  } catch (error: any) {
+    if (error.response && error.response.data.message) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    } else {
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
-)
+})
 
 export const registration = createAsyncThunk(
   'registration',
-  async ({ email, password }: UserData, thunkAPI) => {
+  async ({ email, password }: UserData, thunkAPI): Promise<any> => {
     try {
       const response = await AuthService.registration(email, password)
       localStorage.setItem('token', response.data.accessToken)
@@ -46,7 +50,7 @@ export const registration = createAsyncThunk(
   }
 )
 
-export const logout = createAsyncThunk('logout', async (_, thunkAPI) => {
+export const logout = createAsyncThunk('logout', async (_, thunkAPI): Promise<any> => {
   try {
     const response = await AuthService.logout()
     localStorage.removeItem('token')
@@ -60,7 +64,7 @@ export const logout = createAsyncThunk('logout', async (_, thunkAPI) => {
   }
 })
 
-export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI) => {
+export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI): Promise<any> => {
   try {
     const response = await $api.get<AuthResponse>('/auth/refresh')
     localStorage.setItem('token', response.data.accessToken)
@@ -75,7 +79,7 @@ export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI) => {
   }
 })
 
-export const getUsers = createAsyncThunk('getUsers', async (_, thunkAPI) => {
+export const getUsers = createAsyncThunk('getUsers', async (_, thunkAPI): Promise<any> => {
   try {
     const response = await UserService.fetchUsers()
     return response.data ? response.data : response
@@ -90,14 +94,25 @@ export const getUsers = createAsyncThunk('getUsers', async (_, thunkAPI) => {
 
 export const getFiles = createAsyncThunk(
   'getFiles',
-  async (dirId: any, thunkAPI): Promise<any> => {
+  async (dirId: string | null | undefined, thunkAPI) => {
     try {
-      const response = await $api.get(
-        `/files${dirId ? '?parent=' + dirId : ''}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        }
-      )
+      const response = await FileService.fetchFiles(dirId)
+      return response.data
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+      } else {
+        return thunkAPI.rejectWithValue(error.message)
+      }
+    }
+  }
+)
+
+export const createDir = createAsyncThunk(
+  'createDir',
+  async ({ currentDir, name }: DirData, thunkAPI): Promise<any> => {
+    try {
+      const response = await FileService.createDir(currentDir, name)
       return response.data
     } catch (error: any) {
       if (error.response && error.response.data.message) {

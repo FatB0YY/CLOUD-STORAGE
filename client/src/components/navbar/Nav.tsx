@@ -7,14 +7,14 @@ import { logout, checkAuth } from '../../redux/reducers/ActionCreators'
 import './navbar.scss'
 
 const Nav: FC = () => {
-  const { user, isAuth, registrationAccess } = useAppSelector((store) => store.userReducer)
+  const { user, isAuth } = useAppSelector((store) => store.userReducer)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(checkAuth())
     }
-  }, [dispatch, isAuth, registrationAccess])
+  }, [isAuth])
 
   return (
     <div className='navbar'>

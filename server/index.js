@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const fileUpload = require('express-fileupload')
 const congif = require('config')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
@@ -10,6 +11,7 @@ const errorMiddleware = require('./middleware/error-middleware')
 const app = express()
 const PORT = congif.get('PORT')
 
+app.use(fileUpload({}))
 app.use(express.json())
 app.use(cookieParser())
 app.use(

@@ -1,6 +1,6 @@
 {
     "PORT": 8080,
-    "MONGODB_URI": "mongodb://mongodb:27017",
+    "MONGODB_URI": "mongodb://localhost:27017/",
     "DB_NAME": "CLOUDSTORAGE",
     "JWT_ACCESS_SECRET": "5Aa6f#b2I1Z8X9Pt4y38gEjYm*6#m^",
     "JWT_REFRESH_SECRET": "4Ir5R#h2n6xuQ5Wutu^SNy@RXmYEp3",
@@ -10,5 +10,5 @@
     "SMTP_PASSWORD": "qT7U9V1ZcTQk2",
     "API_URL": "http://localhost:8080",
     "CLIENT_URL": "http://localhost:3000",
-    "FILEPATH": "C:\\Users\\iamrodionn\\Desktop\\CLOUD-STORAGE\\server\\files"
+    "FILEPATH": "C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files"
 }

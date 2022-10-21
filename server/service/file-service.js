@@ -8,17 +8,18 @@ class FileService {
   // объект той модели, которую добавляем в бд
   createDir(file) {
     const filePath = `${config.get('FILEPATH')}\\${file.user}\\${file.path}`
+    console.log('1', filePath);
     return new Promise((resolve, reject) => {
       try {
         if (!fs.existsSync(filePath)) {
           fs.mkdirSync(filePath)
-          return resolve({ message: 'File was created' })
+          return resolve({ message: 'Файл создан' })
         } else {
-          return reject({ message: 'File already exist' })
+          return reject({ message: 'Файл уже существует' })
         }
       } catch (error) {
         console.log(error)
-        return reject({ message: 'File error' })
+        return reject({ message: 'Ошибка файла' })
       }
     })
   }

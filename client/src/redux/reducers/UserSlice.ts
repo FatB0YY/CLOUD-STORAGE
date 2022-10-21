@@ -34,7 +34,7 @@ const initialState: UserState = {
 }
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: 'userSlice',
   initialState,
   reducers: {},
   extraReducers: {

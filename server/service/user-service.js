@@ -26,12 +26,13 @@ class UserService {
       password: hashPassword,
       activationLink,
     })
+    
     // await mailService.sendActivationMail(
     //   email,
     //   `${congif.get('API_URL')}/api/auth/activate/${activationLink}`
     // )
 
-    const userDto = new UserDto(user) // email, id, isActivated
+    const userDto = new UserDto(user)
     const tokens = tokenService.generateTokens({ ...userDto })
 
     await tokenService.saveToken(userDto.id, tokens.refreshToken)

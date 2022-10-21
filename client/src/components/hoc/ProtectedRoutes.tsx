@@ -12,7 +12,7 @@ const ProtectedRoutes = (props: any) => {
     if (localStorage.getItem('token')) {
       dispatch(checkAuth())
     }
-  }, [])
+  }, [dispatch])
 
   return isAuth ? <Outlet /> : <Navigate to='/login' />
 }

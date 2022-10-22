@@ -15,7 +15,7 @@ const File: FC<Props> = ({ file }) => {
   const { currentDir } = useAppSelector((state) => state.filesReducer)
   const dispatch = useAppDispatch()
 
-  const openDirHandler = () => {
+  const openDirHandler = (file: any) => {
     if (file.type === 'dir') {
       dispatch(pushToStack(currentDir))
       dispatch(setCurrentDir(file._id))
@@ -23,7 +23,7 @@ const File: FC<Props> = ({ file }) => {
   }
 
   return (
-    <div className='file' onClick={() => openDirHandler()}>
+    <div className='file' onClick={() => openDirHandler(file)}>
       <img
         src={file.type === 'dir' ? dirLogo : fileLogo}
         alt={file.type === 'dir' ? 'dir logo' : 'file logo'}
@@ -31,7 +31,7 @@ const File: FC<Props> = ({ file }) => {
       />
       <div className='file__name'>{file.name}</div>
       <div className='file__date'>{file.date.slice(0, 10)}</div>
-      <div className='file__size'>{file.size}</div>
+      <div className='file__size'>{file.size === 0 ? '-' : file.size}</div>
     </div>
   )
 }

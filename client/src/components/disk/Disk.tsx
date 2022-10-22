@@ -1,16 +1,22 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { createDir, getFiles } from '../../redux/reducers/ActionCreators'
+import {
+  createDir,
+  getFiles,
+  uploadFile,
+} from '../../redux/reducers/ActionCreators'
 import FileList from './fileList/FileList'
 import Swal from 'sweetalert2'
-import './disk.scss'
 import { setCurrentDir } from '../../redux/reducers/FilesSlice'
+import Dropzone from '../dropzone/Dropzone'
+import './disk.scss'
 
 const Disk: FC = () => {
   const dispatch = useAppDispatch()
   const { currentDir, error, dirStack } = useAppSelector(
     (state) => state.filesReducer
   )
+  const [dragEnter, setDragEnter] = useState(false)
 
   useEffect(() => {
     dispatch(getFiles(currentDir))
@@ -43,13 +49,32 @@ const Disk: FC = () => {
   }
 
   const backClickHandler = () => {
+    // исправить
     const copyDirStack = [...dirStack]
     const backDirId = copyDirStack.pop()
     dispatch(setCurrentDir(backDirId))
   }
 
-  return (
-    <div className='disk'>
+  const fileUploadHandler = async (event: any) => {
+    const files = [...event.target.files]
+    files.forEach((file) => dispatch(uploadFile({ file, currentDir })))
+  }
+
+
+  function dragEnterHandler(event: any) {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragEnter(true)
+  }
+
+  function dragLeaveHandler(event: any) {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragEnter(false)
+  }
+
+  return !dragEnter ? (
+    <div className='disk' onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}>
       <div className='disk__btns'>
         <button className='disk__back' onClick={() => backClickHandler()}>
           Назад
@@ -57,9 +82,22 @@ const Disk: FC = () => {
         <button className='disk__create' onClick={() => createDirHandler()}>
           Создать папку
         </button>
+        <div className='disk__upload'>
+          <label htmlFor='disk__upload-input' className='disk__upload-label'>
+            Загрузить файл
+          </label>
+          <input
+            type='file'
+            id='disk__upload-input'
+            className='disk__upload-input'
+            onChange={(event) => fileUploadHandler(event)}
+          />
+        </div>
       </div>
       <FileList />
     </div>
+  ) : (
+    <Dropzone dragEnterHandler={dragEnterHandler} dragLeaveHandler={dragLeaveHandler} setDragEnter={setDragEnter}/>
   )
 }
 

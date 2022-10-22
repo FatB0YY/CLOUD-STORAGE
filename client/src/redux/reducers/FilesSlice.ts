@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IFile } from '../../models/response/IFile'
-import { createDir, getFiles } from './ActionCreators'
+import { createDir, getFiles, uploadFile } from './ActionCreators'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 interface FileState {
@@ -34,6 +34,7 @@ export const filesSlice = createSlice({
     // }
   },
   extraReducers: {
+    //////////////////////////////////// getFiles
     // успешная загрузка
     [getFiles.fulfilled.type]: (state, action: PayloadAction<Array<IFile>>) => {
       //state.files = action.payload
@@ -51,18 +52,40 @@ export const filesSlice = createSlice({
       state.error = action.payload
     },
 
+    //////////////////////////////////// createDir
     // успешная загрузка
     [createDir.fulfilled.type]: (state, action: PayloadAction<IFile>) => {
       state.files.push(action.payload)
+      state.isLoading = false
     },
 
     // ожидание
     [createDir.pending.type]: (state) => {
       state.error = null
+      state.isLoading = true
     },
     // ошибка
     [createDir.rejected.type]: (state, action: PayloadAction<string>) => {
       state.error = action.payload
+      state.isLoading = false
+    },
+
+    //////////////////////////////////// uploadFile
+    // успешная загрузка
+    [uploadFile.fulfilled.type]: (state, action) => {
+      state.files.push(action.payload)
+      state.isLoading = false
+    },
+
+    // ожидание
+    [uploadFile.pending.type]: (state) => {
+      state.error = null
+      state.isLoading = true
+    },
+    // ошибка
+    [uploadFile.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.error = action.payload
+      state.isLoading = false
     },
   },
 })

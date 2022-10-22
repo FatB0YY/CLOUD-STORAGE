@@ -123,3 +123,26 @@ export const createDir = createAsyncThunk(
     }
   }
 )
+
+export const uploadFile = createAsyncThunk(
+  'uploadFile',
+  async ({ file, dirId }: any, thunkAPI): Promise<any> => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      if(dirId){
+        formData.append('parent', dirId)
+      }
+
+      const response = await FileService.uploadFile(dirId, file, formData)
+      return response.data
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+      } else {
+        return thunkAPI.rejectWithValue(error.message)
+      }
+    }
+  }
+)

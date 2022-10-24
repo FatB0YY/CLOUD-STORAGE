@@ -20,8 +20,7 @@ interface DirData{
 export const login = createAsyncThunk('login', async ({ email, password }: UserData, thunkAPI): Promise<any> => {
   try {
     const response = await AuthService.login(email, password)
-    localStorage.setItem('token', response.data.accessToken)
-    // { expires: 7 }
+    Cookies.set('token', response.data.accessToken, {expires: 7})
     return response.data.user
   } catch (error: any) {
     if (error.response && error.response.data.message) {
@@ -37,8 +36,7 @@ export const registration = createAsyncThunk(
   async ({ email, password }: UserData, thunkAPI): Promise<any> => {
     try {
       const response = await AuthService.registration(email, password)
-      localStorage.setItem('token', response.data.accessToken)
-      // { expires: 7 }
+      Cookies.set('token', response.data.accessToken, { expires: 7 })
       return response.data.user
     } catch (error: any) {
       if (error.response && error.response.data.message) {
@@ -53,7 +51,7 @@ export const registration = createAsyncThunk(
 export const logout = createAsyncThunk('logout', async (_, thunkAPI): Promise<any> => {
   try {
     const response = await AuthService.logout()
-    localStorage.removeItem('token')
+    Cookies.remove('token')
     return {}
   } catch (error: any) {
     if (error.response && error.response.data.message) {
@@ -67,8 +65,7 @@ export const logout = createAsyncThunk('logout', async (_, thunkAPI): Promise<an
 export const checkAuth = createAsyncThunk('checkAuth', async (_, thunkAPI): Promise<any> => {
   try {
     const response = await $api.get<AuthResponse>('/auth/refresh')
-    localStorage.setItem('token', response.data.accessToken)
-    //{ expires: 7 }
+    Cookies.set('token', response.data.accessToken, { expires: 7 })
     return response.data.user
   } catch (error: any) {
     if (error.response && error.response.data.message) {

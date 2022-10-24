@@ -9,6 +9,7 @@ import { useWindowSize } from '@react-hook/window-size'
 import Confetti from 'react-confetti'
 import Swal from 'sweetalert2'
 import './registration.scss'
+import Cookies from 'js-cookie'
 
 interface IAuthForm {
   email: string
@@ -25,7 +26,7 @@ const RegistrationForm: FC = () => {
 
   useEffect(() => {
     // возможен цикл
-    if (localStorage.getItem('token')) {
+    if (Cookies.get('token')) {
       dispatch(checkAuth())
     }
 

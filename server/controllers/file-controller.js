@@ -8,20 +8,13 @@ class FileController {
   async createDir(req, res) {
     try {
       const { name, type, parent } = req.body
-      console.log('2', name);
-      console.log('3', type);
-      console.log('4', parent);
       const file = new File({ name, type, parent, user: req.user.id })
-      console.log('5', file);
       const parentFile = await File.findOne({ _id: parent })
-      console.log('6', parentFile);
       if (!parentFile) {
         file.path = name
-        console.log('7', file.path);
         await fileService.createDir(file)
       } else {
         file.path = `${parentFile.path}\\${file.name}`
-        console.log('8', file.path);
         await fileService.createDir(file)
         parentFile.childs.push(file._id)
         await parentFile.save()

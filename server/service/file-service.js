@@ -8,7 +8,6 @@ class FileService {
   // объект той модели, которую добавляем в бд
   createDir(file) {
     const filePath = `${config.get('FILEPATH')}\\${file.user}\\${file.path}`
-    console.log('1', filePath);
     return new Promise((resolve, reject) => {
       try {
         if (!fs.existsSync(filePath)) {

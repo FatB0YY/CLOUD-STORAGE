@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import { FC, useEffect } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import Cloudstoragelogo from '../../assets/img/cloudstorage-logo.png'
@@ -11,7 +12,7 @@ const Nav: FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (Cookies.get('token')) {
       dispatch(checkAuth())
     }
   }, [isAuth])

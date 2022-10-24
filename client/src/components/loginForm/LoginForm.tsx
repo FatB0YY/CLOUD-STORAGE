@@ -6,6 +6,7 @@ import Loader from '../Loader'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
+import Cookies from 'js-cookie'
 
 interface IAuthForm {
   email: string
@@ -30,7 +31,7 @@ const LoginForm: FC = () => {
 
   useEffect(() => {
     // возможен цикл
-    if (localStorage.getItem('token')) {
+    if (Cookies.get('token')) {
       dispatch(checkAuth())
     }
 

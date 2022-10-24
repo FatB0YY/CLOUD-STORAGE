@@ -9,7 +9,7 @@ const ProtectedRoutes = (props: any) => {
   const { isAuth } = useAppSelector((store) => store.userReducer)
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (Cookies.get('token')) {
       dispatch(checkAuth())
     }
   }, [dispatch])

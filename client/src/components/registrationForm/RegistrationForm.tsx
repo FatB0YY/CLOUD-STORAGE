@@ -14,6 +14,7 @@ import Cookies from 'js-cookie'
 interface IAuthForm {
   email: string
   password: string
+  confirm_password: string
 }
 
 const RegistrationForm: FC = () => {
@@ -31,29 +32,34 @@ const RegistrationForm: FC = () => {
     }
 
     // редирект если пользователь вошел в аккаунт
-    if (isAuth){
+    if (isAuth) {
       Swal.fire({
         icon: 'success',
         title: 'Аккаунт успешно создан!',
         showConfirmButton: false,
-        timer: 5000
+        timer: 5000,
       })
       setTimeout(() => {
         navigate('/disk')
       }, 5000)
-    } 
-  }, [navigate, registrationAccess, isAuth, dispatch]) 
+    }
+  }, [navigate, registrationAccess, isAuth, dispatch])
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
+    watch,
   } = useForm<IAuthForm>({
     mode: 'onBlur',
   })
 
-  const onSubmit: SubmitHandler<IAuthForm> = ({ email, password }) => {
+  const onSubmit: SubmitHandler<IAuthForm> = ({
+    email,
+    password,
+    confirm_password,
+  }) => {
     email = email.toLowerCase()
     dispatch(registration({ email, password }))
     reset()
@@ -106,6 +112,33 @@ const RegistrationForm: FC = () => {
       <div style={{ height: 40 }}>
         {errors?.password && (
           <p>{errors?.password?.message || 'Неизвестная ошибка'}</p>
+        )}
+      </div>
+
+      <input
+        {...register('confirm_password', {
+          required: 'Поле обязательно к заполнению',
+          minLength: {
+            value: 8,
+            message: 'Минимум 8 символов',
+          },
+          maxLength: {
+            value: 128,
+            message: 'Максимум 128 символов',
+          },
+          validate: (val: string) => {
+            if (watch('password') !== val) {
+              return 'Ваши пароли не совпадают'
+            }
+          },
+        })}
+        type='password'
+        id='confirm_password'
+        placeholder='Подтвердите пароль'
+      />
+      <div style={{ height: 40 }}>
+        {errors?.confirm_password && (
+          <p>{errors?.confirm_password?.message || 'Неизвестная ошибка'}</p>
         )}
       </div>
 

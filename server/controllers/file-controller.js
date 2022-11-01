@@ -85,15 +85,28 @@ class FileController {
       await dbFile.save()
       await user.save()
 
-    res.json(dbFile)
+      return res.json(dbFile)
     } catch (error) {
       console.log(error)
       return res.status(500).json('На диске нет места')
     }
   }
+
+  async downloadFile(req, res) {
+    try {
+      const file = await File.findOne({ _id: req.query.id, user: req.user.id })
+      const path = `${config.get('FILEPATH')}\\${req.user.id}\\${file.path}\\${
+        file.name
+      }`
+      if (fs.existsSync(path)) {
+        return res.download(path, file.name)
+      }
+      return res.status(400).json({ message: 'Ошибка при скачивании' })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ messgae: 'Ошибка при скачивании' })
+    }
+  }
 }
 
 module.exports = new FileController()
-
-
-// добавить поля в dtos

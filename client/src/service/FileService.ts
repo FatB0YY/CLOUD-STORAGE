@@ -46,4 +46,13 @@ export default class FileService {
       },
     })
   }
+
+  static async downloadFile(file: any): Promise<any> {
+    return $api.get(`/files/download?id=${file._id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      responseType: 'blob'
+    })
+  }
 }

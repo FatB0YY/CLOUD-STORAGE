@@ -29,9 +29,9 @@ export const filesSlice = createSlice({
     pushToStack(state, action: PayloadAction<any>) {
       state.dirStack.push(action.payload)
     },
-    // pushFromStack(state, action){
-
-    // }
+    popStack(state){ 
+      state.dirStack.pop()
+    }
   },
   extraReducers: {
     //////////////////////////////////// getFiles
@@ -91,5 +91,5 @@ export const filesSlice = createSlice({
 })
 
 const { actions, reducer } = filesSlice
-export const { pushToStack, setCurrentDir } = actions
+export const { pushToStack, setCurrentDir, popStack } = actions
 export default reducer

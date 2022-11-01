@@ -7,7 +7,7 @@ import {
 } from '../../redux/reducers/ActionCreators'
 import FileList from './fileList/FileList'
 import Swal from 'sweetalert2'
-import { setCurrentDir } from '../../redux/reducers/FilesSlice'
+import { popStack, setCurrentDir } from '../../redux/reducers/FilesSlice'
 import Dropzone from '../dropzone/Dropzone'
 import './disk.scss'
 
@@ -49,17 +49,16 @@ const Disk: FC = () => {
   }
 
   const backClickHandler = () => {
-    // исправить
-    const copyDirStack = [...dirStack]
-    const backDirId = copyDirStack.pop()
+    const copy = [...dirStack]
+    const backDirId = copy.pop()
     dispatch(setCurrentDir(backDirId))
+    dispatch(popStack())
   }
 
   const fileUploadHandler = async (event: any) => {
     const files = [...event.target.files]
     files.forEach((file) => dispatch(uploadFile({ file, currentDir })))
   }
-
 
   function dragEnterHandler(event: any) {
     event.preventDefault()
@@ -74,7 +73,12 @@ const Disk: FC = () => {
   }
 
   return !dragEnter ? (
-    <div className='disk' onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onDragOver={dragEnterHandler}>
+    <div
+      className='disk'
+      onDragEnter={dragEnterHandler}
+      onDragLeave={dragLeaveHandler}
+      onDragOver={dragEnterHandler}
+    >
       <div className='disk__btns'>
         <button className='disk__back' onClick={() => backClickHandler()}>
           Назад
@@ -97,7 +101,11 @@ const Disk: FC = () => {
       <FileList />
     </div>
   ) : (
-    <Dropzone dragEnterHandler={dragEnterHandler} dragLeaveHandler={dragLeaveHandler} setDragEnter={setDragEnter}/>
+    <Dropzone
+      dragEnterHandler={dragEnterHandler}
+      dragLeaveHandler={dragLeaveHandler}
+      setDragEnter={setDragEnter}
+    />
   )
 }
 

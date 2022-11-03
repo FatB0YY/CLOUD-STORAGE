@@ -10,11 +10,15 @@ import {
 
 interface UserState {
   user: IUser
-  isLoading: boolean
-  error: string | null
   isAuth: boolean
   registrationAccess: boolean
   users: Array<IUser>
+
+  errorLogin: string | null
+  errorReg: string | null
+
+  isLoadingForm: boolean
+  isLoadingMain: boolean
 }
 
 const initialState: UserState = {
@@ -26,11 +30,15 @@ const initialState: UserState = {
     files: [],
     usedSpace: 0
   },
-  isLoading: false,
-  error: null,
   isAuth: false,
   registrationAccess: false,
   users: [],
+
+  errorLogin: null,
+  errorReg: null,
+
+  isLoadingForm: false,
+  isLoadingMain: false
 }
 
 export const userSlice = createSlice({
@@ -40,21 +48,21 @@ export const userSlice = createSlice({
   extraReducers: {
     // ожидание
     [login.pending.type]: (state) => {
-      state.isLoading = true
-      state.error = null
+      state.isLoadingForm = true
+      state.errorLogin = null
     },
     // успешная загрузка
     [login.fulfilled.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = null
+      state.isLoadingForm = false
+      state.errorLogin = null
       state.user = action.payload
       state.isAuth = true
       state.registrationAccess = true
     },
     // ошибка
     [login.rejected.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = action.payload
+      state.isLoadingForm = false
+      state.errorLogin = action.payload
       state.isAuth = false
     },
 
@@ -62,40 +70,43 @@ export const userSlice = createSlice({
 
     // ожидание
     [logout.pending.type]: (state) => {
-      state.isLoading = true
-      state.error = null
+      state.isLoadingForm = true
+      state.errorLogin = null
+      state.errorReg = null
     },
     // успешная загрузка
     [logout.fulfilled.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = null
+      state.isLoadingForm = false
+      state.errorLogin = null
+      state.errorReg = null
       state.user = action.payload
       state.isAuth = false
       state.registrationAccess = false
     },
     // ошибка
     [logout.rejected.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = action.payload
+      state.isLoadingForm = false
+      state.errorLogin = action.payload
+      state.errorReg = null
     },
 
     
     // ожидание
     [registration.pending.type]: (state) => {
-      state.isLoading = true
-      state.error = null
+      state.isLoadingForm = true
+      state.errorReg = null
     },
     // успешная загрузка
     [registration.fulfilled.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = null
+      state.isLoadingForm = false
+      state.errorReg = null
       state.user = action.payload
       state.registrationAccess = true
     },
     // ошибка
     [registration.rejected.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = action.payload
+      state.isLoadingForm = false
+      state.errorReg = action.payload
     },
 
 
@@ -104,40 +115,33 @@ export const userSlice = createSlice({
 
     // ожидание
     [checkAuth.pending.type]: (state) => {
-      state.isLoading = true
-      state.error = null
+      state.isLoadingMain = true
     },
     // успешная загрузка
     [checkAuth.fulfilled.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = null
+      state.isLoadingMain = false
       state.user = action.payload
       state.isAuth = true
     },
     // ошибка
     [checkAuth.rejected.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = action.payload
+      state.isLoadingMain = false
     },
 
 
 
-    
     // ожидание
     [getUsers.pending.type]: (state) => {
-      state.isLoading = true
-      state.error = ''
+      state.isLoadingMain = true
     },
     // успешная загрузка
     [getUsers.fulfilled.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = ''
+      state.isLoadingMain = false
       state.users = action.payload
     },
     // ошибка
     [getUsers.rejected.type]: (state, action: any) => {
-      state.isLoading = false
-      state.error = action.payload
+      state.isLoadingMain = false
     },
   },
 })

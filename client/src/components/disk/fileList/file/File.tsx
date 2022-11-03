@@ -8,7 +8,8 @@ import {
   pushToStack,
   setCurrentDir,
 } from '../../../../redux/reducers/FilesSlice'
-import { downloadFile } from '../../../../redux/reducers/ActionCreators'
+import { deleteFile, downloadFile } from '../../../../redux/reducers/ActionCreators'
+import Swal from 'sweetalert2'
 
 interface Props {
   file: IFile
@@ -31,6 +32,16 @@ const File: FC<Props> = ({ file }) => {
     dispatch(downloadFile(file))
   } 
 
+  const deleteClickHandler = (event: any) => {
+    event.stopPropagation()
+    Swal.fire(
+      'Файл удален',
+      '',
+      'success'
+    )
+    dispatch(deleteFile(file))
+  }
+
   return (
     <div className='file' onClick={() => openDirHandler(file)}>
       <img
@@ -45,7 +56,7 @@ const File: FC<Props> = ({ file }) => {
       {file.type !== 'dir' && (
         <button onClick={(event) => downloadClickHandler(event)} className='file__btn file__download'>Скачать</button>
       )}
-      <button className='file__btn file__delete'>Удалить</button>
+      <button onClick={(event) => deleteClickHandler(event)} className='file__btn file__delete'>Удалить</button>
     </div>
   )
 }

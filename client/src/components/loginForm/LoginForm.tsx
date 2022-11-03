@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { login, checkAuth } from '../../redux/reducers/ActionCreators'
 import './login.scss'
-import Loader from '../Loader'
+import Loader from '../loader/Loader'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
@@ -14,7 +14,7 @@ interface IAuthForm {
 }
 
 const LoginForm: FC = () => {
-  const { isLoading, error, isAuth } = useAppSelector(
+  const { errorLogin, isAuth, isLoadingForm, isLoadingMain } = useAppSelector(
     (state) => state.userReducer
   )
   const dispatch = useAppDispatch()
@@ -23,7 +23,7 @@ const LoginForm: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
   } = useForm<IAuthForm>({
     mode: 'onBlur',
@@ -42,6 +42,10 @@ const LoginForm: FC = () => {
     email = email.toLowerCase()
     dispatch(login({ email, password }))
     reset()
+  }
+
+  if(isLoadingMain){
+    return <Loader type='main'/>
   }
 
   return (
@@ -93,14 +97,14 @@ const LoginForm: FC = () => {
         )}
       </div>
 
-      <button disabled={isLoading} className='login__btn'>
+      <button disabled={isLoadingForm} className='login__btn'>
         Войти
       </button>
 
       <Link to={'/registration'}>Нет аккаунта? Зарегистрироваться</Link>
 
-      {error ? error : null}
-      {isLoading ? <Loader /> : null}
+      {errorLogin ? errorLogin : null}
+      {isLoadingForm ? <Loader type='form'/> : null}
     </form>
   )
 }

@@ -181,3 +181,26 @@ export const downloadFile = createAsyncThunk(
     }
   }
 )
+
+export const deleteFile = createAsyncThunk(
+  'deleteFile',
+  async (file: any, thunkAPI): Promise<any> => {
+    try {
+      const response = await FileService.deleteFile(file)
+
+      const dirId = file._id
+      const msg = response.data.message
+      
+      return {
+        dirId,
+        msg
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message)
+      } else {
+        return thunkAPI.rejectWithValue(error.message)
+      }
+    }
+  }
+)

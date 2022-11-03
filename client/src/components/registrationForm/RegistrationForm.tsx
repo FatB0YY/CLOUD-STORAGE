@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { registration, checkAuth } from '../../redux/reducers/ActionCreators'
 import { Link, useNavigate } from 'react-router-dom'
-import Loader from '../Loader'
+import Loader from '../loader/Loader'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
 import { useWindowSize } from '@react-hook/window-size'
@@ -18,9 +18,8 @@ interface IAuthForm {
 }
 
 const RegistrationForm: FC = () => {
-  const { isLoading, error, registrationAccess, isAuth } = useAppSelector(
-    (state) => state.userReducer
-  )
+  const { isLoadingForm, isLoadingMain, errorReg, registrationAccess, isAuth } =
+    useAppSelector((state) => state.userReducer)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [width, height] = useWindowSize()
@@ -63,6 +62,10 @@ const RegistrationForm: FC = () => {
     email = email.toLowerCase()
     dispatch(registration({ email, password }))
     reset()
+  }
+
+  if(isLoadingMain){
+    return <Loader type='main'/>
   }
 
   return (
@@ -142,14 +145,14 @@ const RegistrationForm: FC = () => {
         )}
       </div>
 
-      <button disabled={isLoading} type='submit' className='registration__btn'>
+      <button disabled={isLoadingForm} type='submit' className='registration__btn'>
         Создать аккаунт
       </button>
 
       <Link to={'/login'}>Есть аккаунта? Войти</Link>
 
-      {isLoading ? <Loader /> : null}
-      {error ? error : null}
+      {isLoadingForm ? <Loader type='form' /> : null}
+      {errorReg ? errorReg : null}
     </form>
   )
 }

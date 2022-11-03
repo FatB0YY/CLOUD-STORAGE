@@ -9,6 +9,9 @@ const $api = axios.create({
   // каждый запрос с куки
   withCredentials: true,
   baseURL: API_URL,
+  headers: {
+    Authorization: `Bearer ${Cookies.get('token')}`,
+  },
 })
 
 // интерцепторы (перехватчик)
@@ -42,7 +45,7 @@ $api.interceptors.response.use(
         originalRequest._isRetry = true
         // переделать
         const response = await $api.get<AuthResponse>('/auth/refresh')
-        Cookies.set('token', response.data.accessToken, {expires: 7})
+        Cookies.set('token', response.data.accessToken, { expires: 7 })
         return $api.request(originalRequest)
       } catch (error) {
         console.log('НЕ АВТОРИЗОВАН')

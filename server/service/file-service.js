@@ -3,6 +3,11 @@ const config = require('config')
 const File = require('../models/File')
 
 class FileService {
+  getPath(file){
+    return `${config.get('FILEPATH')}\\${file.user}\\${file.path}`
+  }
+
+
   // создание папки
   // принимает параметр file, это не физ файл, а
   // объект той модели, которую добавляем в бд
@@ -21,6 +26,15 @@ class FileService {
         return reject({ message: 'Ошибка файла' })
       }
     })
+  }
+
+  deleteFile(file){
+    const path = this.getPath(file)
+    if(file.type === 'dir'){
+      fs.rmdirSync(path)
+    } else {
+      fs.unlinkSync(path)
+    }
   }
 }
 

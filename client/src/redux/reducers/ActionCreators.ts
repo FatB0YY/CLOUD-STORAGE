@@ -5,6 +5,8 @@ import UserService from '../../service/UserServise'
 import FileService from '../../service/FileService'
 import $api from '../../http'
 import Cookies from 'js-cookie'
+import { addUploadFile, showUploader } from './UploadSlice'
+import { v4 as uuidv4 } from 'uuid'
 
 interface UserData {
   email: string
@@ -143,7 +145,17 @@ export const uploadFile = createAsyncThunk(
         formData.append('parent', dirId)
       }
 
-      const response = await FileService.uploadFile(dirId, file, formData)
+      // изменить?
+      const uploadFile = { name: file.name, progress: 0, id: uuidv4() }
+
+      thunkAPI.dispatch(showUploader())
+      thunkAPI.dispatch(addUploadFile(uploadFile))
+
+      const response = await FileService.uploadFile(
+        formData,
+        uploadFile,
+        thunkAPI.dispatch
+      )
       return response.data
     } catch (error: any) {
       if (error.response && error.response.data.message) {
@@ -190,10 +202,10 @@ export const deleteFile = createAsyncThunk(
 
       const dirId = file._id
       const msg = response.data.message
-      
+
       return {
         dirId,
-        msg
+        msg,
       }
     } catch (error: any) {
       if (error.response && error.response.data.message) {

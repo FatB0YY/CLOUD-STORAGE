@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 import { popStack, setCurrentDir } from '../../redux/reducers/FilesSlice'
 import Dropzone from '../dropzone/Dropzone'
 import './disk.scss'
+import Uploader from '../uploader/Uploader'
 
 const Disk: FC = () => {
   const dispatch = useAppDispatch()
@@ -99,6 +100,7 @@ const Disk: FC = () => {
         </div>
       </div>
       <FileList />
+      <Uploader />
     </div>
   ) : (
     <Dropzone

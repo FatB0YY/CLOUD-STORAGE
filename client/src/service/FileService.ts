@@ -2,6 +2,7 @@ import $api from '../http'
 import { AxiosResponse } from 'axios'
 import { IFile } from '../models/response/IFile'
 import { deleteFile } from '../redux/reducers/ActionCreators'
+import { changeUploadFile } from '../redux/reducers/UploadSlice'
 
 export default class FileService {
   static async fetchFiles(
@@ -21,7 +22,7 @@ export default class FileService {
     })
   }
 
-  static async uploadFile(dir: any, file: any, formData: any): Promise<any> {
+  static async uploadFile(formData: any, uploadFile: any, dispatch: any): Promise<any> {
     return $api.post(`/files/upload`, formData, {
       onUploadProgress: (progressEvent) => {
         const totalLength = progressEvent.lengthComputable
@@ -29,11 +30,11 @@ export default class FileService {
           : progressEvent.target.getResponseHeader('content-length') ||
             progressEvent.target.getResponseHeader(
               'x-decompressed-content-length'
-            )
-        console.log('total', totalLength)
+            );
+
         if (totalLength) {
-          let progress = Math.round((progressEvent.loaded * 100) / totalLength)
-          console.log(progress)
+          uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
+          dispatch(changeUploadFile(uploadFile))
         }
       },
     })

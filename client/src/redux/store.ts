@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './reducers/UserSlice'
 import filesReducer from './reducers/FilesSlice'
+import uploadReducer from './reducers/UploadSlice'
 
 const rootReducer = combineReducers({
   userReducer,
   filesReducer,
+  uploadReducer
 })
 
 export const setupStore = () => {

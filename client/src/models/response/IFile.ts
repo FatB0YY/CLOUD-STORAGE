@@ -9,4 +9,5 @@ export interface IFile {
     user: string
     parent: string
     childs: Array<string>
+    progress?: number
 }

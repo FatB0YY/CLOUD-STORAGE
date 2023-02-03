@@ -7,6 +7,13 @@
   background-color: white;
   width: 100%;
 
+  &__linklogo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+
   &__header{
     margin-left: 10px;
     font-size: 24px;
@@ -32,11 +39,4 @@
   &__login.active, &__registration.active{
     color: rgb(121, 121, 255)
   }
-}
-
-.container{
-  width: 1140px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }

@@ -27,9 +27,9 @@ const Dropzone = (props: any) => {
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Отпустите файлы, чтобы загрузить их</p>
+          <p className='dropzone__text'>Отпустите файлы, чтобы загрузить их</p>
         ) : (
-          <p>
+          <p className='dropzone__text'>
             Перетащите несколько файлов сюда или нажмите, чтобы выбрать файлы
           </p>
         )}

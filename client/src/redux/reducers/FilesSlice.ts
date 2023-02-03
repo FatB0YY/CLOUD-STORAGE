@@ -1,116 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IFile } from '../../models/response/IFile'
-import { createDir, deleteFile, getFiles, uploadFile } from './ActionCreators'
-import { PayloadAction } from '@reduxjs/toolkit'
+import { dirIdType } from '../../models/response/IFile'
 
 interface FileState {
-  files: Array<IFile>
-  currentDir: string | null | undefined
-  error: string | null
-  dirStack: Array<string>
-
-  isLoadingFiles: boolean
+  currentDir: dirIdType
+  dirStack: string[]
+  nameStack: string[]
 }
 
 const initialState: FileState = {
-  files: [],
-  currentDir: null,
-  error: null,
+  currentDir: undefined,
   dirStack: [],
-
-  isLoadingFiles: false,
+  nameStack: [],
 }
 
 export const filesSlice = createSlice({
   name: 'filesSlice',
   initialState,
   reducers: {
-    setCurrentDir(state, action: PayloadAction<string | undefined>) {
+    setCurrentDir(state, action: { payload: dirIdType; type: string }) {
       state.currentDir = action.payload
     },
-    pushToStack(state, action: PayloadAction<any>) {
+    pushToDirStack(state, action) {
       state.dirStack.push(action.payload)
     },
-    popStack(state) {
+    popDirStack(state) {
       state.dirStack.pop()
     },
-  },
-  extraReducers: {
-    //////////////////////////////////// getFiles
-    // успешная загрузка
-    [getFiles.fulfilled.type]: (state, action: PayloadAction<Array<IFile>>) => {
-      state.isLoadingFiles = false
-      state.files = action.payload
+    pushToNameStack(state, action) {
+      state.nameStack.push(action.payload)
     },
-    // ожидание
-    [getFiles.pending.type]: (state) => {
-      state.isLoadingFiles = true
-      state.error = null
-    },
-    // ошибка
-    [getFiles.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.isLoadingFiles = false
-      state.error = action.payload
-    },
-
-    //////////////////////////////////// createDir
-    // успешная загрузка
-    [createDir.fulfilled.type]: (state, action: PayloadAction<IFile>) => {
-      state.files.push(action.payload)
-      state.isLoadingFiles = false
-    },
-
-    // ожидание
-    [createDir.pending.type]: (state) => {
-      state.error = null
-      state.isLoadingFiles = true
-    },
-    // ошибка
-    [createDir.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.error = action.payload
-      state.isLoadingFiles = false
-    },
-
-    //////////////////////////////////// uploadFile
-    // успешная загрузка
-    [uploadFile.fulfilled.type]: (state, action) => {
-      state.files.push(action.payload)
-      state.isLoadingFiles = false
-    },
-
-    // ожидание
-    [uploadFile.pending.type]: (state) => {
-      state.error = null
-      state.isLoadingFiles = true
-    },
-    // ошибка
-    [uploadFile.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.error = action.payload
-      state.isLoadingFiles = false
-    },
-
-    //////////////////////////////////// deleteFile
-    // успешная загрузка
-    [deleteFile.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      state.files = [
-        ...state.files.filter((file) => file._id != action.payload.dirId),
-      ]
-      state.isLoadingFiles = false
-    },
-
-    // ожидание
-    [deleteFile.pending.type]: (state) => {
-      state.error = null
-      state.isLoadingFiles = true
-    },
-    // ошибка
-    [deleteFile.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.error = action.payload
-      state.isLoadingFiles = false
+    popNameStack(state) {
+      state.nameStack.pop()
     },
   },
+  extraReducers: (builder) => {},
 })
 
 const { actions, reducer } = filesSlice
-export const { pushToStack, setCurrentDir, popStack } = actions
+export const { pushToDirStack, setCurrentDir, popDirStack } = actions
 export default reducer

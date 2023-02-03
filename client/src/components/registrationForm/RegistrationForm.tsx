@@ -1,15 +1,13 @@
 import { FC, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { registration, checkAuth } from '../../redux/reducers/ActionCreators'
+import { useAppSelector } from '../../hooks/redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Loader from '../loader/Loader'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
-import { useWindowSize } from '@react-hook/window-size'
-import Confetti from 'react-confetti'
-import Swal from 'sweetalert2'
+import { useRegistrationMutation } from '../../service/AuthAPI'
+import { selectCurrentUser } from '../../redux/reducers/UserSlice'
+import { toast } from 'react-toastify'
 import './registration.scss'
-import Cookies from 'js-cookie'
 
 interface IAuthForm {
   email: string
@@ -18,31 +16,38 @@ interface IAuthForm {
 }
 
 const RegistrationForm: FC = () => {
-  const { isLoadingForm, isLoadingMain, errorReg, registrationAccess, isAuth } =
-    useAppSelector((state) => state.userReducer)
-  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectCurrentUser)
   const navigate = useNavigate()
-  const [width, height] = useWindowSize()
+
+  const [registration, { isLoading, isSuccess, isError, error }] =
+    useRegistrationMutation()
 
   useEffect(() => {
-    // возможен цикл
-    if (Cookies.get('token')) {
-      dispatch(checkAuth())
-    }
-
-    // редирект если пользователь вошел в аккаунт
-    if (isAuth) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Аккаунт успешно создан!',
-        showConfirmButton: false,
-        timer: 5000,
-      })
+    if (isSuccess) {
+      toast.success('Аккаунт успешно создан')
       setTimeout(() => {
         navigate('/disk')
-      }, 5000)
+      }, 3000)
     }
-  }, [navigate, registrationAccess, isAuth, dispatch])
+
+    if (isError) {
+      if (Array.isArray((error as any).data.error)) {
+        ;(error as any).data.error.forEach((el: any) =>
+          toast.error(el.message, {
+            position: 'top-right',
+          })
+        )
+      } else {
+        toast.error((error as any).data.message, {
+          position: 'top-right',
+        })
+      }
+    }
+
+    if (user) {
+      navigate('/disk')
+    }
+  }, [navigate, isSuccess, user, error, isError])
 
   const {
     register,
@@ -54,23 +59,18 @@ const RegistrationForm: FC = () => {
     mode: 'onBlur',
   })
 
-  const onSubmit: SubmitHandler<IAuthForm> = ({
+  const onSubmit: SubmitHandler<IAuthForm> = async ({
     email,
     password,
     confirm_password,
   }) => {
     email = email.toLowerCase()
-    dispatch(registration({ email, password }))
+    await registration({ email, password }).unwrap()
     reset()
-  }
-
-  if(isLoadingMain){
-    return <Loader type='main'/>
   }
 
   return (
     <form className='registration' onSubmit={handleSubmit(onSubmit)}>
-      {registrationAccess ? <Confetti width={width} height={height} /> : null}
       <h2 className='registration__header'>Регистрация</h2>
 
       <input
@@ -83,12 +83,12 @@ const RegistrationForm: FC = () => {
           pattern: {
             value:
               /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-            message: 'Некорректный email',
+            message: 'Некорректный адрес электронной почты',
           },
         })}
         type='email'
         id='email-address'
-        placeholder='Введите email'
+        placeholder='Введите адрес электронной почты'
       />
       <div style={{ height: 20 }}>
         {errors?.email && (
@@ -104,8 +104,8 @@ const RegistrationForm: FC = () => {
             message: 'Минимум 8 символов',
           },
           maxLength: {
-            value: 128,
-            message: 'Максимум 128 символов',
+            value: 256,
+            message: 'Максимум 256 символов',
           },
         })}
         type='password'
@@ -126,8 +126,8 @@ const RegistrationForm: FC = () => {
             message: 'Минимум 8 символов',
           },
           maxLength: {
-            value: 128,
-            message: 'Максимум 128 символов',
+            value: 256,
+            message: 'Максимум 256 символов',
           },
           validate: (val: string) => {
             if (watch('password') !== val) {
@@ -145,14 +145,18 @@ const RegistrationForm: FC = () => {
         )}
       </div>
 
-      <button disabled={isLoadingForm} type='submit' className='registration__btn'>
+      <button disabled={isLoading} type='submit' className='registration__btn'>
         Создать аккаунт
       </button>
 
-      <Link to={'/login'}>Есть аккаунта? Войти</Link>
+      <div>
+        <h5>
+          Есть аккаунт?
+          <Link to={'/login'}>Войти</Link>
+        </h5>
+      </div>
 
-      {isLoadingForm ? <Loader type='form' /> : null}
-      {errorReg ? errorReg : null}
+      {isLoading ? <Loader type='form' /> : null}
     </form>
   )
 }

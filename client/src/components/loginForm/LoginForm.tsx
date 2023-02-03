@@ -1,12 +1,13 @@
-import { FC, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { login, checkAuth } from '../../redux/reducers/ActionCreators'
-import './login.scss'
 import Loader from '../loader/Loader'
-import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
-import Cookies from 'js-cookie'
+import { FC, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/redux'
+import { selectCurrentUser } from '../../redux/reducers/UserSlice'
+import { useLoginMutation } from '../../service/AuthAPI'
+import { toast } from 'react-toastify'
+import './login.scss'
 
 interface IAuthForm {
   email: string
@@ -14,11 +15,39 @@ interface IAuthForm {
 }
 
 const LoginForm: FC = () => {
-  const { errorLogin, isAuth, isLoadingForm, isLoadingMain } = useAppSelector(
-    (state) => state.userReducer
-  )
-  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectCurrentUser)
+  const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Вход успешно выполнен')
+      navigate('/disk')
+    }
+
+    if (user) navigate('/disk')
+
+    if (isError) {
+      console.log(error)
+      if (Array.isArray((error as any).data.error)) {
+        ;(error as any).data.error.forEach((el: any) =>
+          toast.error(el.message, {
+            position: 'top-right',
+          })
+        )
+      } else {
+        toast.error((error as any).data.message, {
+          position: 'top-right',
+        })
+      }
+    }
+  }, [navigate, isSuccess, user, error, isError])
+
+  const onSubmit: SubmitHandler<IAuthForm> = async ({ email, password }) => {
+    email = email.toLowerCase()
+    await login({ email, password }).unwrap()
+    reset()
+  }
 
   const {
     register,
@@ -29,25 +58,6 @@ const LoginForm: FC = () => {
     mode: 'onBlur',
   })
 
-  useEffect(() => {
-    // возможен цикл
-    if (Cookies.get('token')) {
-      dispatch(checkAuth())
-    }
-
-    if (isAuth) navigate('/disk')
-  }, [navigate, isAuth])
-
-  const onSubmit: SubmitHandler<IAuthForm> = ({ email, password }) => {
-    email = email.toLowerCase()
-    dispatch(login({ email, password }))
-    reset()
-  }
-
-  if(isLoadingMain){
-    return <Loader type='main'/>
-  }
-
   return (
     <form className='login' onSubmit={handleSubmit(onSubmit)}>
       <h2 className='login__header'>Вход в аккаунт</h2>
@@ -56,18 +66,18 @@ const LoginForm: FC = () => {
         {...register('email', {
           required: 'Поле обязательно к заполнению',
           maxLength: {
-            value: 128,
-            message: 'Максимум 128 символов',
+            value: 256,
+            message: 'Максимум 256 символов',
           },
           pattern: {
             value:
               /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-            message: 'Некорректный email',
+            message: 'Некорректный адрес электронной почты',
           },
         })}
         type='email'
         id='email-address'
-        placeholder='Введите email'
+        placeholder='Введите адрес электронной почты'
       />
       <div style={{ height: 20 }}>
         {errors?.email && (
@@ -83,8 +93,8 @@ const LoginForm: FC = () => {
             message: 'Минимум 8 символов',
           },
           maxLength: {
-            value: 128,
-            message: 'Максимум 128 символов',
+            value: 256,
+            message: 'Максимум 256 символов',
           },
         })}
         type='password'
@@ -97,14 +107,18 @@ const LoginForm: FC = () => {
         )}
       </div>
 
-      <button disabled={isLoadingForm} className='login__btn'>
+      <button disabled={isLoading} className='login__btn'>
         Войти
       </button>
 
-      <Link to={'/registration'}>Нет аккаунта? Зарегистрироваться</Link>
+      <div>
+        <h5>
+          Нет аккаунта?
+          <Link to={'/registration'}>Создать</Link>
+        </h5>
+      </div>
 
-      {errorLogin ? errorLogin : null}
-      {isLoadingForm ? <Loader type='form'/> : null}
+      {isLoading ? <Loader type='form' /> : null}
     </form>
   )
 }

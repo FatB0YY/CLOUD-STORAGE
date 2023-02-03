@@ -1,18 +1,16 @@
 const fs = require('fs')
-const config = require('config')
+const ApiError = require('../error/ApiError')
 const File = require('../models/File')
 
 class FileService {
-  getPath(file){
-    return `${config.get('FILEPATH')}\\${file.user}\\${file.path}`
+  getPath(file) {
+    return `${process.env.FILEPATH}\\${file.user}\\${file.path}`
   }
 
-
-  // создание папки
   // принимает параметр file, это не физ файл, а
   // объект той модели, которую добавляем в бд
   createDir(file) {
-    const filePath = `${config.get('FILEPATH')}\\${file.user}\\${file.path}`
+    const filePath = `${process.env.FILEPATH}\\${file.user}\\${file.path}`
     return new Promise((resolve, reject) => {
       try {
         if (!fs.existsSync(filePath)) {
@@ -22,15 +20,16 @@ class FileService {
           return reject({ message: 'Файл уже существует' })
         }
       } catch (error) {
-        console.log(error)
         return reject({ message: 'Ошибка файла' })
       }
+    }).catch((error) => {
+      throw ApiError.BadRequest(error.message)
     })
   }
 
-  deleteFile(file){
+  deleteFile(file) {
     const path = this.getPath(file)
-    if(file.type === 'dir'){
+    if (file.type === 'dir') {
       fs.rmdirSync(path)
     } else {
       fs.unlinkSync(path)

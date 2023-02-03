@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt')
 const { v4: uuidv4 } = require('uuid')
 const mailService = require('../service/mail-service')
 const UserDto = require('../dtos/user-dto')
-const congif = require('config')
-const ApiError = require('../exceptions/api-error')
+const ApiError = require('../error/ApiError')
 const tokenService = require('../service/token-service')
 
 class UserService {
@@ -17,8 +16,8 @@ class UserService {
       )
     }
 
-    const saltRounds = 10
-    const hashPassword = await bcrypt.hash(password, saltRounds)
+    const salt = await bcrypt.genSalt()
+    const hashPassword = await bcrypt.hash(password, salt)
     const activationLink = uuidv4()
 
     const user = await UserModel.create({
@@ -26,15 +25,17 @@ class UserService {
       password: hashPassword,
       activationLink,
     })
-    
+
     // await mailService.sendActivationMail(
     //   email,
-    //   `${congif.get('API_URL')}/api/auth/activate/${activationLink}`
+    //   `${process.env.API_URL}/api/auth/activate/${activationLink}`
     // )
 
-    const userDto = new UserDto(user)
-    const tokens = tokenService.generateTokens({ ...userDto })
+    const userDto = new UserDto(user) // email, id, isActivated
 
+    const tokens = tokenService.generateTokens({
+      ...userDto,
+    })
     await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
     return {
@@ -55,7 +56,7 @@ class UserService {
   async login(email, password) {
     const user = await UserModel.findOne({ email })
     if (!user) {
-      throw ApiError.BadRequest('Пользователь с таким email не найден')
+      throw ApiError.BadRequest('Пользователь с таким Email не найден')
     }
     const isPassEquals = await bcrypt.compare(password, user.password)
     if (!isPassEquals) {
@@ -97,8 +98,13 @@ class UserService {
   }
 
   async getAllUsers() {
-    const users = await UserModel.find()
-    return users
+    try {
+      const users = await UserModel.find()
+      const dtoUsers = users.map((user) => new UserDto(user))
+      return dtoUsers
+    } catch (error) {
+      throw ApiError.internal('Не удалось получить список пользователей', error)
+    }
   }
 }
 

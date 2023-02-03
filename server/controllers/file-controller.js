@@ -1,11 +1,11 @@
 const fileService = require('../service/file-service')
 const User = require('../models/User')
 const File = require('../models/File')
-const config = require('config')
 const fs = require('fs')
+const ApiError = require('../error/ApiError')
 
 class FileController {
-  async createDir(req, res) {
+  async createDir(req, res, next) {
     try {
       const { name, type, parent } = req.body
       const file = new File({ name, type, parent, user: req.user.id })
@@ -22,22 +22,20 @@ class FileController {
       await file.save()
       return res.json(file)
     } catch (error) {
-      console.log(error)
-      return res.status(400).json(error)
+      next(error)
     }
   }
 
-  async getFiles(req, res) {
+  async getFiles(req, res, next) {
     try {
       const files = await File.find({
         user: req.user.id,
         parent: req.query.parent,
       })
+
       return res.json(files)
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: 'Не удалось получить список файлов' })
+      next(ApiError.internal('Не удалось получить список файлов', error))
     }
   }
 
@@ -59,11 +57,9 @@ class FileController {
 
       let path
       if (parent) {
-        path = `${config.get('FILEPATH')}\\${user._id}\\${parent.path}\\${
-          file.name
-        }`
+        path = `${process.env.FILEPATH}\\${user._id}\\${parent.path}\\${file.name}`
       } else {
-        path = `${config.get('FILEPATH')}\\${user._id}\\${file.name}`
+        path = `${process.env.FILEPATH}\\${user._id}\\${file.name}`
       }
 
       if (fs.existsSync(path)) {
@@ -99,7 +95,7 @@ class FileController {
   async downloadFile(req, res) {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id })
-      const path = `${config.get('FILEPATH')}\\${req.user.id}\\${file.path}`
+      const path = `${process.env.FILEPATH}\\${req.user.id}\\${file.path}`
       if (fs.existsSync(path)) {
         return res.download(path, file.name)
       }
@@ -110,18 +106,18 @@ class FileController {
     }
   }
 
-  async deleteFile(req, res) {
+  async deleteFile(req, res, next) {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id })
       if (!file) {
-        return res.status(400).json({ message: 'Файл не найден' })
+        next(ApiError.BadRequest('Не найден', error))
+        return
       }
       fileService.deleteFile(file)
       await file.remove()
-      return res.json({ message: 'Файл удален' })
+      return res.json({ message: 'Удален' })
     } catch (error) {
-      console.log(error)
-      return res.status(400).json({message: "Папка не пуста"})
+      next(ApiError.BadRequest('Папка не пуста', error))
     }
   }
 }

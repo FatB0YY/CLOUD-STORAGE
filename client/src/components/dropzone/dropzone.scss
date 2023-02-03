@@ -19,5 +19,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 1;
+    }
+
+    .dropzone__text{
+        z-index: -1;
     }
 }

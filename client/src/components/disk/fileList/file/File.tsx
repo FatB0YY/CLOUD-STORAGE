@@ -1,31 +1,41 @@
-import { FC, useEffect } from 'react'
-import { IFile } from '../../../../models/response/IFile'
+import { FC, memo } from 'react'
+import { IFile, TypeFile } from '../../../../models/response/IFile'
 import fileLogo from '../../../../assets/img/file.png'
 import dirLogo from '../../../../assets/img/dir.png'
-import './file.scss'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux'
 import {
-  pushToStack,
+  pushToDirStack,
   setCurrentDir,
 } from '../../../../redux/reducers/FilesSlice'
-import {
-  deleteFile,
-  downloadFile,
-} from '../../../../redux/reducers/ActionCreators'
-import Swal from 'sweetalert2'
+import { downloadFile } from '../../../../redux/reducers/ActionCreators'
 import sizeFormat from '../../../../utils/sizeFormat'
+import { useDeleteFileMutation } from '../../../../service/FilesAPI'
+import { toast } from 'react-toastify'
+import Loader from '../../../loader/Loader'
+import './file.scss'
 
 interface Props {
   file: IFile
 }
 
 const File: FC<Props> = ({ file }) => {
+  const [
+    deleteTrigger,
+    {
+      isError: isErrorDelete,
+      isLoading: isLoadingDelete,
+      isSuccess: isSuccessDelete,
+      isUninitialized: isUninitializedDelete,   
+      error: errorDelete,
+    },
+  ] = useDeleteFileMutation()
+
   const { currentDir } = useAppSelector((state) => state.filesReducer)
   const dispatch = useAppDispatch()
 
-  const openDirHandler = (file: any) => {
-    if (file.type === 'dir') {
-      dispatch(pushToStack(currentDir))
+  const openDirHandler = (file: IFile) => {
+    if (file.type === TypeFile.DIR) {
+      dispatch(pushToDirStack(currentDir))
       dispatch(setCurrentDir(file._id))
     }
   }
@@ -35,17 +45,36 @@ const File: FC<Props> = ({ file }) => {
     dispatch(downloadFile(file))
   }
 
-  const deleteClickHandler = (event: any) => {
+  const deleteClickHandler = async (event: any) => {
     event.stopPropagation()
-    Swal.fire('Файл удален', '', 'success')
-    dispatch(deleteFile(file))
+    await deleteTrigger(file).unwrap()
+  }
+
+  if (isSuccessDelete) {
+    toast.success(
+      `${file.type === TypeFile.DIR ? 'Папка удалена' : 'Файл удален'}`
+    )
+  }
+
+  if (isErrorDelete) {
+    if (Array.isArray((errorDelete as any).data.error)) {
+      ;(errorDelete as any).data.error.forEach((el: any) =>
+        toast.error(el.message, {
+          position: 'top-right',
+        })
+      )
+    } else {
+      toast.error((errorDelete as any).data.message, {
+        position: 'top-right',
+      })
+    }
   }
 
   return (
     <div className='file' onClick={() => openDirHandler(file)}>
       <img
-        src={file.type === 'dir' ? dirLogo : fileLogo}
-        alt={file.type === 'dir' ? 'dir logo' : 'file logo'}
+        src={file.type === TypeFile.DIR ? dirLogo : fileLogo}
+        alt={file.type === TypeFile.DIR ? 'dir logo' : 'file logo'}
         className='file__img'
       />
       <div className='file__name'>{file.name}</div>
@@ -54,7 +83,7 @@ const File: FC<Props> = ({ file }) => {
         {file.size === 0 ? '-' : sizeFormat(file.size)}
       </div>
 
-      {file.type !== 'dir' && (
+      {file.type !== TypeFile.DIR && (
         <button
           onClick={(event) => downloadClickHandler(event)}
           className='file__btn file__download'
@@ -62,14 +91,20 @@ const File: FC<Props> = ({ file }) => {
           Скачать
         </button>
       )}
-      <button
-        onClick={(event) => deleteClickHandler(event)}
-        className='file__btn file__delete'
-      >
-        Удалить
-      </button>
+
+      {(isLoadingDelete || !isUninitializedDelete) && !isErrorDelete ? (
+        <div>Идет удаление...</div>
+      ) : (
+        <button
+          disabled={isLoadingDelete}
+          onClick={(event) => deleteClickHandler(event)}
+          className='file__btn file__delete'
+        >
+          Удалить
+        </button>
+      )}
     </div>
   )
 }
 
-export default File
+export default memo(File)

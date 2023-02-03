@@ -1,48 +1,45 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import {
-  createDir,
-  getFiles,
-  uploadFile,
-} from '../../redux/reducers/ActionCreators'
+import { uploadFile } from '../../redux/reducers/ActionCreators'
 import FileList from './fileList/FileList'
 import Swal from 'sweetalert2'
-import { popStack, setCurrentDir } from '../../redux/reducers/FilesSlice'
+import { popDirStack, setCurrentDir } from '../../redux/reducers/FilesSlice'
 import Dropzone from '../dropzone/Dropzone'
-import './disk.scss'
 import Uploader from '../uploader/Uploader'
+import { dirIdType } from '../../models/response/IFile'
+import { useCreateDirMutation } from '../../service/FilesAPI'
+import { toast } from 'react-toastify'
+import './disk.scss'
 
 const Disk: FC = () => {
-  const dispatch = useAppDispatch()
-  const { currentDir, error, dirStack } = useAppSelector(
+  const [
+    triggerCreateDir,
+    {
+      isError: isErrorCreateDir,
+      isLoading: isLoadingCreateDir,
+      error: errorCreateDir,
+    },
+  ] = useCreateDirMutation()
+  const { currentDir: dirId, dirStack } = useAppSelector(
     (state) => state.filesReducer
   )
   const [dragEnter, setDragEnter] = useState(false)
+  const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(getFiles(currentDir))
-
-    if (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Ошибка',
-        text: error,
-      })
-    }
-  }, [currentDir, error, dispatch, dirStack])
-
-  const createDirHandler = () => {
+  const createDirHandler = async () => {
     Swal.fire({
       title: 'Создать новую папку',
       input: 'text',
       showCancelButton: true,
       confirmButtonText: 'Создать папку',
       showLoaderOnConfirm: true,
-      preConfirm: (name) => {
-        if (!name || name.trim() == '' || name.trim().length == '0') {
-          Swal.showValidationMessage('Ошибка при валидации')
+      preConfirm: async (name: string) => {
+        const regex = /\S+/
+        if (!name || !regex.test(name)) {
+          Swal.showValidationMessage('Некорректное название')
+        } else {
+          await triggerCreateDir({ name: name.trim(), dirId }).unwrap()
         }
-        dispatch(createDir({ currentDir, name }))
       },
 
       allowOutsideClick: () => !Swal.isLoading(),
@@ -51,14 +48,14 @@ const Disk: FC = () => {
 
   const backClickHandler = () => {
     const copy = [...dirStack]
-    const backDirId = copy.pop()
+    const backDirId: dirIdType = copy.pop()
     dispatch(setCurrentDir(backDirId))
-    dispatch(popStack())
+    dispatch(popDirStack())
   }
 
   const fileUploadHandler = async (event: any) => {
     const files = [...event.target.files]
-    files.forEach((file) => dispatch(uploadFile({ file, currentDir })))
+    files.forEach((file) => dispatch(uploadFile({ file, dirId })))
   }
 
   function dragEnterHandler(event: any) {
@@ -73,6 +70,20 @@ const Disk: FC = () => {
     setDragEnter(false)
   }
 
+  if (isErrorCreateDir) {
+    if (Array.isArray((errorCreateDir as any).data.error)) {
+      ;(errorCreateDir as any).data.error.forEach((el: any) =>
+        toast.error(el.message, {
+          position: 'top-right',
+        })
+      )
+    } else {
+      toast.error((errorCreateDir as any).data.message, {
+        position: 'top-right',
+      })
+    }
+  }
+
   return !dragEnter ? (
     <div
       className='disk'
@@ -81,10 +92,18 @@ const Disk: FC = () => {
       onDragOver={dragEnterHandler}
     >
       <div className='disk__btns'>
-        <button className='disk__back' onClick={() => backClickHandler()}>
+        <button
+          disabled={!dirId}
+          className='disk__back'
+          onClick={() => backClickHandler()}
+        >
           Назад
         </button>
-        <button className='disk__create' onClick={() => createDirHandler()}>
+        <button
+          disabled={isLoadingCreateDir}
+          className='disk__create'
+          onClick={() => createDirHandler()}
+        >
           Создать папку
         </button>
         <div className='disk__upload'>
@@ -99,6 +118,7 @@ const Disk: FC = () => {
           />
         </div>
       </div>
+
       <FileList />
       <Uploader />
     </div>

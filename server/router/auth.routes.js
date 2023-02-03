@@ -1,27 +1,20 @@
 const Router = require('express')
 const userController = require('../controllers/user-controller')
-const { body } = require('express-validator')
 const authMiddleware = require('../middleware/auth-middleware')
+const validateRequestSchema = require('../error/validate-request-schema')
+const authSchema = require('../schema/auth-schema')
 const router = new Router()
 
 router.post(
   '/registration',
-  body('email').isEmail(),
-  body('password').isLength({ min: 8, max: 128 }),
+  authSchema,
+  validateRequestSchema,
   userController.registration
 )
-router.post(
-  '/login',
-  body('email').isEmail(),
-  body('password').isLength({ min: 8, max: 128 }),
-  userController.login
-)
+router.post('/login', authSchema, validateRequestSchema, userController.login)
 router.post('/logout', userController.logout)
 router.get('/activate/:link', userController.activate)
 router.get('/refresh', userController.refresh)
 router.get('/users', authMiddleware, userController.getUsers)
 
 module.exports = router
-
-// 1. email не приходит
-// 2. пользователь не авторизован

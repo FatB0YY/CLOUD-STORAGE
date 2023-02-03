@@ -1,24 +1,23 @@
 const nodemailer = require("nodemailer")
-const congif = require("config")
 
 class MailService {
   constructor(){
     this.transporter = nodemailer.createTransport({
-      host: congif.get('SMTP_HOST'),
-      port: congif.get('SMTP_PORT'),
+      host: process.env.SMTP_HOST,
+      port:  process.env.SMTP_PORT,
       secure: false,
       auth: {
-        user: congif.get('SMTP_USER'),
-        pass: congif.get('SMTP_PASSWORD')
+        user:  process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD
       }
     })
   }
 
   async sendActivationMail(to, link) {
     await this.transporter.sendMail({
-      from: congif.get('SMTP_USER'),
+      from: process.env.SMTP_USER,
       to,
-      subject: `Активация аккаунта ${congif.get('API_URL')}`,
+      subject: `Активация аккаунта на ${process.env.API_URL}`,
       text: '',
       html: 
           `

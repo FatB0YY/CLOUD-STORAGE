@@ -1,7 +1,333 @@
-.container{
-    margin: 0 auto;
+@import '../../utils/colors.scss';
+
+.container {
+  margin: 0 auto;
 }
 
-.home{
-    
+.home {
+  width: 100%;
+  padding: 73px 0;
+  align-items: center;
+
+  .home-titleblock {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 150px;
+    padding: 0 60px;
+
+    .home-titleblock-greeting {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+
+      &__title {
+        font-weight: 500;
+        font-size: 44px;
+        line-height: 76%;
+        max-width: 650px;
+        color: $font-color;
+        font-style: italic;
+
+        span {
+          font-size: 34px;
+          font-style: normal;
+        }
+      }
+
+      &__description {
+        max-width: 450px;
+        margin-top: 20px;
+      }
+
+      &__registration {
+        text-decoration: none;
+        outline: 0;
+        cursor: pointer;
+        color: $font-color;
+        font-size: 16px;
+        font-weight: 500;
+        background: #f3f2f2;
+        border-radius: 10px;
+        height: 48px;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 199px;
+        margin-top: 20px;
+      }
+
+      &__registration:hover {
+        background: #dbdada;
+      }
+    }
+
+    .home__titleblock-img {
+      object-fit: none;
+    }
+  }
+
+  .home-sizeblock {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+    margin-bottom: 150px;
+
+    &__img {
+      border-radius: 16px;
+      object-fit: cover;
+      box-shadow: 0px 0px 2px hsla(0, 0%, 60%, 0.1),
+      0px 8px 28px hsla(0, 0%, 60%, 0.3);
+    }
+
+    &__img_1 {
+      width: 370px;
+    }
+
+    &__img_2 {
+      position: absolute;
+      left: 260px;
+      bottom: -40px;
+    }
+
+    &__img_3 {
+      width: 370px;
+    }
+
+    &__img_4 {
+      position: absolute;
+      width: 180px;
+      left: 0;
+      top: -75px;
+      animation: spin 7.5s infinite linear;
+    }
+
+    &__img_5 {
+      width: 220px;
+      position: absolute;
+      left: 0;
+      top: -75px;
+      animation: spin 5.5s infinite linear;
+    }
+
+    .home-sizeblock-img {
+      width: 444px;
+    }
+
+    .home-sizeblock-desc {
+      max-width: 412px;
+      width: 100%;
+      text-align: left;
+      align-items: end;
+
+      &__title {
+        font-weight: 400;
+        font-size: 44px;
+        line-height: 110%;
+        max-width: 650px;
+        margin-bottom: 16px;
+        color: $font-color;
+        font-style: normal;
+      }
+
+      &__description {
+        max-width: 450px;
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .home-sharedblock {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+
+    .home-sharedblock-img {
+      width: 444px;
+    }
+
+    .home-sharedblock-desc {
+      max-width: 412px;
+      width: 100%;
+
+      &__title {
+        font-weight: 400;
+        font-size: 44px;
+        line-height: 110%;
+        max-width: 650px;
+        margin-bottom: 16px;
+        color: $font-color;
+        font-style: normal;
+      }
+
+      &__description {
+        max-width: 450px;
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .home-card {
+    padding: 60px;
+    margin-top: 114px;
+    box-sizing: border-box;
+    background: linear-gradient(
+      117.34deg,
+      hsla(0, 0%, 100%, 0.6) 5.81%,
+      hsla(0, 0%, 100%, 0.1) 88.87%
+    );
+    border-radius: 40px;
+    border: 4px solid hsla(0, 0%, 100%, 0.2);
+    background-origin: border-box;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .home-card-desc {
+      &__title {
+        font-weight: 500;
+        margin-bottom: 30px;
+        white-space: nowrap;
+        font-size: 2.125rem;
+        line-height: 2.5rem;
+        letter-spacing: 0rem;
+      }
+
+      .home-card-desc-list {
+        .home-card-desc-list-pointListItem {
+          display: flex;
+          align-items: center;
+          margin-bottom: 25px;
+
+          &__containerIcon {
+            display: inline-block;
+            background-color: rgba(180, 184, 204, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            margin-right: 20px;
+          }
+
+          &__text {
+            font-size: 1rem;
+            line-height: 1.25rem;
+            letter-spacing: 0rem;
+          }
+        }
+
+        .home-card-desc-list-pointListItem:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .home-card-img {
+    }
+  }
+
+  .home-cloudstorage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 0;
+
+    &__logoblock {
+      max-width: 250px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &__title {
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    &__logo {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .home-questionblock {
+    &__title {
+      font-weight: 700;
+      margin-bottom: 30px;
+      font-size: 2.125rem;
+      line-height: 2.5rem;
+      text-align: center;
+    }
+  }
+
+  .home-auth {
+    padding: 100px 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+
+    &__registration {
+      border: 2px solid #00b8fa;
+    }
+
+    &__registration:hover {
+      background: #00b8fa;
+      color: #fff;
+    }
+
+    &__login {
+      margin-right: 12px;
+      background: #f3f2f2;
+      border: 2px solid #f3f2f2;
+    }
+
+    &__login,
+    &__registration {
+      text-decoration: none;
+      outline: 0;
+      cursor: pointer;
+      text-transform: none;
+      display: block;
+      padding: 5px 10px;
+      text-align: center;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      min-width: 110px;
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    &__login:hover {
+      background: #dbdada;
+      border: 2px solid #dbdada;
+    }
+
+    &__login.active,
+    &__registration.active {
+      color: #00b8fa;
+    }
+
+    &__registration.active:hover {
+      background: #00b8fa;
+      color: #fff;
+    }
+  }
+}
+
+
+@keyframes spin {
+  0% {
+    top: -75px;
+  }
+  50% {
+    top: -55px;
+  }
+  100% {
+    top: -75px;
+  }
 }

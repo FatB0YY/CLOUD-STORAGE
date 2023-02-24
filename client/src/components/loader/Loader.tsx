@@ -9,12 +9,16 @@ const Loader: FC<propType> = ({ type }) => {
   switch (type) {
     case 'form':
       return (
-        <div>Loading...</div>
+        <div className='loader loader__form'>
+          <div className='lds-dual-ring'></div>
+        </div>
       )
 
     case 'main':
       return (
-        <div>Loading...</div>
+        <div className='loader loader__main'>
+          <div className='lds-dual-ring'></div>
+        </div>
       )
     default:
       return <div>Loading...</div>

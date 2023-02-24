@@ -1,31 +1,16 @@
-import { dirIdType, IFile } from '../models/response/IFile'
-import { changeUploadFile } from '../redux/reducers/UploadSlice'
+import axios from "axios";
+import Cookies from "js-cookie";
+import config from "../config";
+import { IFile } from "../models/response/IFile";
 
 export default class FileService {
-  static async uploadFile(formData: any, uploadFile: any, dispatch: any): Promise<any> {
-    return $api.post(`/files/upload`, formData, {
-      onUploadProgress: (progressEvent) => {
-        const totalLength = progressEvent.lengthComputable
-          ? progressEvent.total
-          : progressEvent.target.getResponseHeader('content-length') ||
-            progressEvent.target.getResponseHeader(
-              'x-decompressed-content-length'
-            );
-
-        if (totalLength) {
-          uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
-          dispatch(changeUploadFile(uploadFile))
-        }
+  static async downloadFile(file: IFile) {
+    return axios.get(`${config.API_URL}/files/download?id=${file._id}`, {
+      responseType: 'blob',
+      headers:{
+        Authorization: `Bearer ${Cookies.get('accessToken')}`
       },
+      withCredentials: true
     })
   }
-
-  // static async downloadFile(file: any): Promise<any> {
-  //   return $api.get(`/files/download?id=${file._id}`, {
-  //     responseType: 'blob',
-  //   })
-  // }
 }
-
-
-// inviladatesTags для мутации состояния файлов, удаление изменение добавление!

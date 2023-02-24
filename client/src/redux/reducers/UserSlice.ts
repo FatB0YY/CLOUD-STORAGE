@@ -4,6 +4,8 @@ import { authAPI } from '../../service/AuthAPI'
 import Cookies from 'js-cookie'
 import { AuthResponse } from '../../models/response/AuthResponse'
 import { RootState } from '../store'
+import { filesAPI } from '../../service/FilesAPI'
+import { userAPI } from '../../service/UserAPI'
 
 interface UserState {
   user: IUser | null
@@ -42,10 +44,6 @@ export const userSlice = createSlice({
         state.user = action.payload.user
       }
     )
-    builder.addMatcher(
-      authAPI.endpoints.registration.matchRejected,
-      (state, action) => {}
-    )
     // logout
     builder.addMatcher(
       authAPI.endpoints.logout.matchFulfilled,
@@ -53,10 +51,6 @@ export const userSlice = createSlice({
         Cookies.remove('accessToken')
         state.user = null
       }
-    )
-    builder.addMatcher(
-      authAPI.endpoints.logout.matchRejected,
-      (state, action) => {}
     )
     // check
     builder.addMatcher(
@@ -67,8 +61,24 @@ export const userSlice = createSlice({
       }
     )
     builder.addMatcher(
-      authAPI.endpoints.checkAuth.matchRejected,
-      (state, action) => {}
+      filesAPI.endpoints.deleteFile.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload.user
+      }
+    )
+
+    builder.addMatcher(
+      filesAPI.endpoints.uploadFile.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload.user
+      }
+    )
+
+    builder.addMatcher(
+      userAPI.endpoints.uploadAvatar.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload
+      }
     )
   },
 })

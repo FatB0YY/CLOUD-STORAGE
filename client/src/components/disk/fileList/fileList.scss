@@ -1,38 +1,217 @@
-.fileList{
-    margin: 20px 0px;
+@import '../../../utils/colors.scss';
 
-    &__header{
-        display: grid;
-        grid-template-columns: 1fr 4fr repeat(4, 1fr);
-    }
+.fileList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
-    &__name{
-        grid-column-start: 2;
-    }
-
-    &__date{
-        grid-column-start: 5;
-        justify-self: center;
-    }
-
-    &__size{
-        grid-column-start: 6;
-        justify-self: center;
-    }
+  &__head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    position: relative;
+  }
 }
 
-.file-enter-active{
-    animation: file-enter 500ms forwards;
+.fileList-head {
+  margin-bottom: 30px;
+
+  &__settings {
+    flex-shrink: 0;
+    margin-left: auto;
+    position: relative;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+  }
+
+  &__back {
+    border: none;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 20px;
+  }
+
+  &__back > svg > path {
+    color: $font-color;
+  }
+
+  &__sort {
+    vertical-align: initial !important;
+    margin-right: 8px;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  &__buttonSort {
+    cursor: pointer;
+    text-align: left;
+    height: 36px;
+    font-size: 14px;
+    line-height: 36px;
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    font-weight: inherit;
+    user-select: none;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    border-width: 0;
+    outline: 0;
+    background: transparent;
+    touch-action: manipulation;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 5%), 0 1px 0 1px rgb(0 0 0 / 5%),
+      0 4px 6px 0 rgb(0 0 0 / 5%);
+    background: #fff;
+  }
+
+  &__iconblock {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    text-align: left;
+  }
+
+  &__iconblock_chevron{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    text-align: left;
+
+    transition: all 0.3s ease;
+  }
+
+  &__iconblock_chevron.active{
+    transform: rotate(180deg)
+  }
+
+  &__buttonText {
+    margin-right: 32px;
+    margin-left: 32px;
+    position: relative;
+    display: inline-block;
+    resize: none;
+    white-space: nowrap;
+    pointer-events: none;
+    text-align: left;
+    color: $font-color;
+    font-size: 14px;
+    line-height: 36px;
+    font-weight: 500;
+  }
+}
+
+.fileList-head-sort{
+  &__popup{
+    position: absolute;
+    z-index: 9999;
+    background: #fff;
+    border-radius: 12px;
+    top: 42px;
+    box-shadow: 0 11px 14px -7px rgb(0 0 0 / 30%);
+    width: 100%;
+    padding: 12px 0;
+    display: none;
+  }
+
+  &__popup.active{
+    display: block;
+  }
+
+  &__item{
+    cursor: pointer;
+    padding: 10px;
+    transition: all 0.1s ease;
+    margin: 3px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__text{
+    position: relative;
+    z-index: -1;
+  }
+
+  &__item:hover{
+
+    background: #e7e7e7;
+  }
+}
+
+.fileList__notfound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.fileList__body_notfound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.fileList-notfound {
+  &__icon {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin-bottom: 15px;
+    right: 15px;
+  }
+
+  &__title {
+    margin-bottom: 15px;
+  }
+}
+
+.file-enter-active {
+  animation: file-enter 500ms forwards;
 }
 
 @keyframes file-enter {
-    0%{
-        opacity: 0;
-        transform: translateY(-50%);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
 
-    100%{
-        opacity: 1;
-        transform: translateY(0);
-    }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

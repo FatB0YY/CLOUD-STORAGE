@@ -3,6 +3,8 @@ const User = require('../models/User')
 const File = require('../models/File')
 const fs = require('fs')
 const ApiError = require('../error/ApiError')
+const UserDto = require('../dtos/user-dto')
+const { v4: uuidv4 } = require('uuid')
 
 class FileController {
   async createDir(req, res, next) {
@@ -28,10 +30,35 @@ class FileController {
 
   async getFiles(req, res, next) {
     try {
-      const files = await File.find({
-        user: req.user.id,
-        parent: req.query.parent,
-      })
+      const { sort } = req.query
+      let files
+
+      switch (sort) {
+        case 'name':
+          files = await File.find({
+            user: req.user.id,
+            parent: req.query.parent,
+          }).sort({ name: 1 })
+          break
+        case 'type':
+          files = await File.find({
+            user: req.user.id,
+            parent: req.query.parent,
+          }).sort({ type: 1 })
+          break
+        case 'date':
+          files = await File.find({
+            user: req.user.id,
+            parent: req.query.parent,
+          }).sort({ date: 1 })
+          break
+
+        default:
+          files = await File.find({
+            user: req.user.id,
+            parent: req.query.parent,
+          })
+      }
 
       return res.json(files)
     } catch (error) {
@@ -39,7 +66,7 @@ class FileController {
     }
   }
 
-  async uploadFile(req, res) {
+  async uploadFile(req, res, next) {
     try {
       const file = req.files.file
 
@@ -50,7 +77,7 @@ class FileController {
       const user = await User.findOne({ _id: req.user.id })
 
       if (user.usedSpace + file.size > user.diskSpace) {
-        return res.status(400).json({ message: 'Недостаточно места на диске' })
+        return next(ApiError.BadRequest('Недостаточно места на диске'))
       }
 
       user.usedSpace = user.usedSpace + file.size
@@ -63,16 +90,18 @@ class FileController {
       }
 
       if (fs.existsSync(path)) {
-        return res.status(400).json({ message: 'Файл уже существует' })
+        return next(ApiError.BadRequest('Файл уже существует'))
       }
 
-      file.mv(path)
+      await file.mv(path)
 
       const type = file.name.split('.').pop()
       let filePath = file.name
+
       if (parent) {
-        filePath = `${parent.file}\\${file.name}`
+        filePath = `${parent.path}\\${file.name}`
       }
+
       const dbFile = new File({
         name: file.name,
         type,
@@ -85,41 +114,118 @@ class FileController {
       await dbFile.save()
       await user.save()
 
-      return res.json(dbFile)
+      const userDto = new UserDto(user)
+
+      return res.json({file: dbFile, user: userDto})
     } catch (error) {
-      console.log(error)
-      return res.status(500).json('На диске нет места')
+      return next(ApiError.internal(error.message, error))
     }
   }
 
-  async downloadFile(req, res) {
+  async downloadFile(req, res, next) {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id })
-      const path = `${process.env.FILEPATH}\\${req.user.id}\\${file.path}`
+      const path = fileService.getPath(file)
+
       if (fs.existsSync(path)) {
         return res.download(path, file.name)
       }
-      return res.status(400).json({ message: 'Ошибка при скачивании' })
+      return ApiError.BadRequest('Ошибка при скачивании')
     } catch (error) {
-      console.log(error)
-      return res.status(500).json({ message: 'Ошибка при скачивании' })
+      next(ApiError.internal('Ошибка при скачивании', error))
     }
   }
 
   async deleteFile(req, res, next) {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id })
+      const user = await User.findOne({ _id: req.user.id })
+
       if (!file) {
-        next(ApiError.BadRequest('Не найден', error))
+        next(ApiError.BadRequest('Не найден'))
         return
       }
       fileService.deleteFile(file)
+      user.usedSpace = user.usedSpace - file.size
+
+      await user.save()
       await file.remove()
-      return res.json({ message: 'Удален' })
+
+      const userDto = new UserDto(user)
+
+      return res.json({ message: 'Удален', user: userDto })
     } catch (error) {
       next(ApiError.BadRequest('Папка не пуста', error))
+    }
+  }
+
+  async searchFile(req, res, next) {
+    try {
+      const searchName = req.query.search
+
+      let files = await File.find({ user: req.user.id })
+
+      if (searchName.trim() == '') {
+        return res.json([])
+      } else {
+        files = files.filter((file) =>
+          file.name.toLowerCase().includes(searchName.toLowerCase())
+        )
+        return res.json(files)
+      }
+    } catch (error) {
+      next(ApiError.BadRequest('Ошибка поиска', error))
+    }
+  }
+
+  async uploadAvatar(req, res, next) {
+    try {
+      const file = req.files.file
+      const user = await User.findById(req.user.id)
+      const avatarName = `avatar${uuidv4()}.jpg`
+      file.mv(process.env.STATICPATH + '\\' + avatarName)
+      user.avatar = avatarName
+      await user.save()
+      const userDto = new UserDto(user)
+      return res.json(userDto)
+    } catch (error) {
+      next(ApiError.BadRequest('Ошибка загрузки аватара', error))
+    }
+  }
+
+  async deleteAvatar(req, res, next) {
+    try {
+      const user = await User.findById(req.user.id)
+      fs.unlinkSync(process.env.STATICPATH + '\\' + user.avatar)
+      user.avatar = null
+      await user.save()
+      const userDto = new UserDto(user)
+      return res.json(userDto)
+    } catch (error) {
+      next(ApiError.BadRequest('Ошибка удаления аватара', error))
     }
   }
 }
 
 module.exports = new FileController()
+
+// рекурсивное удаление
+// https://www.mousedc.ru/learning/482-rekursivnyy-obkhod-faylov-nodejs/
+// const fs = require("fs");
+// const path = require("path");
+
+// function deleteDirectoryRecursive(dir) {
+//   if (fs.existsSync(dir)) {
+//     fs.readdirSync(dir).forEach(function (file, index) {
+//       const curPath = path.join(dir, file);
+//       if (fs.lstatSync(curPath).isDirectory()) {
+//         // recurse
+//         deleteDirectoryRecursive(curPath);
+//       } else {
+//         // delete file
+//         fs.unlinkSync(curPath);
+//       }
+//     });
+//     fs.rmdirSync(dir);
+//   }
+// }

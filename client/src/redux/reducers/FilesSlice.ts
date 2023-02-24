@@ -4,13 +4,11 @@ import { dirIdType } from '../../models/response/IFile'
 interface FileState {
   currentDir: dirIdType
   dirStack: string[]
-  nameStack: string[]
 }
 
 const initialState: FileState = {
   currentDir: undefined,
   dirStack: [],
-  nameStack: [],
 }
 
 export const filesSlice = createSlice({
@@ -25,12 +23,6 @@ export const filesSlice = createSlice({
     },
     popDirStack(state) {
       state.dirStack.pop()
-    },
-    pushToNameStack(state, action) {
-      state.nameStack.push(action.payload)
-    },
-    popNameStack(state) {
-      state.nameStack.pop()
     },
   },
   extraReducers: (builder) => {},

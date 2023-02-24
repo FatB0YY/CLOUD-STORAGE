@@ -1,59 +1,70 @@
 @import '../../utils/colors.scss';
 
-.uploader{
-    height: 300px;
-    width: 300px;
-    position: fixed;
-    background-color: $font-color;
-    bottom: 0;
-    right: 0;
-    padding: 20px;
-    border-radius: 12px;
-    overflow-y: auto;
+.uploader {
+  height: 300px;
+  width: 300px;
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffdc60, #fdefb2);
+  box-shadow: 0px 0px 2px hsla(0, 0%, 60%, 0.1),
+    0px 8px 28px hsla(0, 0%, 60%, 0.3);
 
-    &__header{
-        display: flex;
-        justify-content: space-between;
-    }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    &__title{
-        color: $background-color;
-    }
+  &__title {
+    color: $font-color;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 5px 0;
+  }
 
-    &__close{
-        cursor: pointer;
-        padding: 3px;
-        font-size: 1.2rem;
-    }
+  &__close {
+    cursor: pointer;
+    padding: 3px;
+    font-size: 1.2rem;
+    background: inherit;
+    border: none;
+    outline: none;
+  }
 }
 
-.upload-file{
-    background-color: $background-color;
+.upload-file {
+  background-color: #f3f2f2;
+  border-radius: 8px;
+  margin: 5px 0;
+  padding: 5px 10px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__progress-bar {
+    height: 1rem;
     border-radius: 8px;
-    margin: 5px 0;
-    padding: 5px 10px;
+    background-color: $font-color;
+    display: flex;
+    margin: 3px 0;
+  }
 
-    &__header{
-        display: flex;
-        justify-content: space-between;
-    }
+  &__upload-bar {
+    background-color: green;
+    border-radius: 8px;
+  }
 
-    &__progress-bar{
-        height: 1rem;
-        border-radius: 8px;
-        background-color: $font-color;
-        display: flex;
-        margin: 3px 0;
-    }
-
-    &__upload-bar{
-        background-color: green;
-        border-radius: 8px;        
-    }
-
-    &__percent{
-        color: $background-color;
-        left: 50%;
-        position: absolute;
-    }
+  &__percent {
+    color: $background-color;
+    left: 50%;
+    position: absolute;
+  }
 }

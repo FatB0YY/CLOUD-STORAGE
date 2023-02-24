@@ -1,54 +1,154 @@
 @import '../../../../utils/colors.scss';
 
-.file{
-    margin: 10px 0px;
-    border-bottom: solid 2px $font-color;
-    display: grid;
-    grid-template-columns: 1fr 4fr repeat(4, 1fr);
+.file {
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
+  user-select: none;
+  outline: none;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 5px 0;
+  padding: 6px 16px;
+
+  &__info {
+    display: flex;
+    flex-grow: 1;
     align-items: center;
-    transition: all 0.3s ease;
+    padding-left: 20px;
+    overflow: hidden;
+    order: 1;
+  }
 
-    &:hover{
-        transform: scale(1.01);
-    }
+  &__icon {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    order: 0;
+    width: 40px;
+    height: 40px;
+  }
 
-    &__img{
-        justify-self: center;
-    }
+  &__icon img {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+    width: 80px;
+    height: 80px;
+  }
 
-    &__date{
-        grid-column-start: 5;
-        justify-self: center;
-    }
+  &__title {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
 
-    &__size{
-        grid-column-start: 6;
-        justify-self: center;
-    }
+  &__name {
+    font-size: 13px;
+    color: $font-color;
+    display: inline-block;
+    word-break: break-all;
+    white-space: pre-line;
+  }
 
-    &__btn {
-        display: none;
-        cursor: pointer;
-    }
+  &__date {
+    display: inline-flex;
+    flex-basis: 95px;
+    text-align: right;
+    justify-content: flex-end;
+    font-size: 13px;
+    color: $font-color;
+  }
 
-    &:hover &__date{
-        grid-column-start: 3;
-    }
+  &__size {
+    display: inline-flex;
+    flex-basis: 95px;
+    text-align: right;
+    justify-content: flex-end;
+    font-size: 13px;
+    color: $font-color;
+  }
 
-    
-    &:hover &__size{
-        grid-column-start: 4;
-    }
+  // btns
 
-        
-    &:hover &__download{
-        display: block;
-        grid-column-start: 5;
-    }
+  &__btns {
+    display: inline-flex;
+    flex-basis: 95px;
+    text-align: right;
+    justify-content: flex-end;
+    margin-left: 50px;
+  }
 
-        
-    &:hover &__delete{
-        display: block;
-        grid-column-start: 6;
+  &__btn {
+    display: flex;
+    text-align: right;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    text-decoration: none;
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+
+    border-radius: 50%;
+    background: $font-color;
+
+    .icon {
     }
+  }
+
+  &__btn:hover {
+    box-shadow: 0px 0px 2px hsla(0, 0%, 60%, 0.1),
+      0px 8px 28px hsla(0, 0%, 60%, 0.3);
+  }
+
+  &__btn_none {
+    opacity: 0;
+  }
+
+  &__btn > svg > path {
+    color: #f3f2f2;
+  }
+
+  .icon-spinner {
+    display: flex;
+    text-align: right;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    text-decoration: none;
+    width: 23px;
+    height: 23px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 50%;
+    background: $font-color;
+    padding: 3px;
+
+    animation: 1s linear 0s normal none infinite running iconSpinnerAnim;
+    -webkit-animation: 1s linear 0s normal none infinite running iconSpinnerAnim;
+  }
+
+  .icon-spinner > path {
+    color: #f3f2f2;
+  }
+}
+
+.file:hover {
+  background: #e7e7e7;
+}
+
+.file:first-child {
+  margin-top: 0;
 }

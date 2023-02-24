@@ -1,12 +1,12 @@
-export default (size: number): string => {
-  if (size > 1024 * 1024 * 1024) {
-    return (size / (1024 * 1024 * 1024)).toFixed(1) + 'ГБ'
+export default function sizeFormat(size: number): string {
+  const units = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ']
+  let unitIndex = 0
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024
+    unitIndex++
   }
-  if (size > 1024 * 1024) {
-    return (size / (1024 * 1024)).toFixed(1) + 'МБ'
-  }
-  if (size > 1024) {
-    return (size / 1024).toFixed(1) + 'КБ'
-  }
-  return size + 'Б'
+  const formattedSize = size.toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  })
+  return formattedSize + ' ' + units[unitIndex]
 }

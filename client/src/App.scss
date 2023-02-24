@@ -6,11 +6,24 @@
   box-sizing: border-box;
   color: $font-color;
   font-family: 'Roboto', sans-serif;
-  color: "#566885"
 }
 
 body {
-  background-color: $background-color;
+  background: linear-gradient(45deg, #f9e4b3, #feccff, #00b8fa);
+  background-size: 300% 300%;
+  animation: backgroundAnimationColor 30s ease-in-out infinite;
+}
+
+@keyframes backgroundAnimationColor {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }
 
 #root {
@@ -23,9 +36,15 @@ body {
   align-items: center;
 }
 
-.container{
+.container {
   width: 1140px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+
+
+.icon {
+  color: $font-color;
 }

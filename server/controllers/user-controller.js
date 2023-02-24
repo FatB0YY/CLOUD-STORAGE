@@ -45,15 +45,7 @@ class UserController {
       next(error)
     }
   }
-  async activate(req, res, next) {
-    try {
-      const activationLink = req.params.link
-      await userService.activate(activationLink)
-      return res.redirect(process.env.CLIENT_URL)
-    } catch (error) {
-      next(error)
-    }
-  }
+  
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies

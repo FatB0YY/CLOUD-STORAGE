@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IUploadFile } from '../../models/response/IUploadFile'
-import { PayloadAction } from '@reduxjs/toolkit'
 
 interface UploadState {
   isVisible: boolean
-  files: Array<IUploadFile>
+  files: IUploadFile[]
 }
 
 const initialState: UploadState = {
@@ -24,12 +23,9 @@ export const uploadSlice = createSlice({
     },
     addUploadFile(state, action) {
       state.files = [...state.files, { ...action.payload }]
-      
     },
     removeUploadFile(state, action) {
-      state.files = [
-        ...state.files.filter((file) => file.id != action.payload),
-      ]
+      state.files = [...state.files.filter((file) => file.id != action.payload)]
     },
     changeUploadFile(state, action) {
       state.files = [

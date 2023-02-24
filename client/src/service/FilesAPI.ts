@@ -1,11 +1,27 @@
-import { dirIdType, IFile } from '../models/response/IFile'
+import { dirIdType, IFile, TypeSortOption } from '../models/response/IFile'
+import {
+  addUploadFile,
+  changeUploadFile,
+  showUploader,
+} from '../redux/reducers/UploadSlice'
 import { rtkAPI } from './rtkAPI'
+import { v4 as uuidv4 } from 'uuid'
+import axios from 'axios'
+import config from '../config'
+import { toast } from 'react-toastify'
+import Cookies from 'js-cookie'
+import { IUser } from '../models/response/IUser'
 
 export const filesAPI = rtkAPI.injectEndpoints({
   endpoints: (build) => ({
-    getAllFiles: build.query<IFile[], dirIdType>({
-      query: (dirId) => ({
-        url: `/files${dirId ? '?parent=' + dirId : ''}`,
+    getAllFiles: build.query<
+      IFile[],
+      { dirId: dirIdType; sortValue: TypeSortOption }
+    >({
+      query: ({ dirId, sortValue }) => ({
+        url: `/files${dirId ? `?parent=${dirId}` : ''}${
+          sortValue ? `${dirId ? '&' : '?'}sort=${sortValue}` : ''
+        }`,
       }),
       providesTags: (result) =>
         result
@@ -15,13 +31,28 @@ export const filesAPI = rtkAPI.injectEndpoints({
             ]
           : [{ type: 'Files', id: 'LISTFILES' }],
     }),
-    deleteFile: build.mutation<{ message: string }, IFile>({
+
+    searchFiles: build.query<IFile[], string>({
+      query: (searchName) => ({
+        url: `/files/search?search=${searchName}`,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ _id }) => ({ type: 'Files' as const, _id })),
+              { type: 'Files', id: 'LISTFILES' },
+            ]
+          : [{ type: 'Files', id: 'LISTFILES' }],
+    }),
+
+    deleteFile: build.mutation<{ message: string; user: IUser }, IFile>({
       query: (file) => ({
         url: `/files?id=${file._id}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
     }),
+
     createDir: build.mutation<IFile, { name: string; dirId: dirIdType }>({
       query: ({ name, dirId }) => ({
         url: `/files`,
@@ -34,7 +65,67 @@ export const filesAPI = rtkAPI.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
     }),
+
+    uploadFile: build.mutation<
+      { file: IFile; user: IUser },
+      { file: IFile; dirId: dirIdType }
+    >({
+      async queryFn({ file, dirId }, { dispatch }) {
+        try {
+          const formData = new FormData()
+          // blob
+          formData.append('file', file as any)
+
+          if (dirId) {
+            formData.append('parent', dirId)
+          }
+
+          const uploadFile = { name: file.name, progress: 0, id: uuidv4() }
+
+          dispatch(showUploader())
+          dispatch(addUploadFile(uploadFile))
+
+          let response = await axios.post(
+            `${config.API_URL}/files/upload`,
+            formData,
+            {
+              onUploadProgress: (progressEvent) => {
+                const totalLength = progressEvent.total
+
+                if (totalLength) {
+                  uploadFile.progress = Math.round(
+                    (progressEvent.loaded * 100) / totalLength
+                  )
+                  dispatch(changeUploadFile(uploadFile))
+                }
+              },
+              headers: {
+                Authorization: `Bearer ${Cookies.get('accessToken')}`,
+              },
+              withCredentials: true,
+            }
+          )
+
+          return { data: response.data }
+        } catch (error: any) {
+          if (error.response && error.response.data.message) {
+            toast.error(error.response.data.message)
+            return { error: error.response.data.message }
+          } else {
+            toast.error(error.message)
+            return { error: error.message }
+          }
+        }
+      },
+      invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+    }),
   }),
 })
 
-export const { useGetAllFilesQuery, useDeleteFileMutation, useCreateDirMutation } = filesAPI
+export const {
+  useGetAllFilesQuery,
+  useDeleteFileMutation,
+  useCreateDirMutation,
+  useUploadFileMutation,
+  useSearchFilesQuery,
+} = filesAPI

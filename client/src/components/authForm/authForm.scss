@@ -1,0 +1,278 @@
+@import '../../utils/colors.scss';
+
+.authForm {
+  overflow: hidden;
+  width: 100%;
+  padding: 10vh 0;
+  padding-bottom: 0;
+
+  &__wave {
+    position: fixed;
+    bottom: -45%;
+    left: -40%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .containerAuth {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  &__img {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 10vw;
+  }
+
+  &__login-content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__img img {
+    width: 500px;
+  }
+
+  form {
+    width: 360px;
+
+    img {
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+  }
+
+  &__content img {
+    height: 100px;
+  }
+
+  &__content h2 {
+    margin: 15px 0;
+    color: $font-color;
+    text-transform: uppercase;
+    font-size: 2rem;
+  }
+
+  &__content &__input-div {
+    position: relative;
+    display: grid;
+    grid-template-columns: 7% 93%;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: 2px solid rgba(180, 184, 204, 0.52);
+  }
+
+  &__content &__input-div.one {
+    margin-top: 0;
+  }
+
+  &__i {
+    color: $font-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__i .icon {
+    transition: 0.3s;
+  }
+
+  &__input-div > &__div {
+    position: relative;
+    height: 45px;
+  }
+
+  &__input-div > &__div > h5 {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $font-color;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+
+  &__input-div.focus >&__i > .icon > path{
+	color: #00b8fa !important;
+  }
+
+  &__input-div.error >&__i > .icon > path{
+    color: red !important;
+    }
+
+  &__input-div:before,
+  &__input-div:after {
+    content: ' ';
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: #00b8fa;
+    transition: 0.4s;
+  }
+
+  &__input-div.error:before,
+  &__input-div.error:after {
+    content: ' ';
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: red;
+    transition: 0.4s;
+  }
+
+  &__input-div:before {
+    right: 50%;
+  }
+
+  &__input-div:after {
+    left: 50%;
+  }
+
+  &__input-div.focus:before,
+  &__input-div.focus:after {
+    width: 50%;
+  }
+
+  &__input-div.error:before,
+  &__input-div.error:after {
+    width: 50%;
+  }
+
+  &__input-div.focus > div > h5 {
+    top: -5px;
+    font-size: 15px;
+  }
+
+  &__input-div.error > div > h5 {
+    top: -5px;
+    font-size: 15px;
+  }
+
+  &__input-div > &__div > input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.2rem;
+    color: $font-color;
+    font-family: 'poppins', sans-serif;
+  }
+
+  &__input-div.pass {
+    margin-bottom: 4px;
+  }
+
+  a {
+    display: block;
+    text-align: right;
+    text-decoration: none;
+    color: $font-color;
+    font-size: 0.9rem;
+    transition: 0.3s;
+  }
+
+  a:hover {
+    color: #00b8fa;
+  }
+
+  &__btn {
+    display: block;
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #00b8fa, #4acfff, #18c2ff);
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #f3f2f2;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: 0.5s;
+  }
+  &__btn:hover {
+    background-position: right;
+  }
+
+  .icon-spinner{
+    animation: 1s linear 0s normal none infinite running iconSpinnerAnim;
+    -webkit-animation: 1s linear 0s normal none infinite running iconSpinnerAnim;
+    width: 100px;
+  }
+
+  .icon-spinner > path {
+    color: #f3f2f2;
+  }
+}
+
+@keyframes iconSpinnerAnim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes iconSpinnerAnim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .containerAuth {
+    grid-gap: 5rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  form {
+    width: 290px;
+  }
+
+  .authForm__content h2 {
+    font-size: 2.4rem;
+    margin: 8px 0;
+  }
+
+  .authForm__img img {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .containerAuth {
+    grid-template-columns: 1fr;
+  }
+
+  .authForm__img {
+    display: none;
+  }
+
+  .authForm__wave {
+    display: none;
+  }
+
+  .authForm__content {
+    justify-content: center;
+  }
+}

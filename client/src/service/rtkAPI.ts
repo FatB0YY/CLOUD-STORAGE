@@ -69,6 +69,7 @@ const baseQueryWithReauth: BaseQueryFn<
 export const rtkAPI = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
+  refetchOnFocus: true,
   tagTypes: ['Users', 'Files'],
   endpoints: (build) => ({}),
 })

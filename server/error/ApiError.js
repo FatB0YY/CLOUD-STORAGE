@@ -17,7 +17,7 @@ class ApiError extends Error {
         logger.error(msg, { error })
       })
     } else {
-      logger.error(msg)
+      logger.error(msg, errors)
     }
 
     return new ApiError(400, msg, errors)

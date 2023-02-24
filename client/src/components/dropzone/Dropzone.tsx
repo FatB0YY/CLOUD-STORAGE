@@ -1,18 +1,15 @@
 import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { uploadFile } from '../../redux/reducers/ActionCreators'
+import { useAppSelector } from '../../hooks/redux'
+import { useUploadFileMutation } from '../../service/FilesAPI'
 import './dropzone.scss'
 
 const Dropzone = (props: any) => {
-  const dispatch = useAppDispatch()
-  const { currentDir } = useAppSelector((state) => state.filesReducer)
+  const [triggerUploadFile, {}] = useUploadFileMutation()
+  const { currentDir: dirId } = useAppSelector((state) => state.filesReducer)
 
   const onDrop = useCallback((acceptedFiles: any) => {
-    console.log('Файлы:', acceptedFiles)
-    acceptedFiles.forEach((file: any) =>
-      dispatch(uploadFile({ file, currentDir }))
-    )
+    acceptedFiles.forEach((file: any) => triggerUploadFile({ file, dirId }).unwrap())
     props.setDragEnter(false)
   }, [])
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
@@ -25,7 +22,7 @@ const Dropzone = (props: any) => {
       onDragOver={props.dragEnterHandler}
     >
       <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
+        <input {...getInputProps()} className='dropzone__input'/>
         {isDragActive ? (
           <p className='dropzone__text'>Отпустите файлы, чтобы загрузить их</p>
         ) : (

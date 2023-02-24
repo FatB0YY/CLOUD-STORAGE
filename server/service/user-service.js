@@ -1,7 +1,5 @@
 const UserModel = require('../models/User')
 const bcrypt = require('bcrypt')
-const { v4: uuidv4 } = require('uuid')
-const mailService = require('../service/mail-service')
 const UserDto = require('../dtos/user-dto')
 const ApiError = require('../error/ApiError')
 const tokenService = require('../service/token-service')
@@ -18,20 +16,13 @@ class UserService {
 
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(password, salt)
-    const activationLink = uuidv4()
 
     const user = await UserModel.create({
       email,
       password: hashPassword,
-      activationLink,
     })
 
-    // await mailService.sendActivationMail(
-    //   email,
-    //   `${process.env.API_URL}/api/auth/activate/${activationLink}`
-    // )
-
-    const userDto = new UserDto(user) // email, id, isActivated
+    const userDto = new UserDto(user) // email, id, usedSpace, diskSpace...
 
     const tokens = tokenService.generateTokens({
       ...userDto,
@@ -42,15 +33,6 @@ class UserService {
       ...tokens,
       user: userDto,
     }
-  }
-
-  async activate(activationLink) {
-    const user = await UserModel.findOne({ activationLink })
-    if (!user) {
-      throw ApiError.BadRequest('Неккоректная ссылка для активации')
-    }
-    user.isActivated = true
-    await user.save()
   }
 
   async login(email, password) {

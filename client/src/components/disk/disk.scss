@@ -1,29 +1,164 @@
 @import '../../utils/colors.scss';
 
-.disk{
-    max-width: 1140px;
+.disk {
+  max-width: 95vw;
+  width: 100%;
+  min-height: 85vh;
+  height: auto;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 16px;
+  background-color: #f3f2f2;
+  box-shadow: 0px 0px 2px hsla(0, 0%, 60%, 0.1),
+    0px 8px 28px hsla(0, 0%, 60%, 0.3);
+  display: flex;
+  margin-bottom: 30px;
+
+  &__center {
+    display: flex;
     width: 100%;
-    margin: 0 auto;
-    margin-top: 20px;
-    min-height: 100vh;
+    padding: 40px;
+  }
 
-    &__btns{
-        display: flex;
+  &__center_notfound {
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #e7e7e7;
+    border-radius: 16px 0 0 16px;
+    padding: 10px;
+    padding-top: 30px;
+    outline: none;
+
+    max-width: 250px;
+    width: 100%;
+  }
+
+  &__upload {
+    width: 100%;
+  }
+
+  &__create {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    position: relative;
+    outline: none;
+
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    color: $font-color;
+    cursor: pointer;
+    background: #f3f2f2;
+    border: 0;
+    text-decoration: none;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 36px;
+    box-shadow: 0 8px 14px rgb(34 34 34 / 5%);
+
+    .icon {
+      position: absolute;
+      left: 18px;
     }
 
-    &__create{
-        margin-left: 10px;
+    .icon > path {
+      color: $font-color;
+    }
+  }
+
+  &__create:hover {
+    background: #d6d6d6;
+  }
+
+  &__upload-input {
+    display: none;
+  }
+
+  &__upload-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+
+    position: relative;
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    color: $font-color;
+
+    background: #ffdc60;
+    box-shadow: 0 8px 14px rgb(255 204 0 / 25%);
+
+    // background: #00b8fa;
+    // box-shadow: 0 8px 14px rgba(0, 184, 250, 0.25);
+
+    font-size: 14px;
+    line-height: 36px;
+
+    .icon {
+      position: absolute;
+      left: 15px;
     }
 
-    &__upload-input{
-        display: none;
+    .icon > path {
+      color: $font-color;
     }
+  }
 
-    &__upload-label{
-        border: 2px dashed $font-color;
-        padding: 5px 10px;
-        cursor: pointer;
-        margin-left: 10px;
+  &__upload-label:hover {
+    background: #ffd21f;
+  }
+
+  // &__upload-label:hover {
+  //   background: #27c5ff;
+  // }
+
+  .infoSpace {
+    width: 100%;
+    color: $font-color;
+    margin-top: auto;
+    display: block;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffdc60, #fdefb2);
+    padding: 12px;
+
+    &__indicatorWrapper {
+      .indicatorBar {
+        position: relative;
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #edc124;
+        background-color: rgba(0, 0, 0, 0.07);
+
+        &__value {
+          border-radius: 4px;
+          background: #fff;
+          position: relative;
+          height: 8px;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          overflow: hidden;
+        }
+      }
     }
+    &__text {
+      width: 100%;
+      display: block;
+      text-align: center;
+      margin-top: 9px;
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
 }
-

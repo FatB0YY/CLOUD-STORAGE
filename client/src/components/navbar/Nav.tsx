@@ -24,6 +24,8 @@ const Nav: FC = () => {
   const [logout, {}] = useLogoutMutation()
 
   useEffect(() => {
+    console.log('re');
+    
     searchFilesTrigger(debounced)
   }, [debounced, searchFilesTrigger])
 

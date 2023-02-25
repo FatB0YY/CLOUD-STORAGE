@@ -29,7 +29,7 @@ const FileList: FC = () => {
     isLoading: isLoadingFiles,
     isFetching: isFetchingFiles,
     refetch,
-  } = useGetAllFilesQuery({ dirId, sortValue }, { refetchOnFocus: true })
+  } = useGetAllFilesQuery({ dirId, sortValue })
   const dispatch = useAppDispatch()
 
   const backClickHandler = () => {

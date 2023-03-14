@@ -1,5 +1,9 @@
 import { FC, memo } from 'react'
-import { getExtensionIcon, IFile, TypeFile } from '../../../../models/response/IFile'
+import {
+  getExtensionIcon,
+  IFile,
+  TypeFile,
+} from '../../../../models/response/IFile'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux'
 import {
   pushToDirStack,
@@ -25,7 +29,6 @@ const File: FC<Props> = ({ file }) => {
       isError: isErrorDelete,
       isLoading: isLoadingDelete,
       isUninitialized: isUninitializedDelete,
-      error: errorDelete,
     },
   ] = useDeleteFileMutation()
 
@@ -47,20 +50,6 @@ const File: FC<Props> = ({ file }) => {
   const deleteClickHandler = async (event: any) => {
     event.stopPropagation()
     await deleteTrigger(file).unwrap()
-  }
-
-  if (isErrorDelete) {
-    if (Array.isArray((errorDelete as any).data.error)) {
-      ;(errorDelete as any).data.error.forEach((el: any) =>
-        toast.error(el.message, {
-          position: 'top-right',
-        })
-      )
-    } else {
-      toast.error((errorDelete as any).data.message, {
-        position: 'top-right',
-      })
-    }
   }
 
   return (

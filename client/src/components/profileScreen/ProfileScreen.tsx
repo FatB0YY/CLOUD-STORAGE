@@ -78,7 +78,12 @@ const ProfileScreen: FC = () => {
             <p className='card__description'>
               Нажмите на аватарку, чтобы ее поменять
             </p>
-            <button onClick={() => handleDeleteClick()}>
+            <button
+              style={{
+                display: `${avatar === userAvatarDefault ? 'none' : 'block'}`,
+              }}
+              onClick={() => handleDeleteClick()}
+            >
               Удалить аватарку
             </button>
           </div>
@@ -102,7 +107,9 @@ const ProfileScreen: FC = () => {
       </div>
 
       <div>
-        <button style={{display: 'none'}} onClick={handleButtonClick}>Получить пользователей</button>
+        <button style={{ display: 'none' }} onClick={handleButtonClick}>
+          Получить пользователей
+        </button>
         {isLoading ? (
           <div>Loading...</div>
         ) : (

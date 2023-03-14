@@ -8,7 +8,6 @@ import { rtkAPI } from './rtkAPI'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import config from '../config'
-import { toast } from 'react-toastify'
 import Cookies from 'js-cookie'
 import { IUser } from '../models/response/IUser'
 
@@ -50,7 +49,15 @@ export const filesAPI = rtkAPI.injectEndpoints({
         url: `/files?id=${file._id}`,
         method: 'DELETE',
       }),
+      // transformErrorResponse: (response: {data: {message: string}}, meta, arg) => {
+      //   return response.data.message
+      // },
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      // transformResponse: (baseQueryReturnValue: any) => {
+      //   console.log(baseQueryReturnValue)
+
+      //   return baseQueryReturnValue
+      // },
     }),
 
     createDir: build.mutation<IFile, { name: string; dirId: dirIdType }>({
@@ -85,6 +92,8 @@ export const filesAPI = rtkAPI.injectEndpoints({
           dispatch(showUploader())
           dispatch(addUploadFile(uploadFile))
 
+          // console.log(Array.from(formData.entries()))
+
           let response = await axios.post(
             `${config.API_URL}/files/upload`,
             formData,
@@ -100,6 +109,8 @@ export const filesAPI = rtkAPI.injectEndpoints({
                 }
               },
               headers: {
+                // 'Content-Type': 'multipart/form-data; charset=utf-8',
+                // 'Content-Type': 'multipart/form-data; charset=windows-1251',
                 Authorization: `Bearer ${Cookies.get('accessToken')}`,
               },
               withCredentials: true,
@@ -109,10 +120,8 @@ export const filesAPI = rtkAPI.injectEndpoints({
           return { data: response.data }
         } catch (error: any) {
           if (error.response && error.response.data.message) {
-            toast.error(error.response.data.message)
             return { error: error.response.data.message }
           } else {
-            toast.error(error.message)
             return { error: error.message }
           }
         }

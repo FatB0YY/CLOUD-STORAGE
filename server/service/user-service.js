@@ -85,7 +85,10 @@ class UserService {
       const dtoUsers = users.map((user) => new UserDto(user))
       return dtoUsers
     } catch (error) {
-      throw ApiError.internal('Не удалось получить список пользователей', error)
+      throw ApiError.internalError(
+        'Не удалось получить список пользователей',
+        error
+      )
     }
   }
 }

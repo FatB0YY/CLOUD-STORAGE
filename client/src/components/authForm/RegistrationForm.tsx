@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useAppSelector } from '../../hooks/redux'
 import { Link, useNavigate } from 'react-router-dom'
-import Loader from '../loader/Loader'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
 import { useRegistrationMutation } from '../../service/AuthAPI'
@@ -25,7 +24,7 @@ const RegistrationForm: FC = () => {
   const user = useAppSelector(selectCurrentUser)
   const navigate = useNavigate()
 
-  const [registration, { isLoading, isSuccess, isError, error }] =
+  const [registration, { isLoading, isSuccess }] =
     useRegistrationMutation()
 
   const [classEmail, setClassEmail] = useState('authForm__input-div one')
@@ -89,24 +88,10 @@ const RegistrationForm: FC = () => {
       }, 3000)
     }
 
-    if (isError) {
-      if (Array.isArray((error as any).data.error)) {
-        ;(error as any).data.error.forEach((el: any) =>
-          toast.error(el.message, {
-            position: 'top-right',
-          })
-        )
-      } else {
-        toast.error((error as any).data.message, {
-          position: 'top-right',
-        })
-      }
-    }
-
     if (user) {
       navigate('/disk')
     }
-  }, [navigate, isSuccess, user, error, isError])
+  }, [navigate, isSuccess, user])
 
   const onSubmit: SubmitHandler<IAuthForm> = async ({
     email,

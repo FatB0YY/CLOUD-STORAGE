@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { toast } from 'react-toastify'
 import config from '../config'
 import { IFile } from '../models/response/IFile'
 import { IUser } from '../models/response/IUser'
@@ -41,10 +40,8 @@ export const userAPI = rtkAPI.injectEndpoints({
           return { data: response.data }
         } catch (error: any) {
           if (error.response && error.response.data.message) {
-            toast.error(error.response.data.message)
             return { error: error.response.data.message }
           } else {
-            toast.error(error.message)
             return { error: error.message }
           }
         }
@@ -64,10 +61,8 @@ export const userAPI = rtkAPI.injectEndpoints({
           return { data: response.data }
         } catch (error: any) {
           if (error.response && error.response.data.message) {
-            toast.error(error.response.data.message)
             return { error: error.response.data.message }
           } else {
-            toast.error(error.message)
             return { error: error.message }
           }
         }

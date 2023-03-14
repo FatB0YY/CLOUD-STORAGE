@@ -6,6 +6,7 @@ import { AuthResponse } from '../../models/response/AuthResponse'
 import { RootState } from '../store'
 import { filesAPI } from '../../service/FilesAPI'
 import { userAPI } from '../../service/UserAPI'
+import { toast } from 'react-toastify'
 
 interface UserState {
   user: IUser | null
@@ -25,7 +26,6 @@ export const userSlice = createSlice({
     logOut: () => initialState,
   },
   extraReducers: (builder) => {
-    // login
     builder.addMatcher(
       authAPI.endpoints.login.matchFulfilled,
       (state, action) => {
@@ -36,7 +36,6 @@ export const userSlice = createSlice({
     builder.addMatcher(authAPI.endpoints.login.matchRejected, (state) => {
       state.user = null
     })
-    // reg
     builder.addMatcher(
       authAPI.endpoints.registration.matchFulfilled,
       (state, action) => {
@@ -44,7 +43,6 @@ export const userSlice = createSlice({
         state.user = action.payload.user
       }
     )
-    // logout
     builder.addMatcher(
       authAPI.endpoints.logout.matchFulfilled,
       (state, action) => {
@@ -52,7 +50,6 @@ export const userSlice = createSlice({
         state.user = null
       }
     )
-    // check
     builder.addMatcher(
       authAPI.endpoints.checkAuth.matchFulfilled,
       (state, action) => {
@@ -76,6 +73,12 @@ export const userSlice = createSlice({
 
     builder.addMatcher(
       userAPI.endpoints.uploadAvatar.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload
+      }
+    )
+    builder.addMatcher(
+      userAPI.endpoints.deleteAvatar.matchFulfilled,
       (state, action) => {
         state.user = action.payload
       }

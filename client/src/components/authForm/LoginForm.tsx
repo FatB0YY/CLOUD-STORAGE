@@ -21,7 +21,7 @@ interface IAuthForm {
 
 const LoginForm: FC = () => {
   const user = useAppSelector(selectCurrentUser)
-  const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation()
+  const [login, { isLoading, isSuccess }] = useLoginMutation()
   const navigate = useNavigate()
 
   const [classEmail, setClassEmail] = useState('authForm__input-div one')
@@ -77,21 +77,7 @@ const LoginForm: FC = () => {
 
     if (user) navigate('/disk')
 
-    if (isError) {
-      console.log(error)
-      if (Array.isArray((error as any).data.error)) {
-        ;(error as any).data.error.forEach((el: any) =>
-          toast.error(el.message, {
-            position: 'top-right',
-          })
-        )
-      } else {
-        toast.error((error as any).data.message, {
-          position: 'top-right',
-        })
-      }
-    }
-  }, [navigate, isSuccess, user, error, isError])
+  }, [navigate, isSuccess, user])
 
   return (
     <div className='container'>

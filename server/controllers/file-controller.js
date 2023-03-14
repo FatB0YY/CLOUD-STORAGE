@@ -62,7 +62,7 @@ class FileController {
 
       return res.json(files)
     } catch (error) {
-      next(ApiError.internal('Не удалось получить список файлов', error))
+      next(ApiError.internalError('Не удалось получить список файлов', error))
     }
   }
 
@@ -116,9 +116,9 @@ class FileController {
 
       const userDto = new UserDto(user)
 
-      return res.json({file: dbFile, user: userDto})
+      return res.json({ file: dbFile, user: userDto })
     } catch (error) {
-      return next(ApiError.internal(error.message, error))
+      return next(ApiError.internalError(error.message, error))
     }
   }
 
@@ -132,7 +132,7 @@ class FileController {
       }
       return ApiError.BadRequest('Ошибка при скачивании')
     } catch (error) {
-      next(ApiError.internal('Ошибка при скачивании', error))
+      next(ApiError.internalError('Ошибка при скачивании', error))
     }
   }
 

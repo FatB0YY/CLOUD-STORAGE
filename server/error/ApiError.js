@@ -1,36 +1,38 @@
-const logger = require('../logger/index')
+const logger = require('../logger')
 
 class ApiError extends Error {
-  code
+  status
   errors
 
-  constructor(code, message, errors = []) {
+  constructor(status, message, errors = []) {
     super(message)
-    this.code = code
+    this.status = status
     this.errors = errors
   }
 
-  static BadRequest(msg, errors = []) {
-    // запись в журнал
-    if (Array.isArray(errors) && errors.length) {
-      errors.forEach((error) => {
-        logger.error(msg, { error })
-      })
-    } else {
-      logger.error(msg, errors)
-    }
-
-    return new ApiError(400, msg, errors)
+  static BadRequest(message, errors = []) {
+    return new ApiError(400, message)
   }
 
-  static UnauthorizedError() {
-    logger.error('Пользователь не авторизован')
-    return new ApiError(401, 'Пользователь не авторизован')
+  static unauthorized() {
+    return new ApiError(401, 'Не авторизован')
   }
 
-  static internal(msg, error) {
-    logger.error(msg, error)
-    return new ApiError(500, msg)
+  static tokenExpiredError() {
+    return new ApiError(401, 'Срок действия токена истек')
+  }
+
+  static jsonWebTokenError() {
+    return new ApiError(401, 'Недействительный токен')
+  }
+
+  static forbiddenError() {
+    return new ApiError(403, 'Запрещенный')
+  }
+
+  static internalError(error) {
+    logger.error(error)
+    return new ApiError(500, 'Внутренняя ошибка сервера')
   }
 }
 

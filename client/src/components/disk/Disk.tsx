@@ -10,20 +10,13 @@ import {
   useCreateDirMutation,
   useUploadFileMutation,
 } from '../../service/FilesAPI'
-import { toast } from 'react-toastify'
 import './disk.scss'
 import { selectCurrentUser } from '../../redux/reducers/UserSlice'
 import sizeFormat from '../../utils/sizeFormat'
 
 const Disk: FC = () => {
-  const [
-    triggerCreateDir,
-    {
-      isError: isErrorCreateDir,
-      isLoading: isLoadingCreateDir,
-      error: errorCreateDir,
-    },
-  ] = useCreateDirMutation()
+  const [triggerCreateDir, { isLoading: isLoadingCreateDir }] =
+    useCreateDirMutation()
 
   const [triggerUploadFile, {}] = useUploadFileMutation()
 
@@ -39,6 +32,7 @@ const Disk: FC = () => {
       title: 'Создать новую папку',
       input: 'text',
       showCancelButton: true,
+      cancelButtonText: 'Закрыть',
       confirmButtonText: 'Создать папку',
       showLoaderOnConfirm: true,
       preConfirm: async (name: string) => {
@@ -57,9 +51,13 @@ const Disk: FC = () => {
   const fileUploadHandler = async (event: any) => {
     // список файлов из инпута
     const files = [...event.target.files]
-    await files.forEach(
-      async (file) => await triggerUploadFile({ file, dirId }).unwrap()
-    )
+    await files.forEach(async (file) => {
+      await triggerUploadFile({ file, dirId }).unwrap()
+    })
+
+    // await files.forEach(
+    //   async (file) => await FileEncryptor(file)
+    // )
   }
 
   function dragEnterHandler(event: any) {
@@ -72,20 +70,6 @@ const Disk: FC = () => {
     event.preventDefault()
     event.stopPropagation()
     setDragEnter(false)
-  }
-
-  if (isErrorCreateDir) {
-    if (Array.isArray((errorCreateDir as any).data.error)) {
-      ;(errorCreateDir as any).data.error.forEach((el: any) =>
-        toast.error(el.message, {
-          position: 'top-right',
-        })
-      )
-    } else {
-      toast.error((errorCreateDir as any).data.message, {
-        position: 'top-right',
-      })
-    }
   }
 
   useEffect(() => {

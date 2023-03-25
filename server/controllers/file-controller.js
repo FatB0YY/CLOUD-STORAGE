@@ -69,6 +69,9 @@ class FileController {
   async uploadFile(req, res, next) {
     try {
       const file = req.files.file
+      console.log(file)
+
+      const tempPath = file.path
 
       const parent = await File.findOne({
         user: req.user.id,
@@ -82,18 +85,22 @@ class FileController {
 
       user.usedSpace = user.usedSpace + file.size
 
-      let path
+      let targetPath
       if (parent) {
-        path = `${process.env.FILEPATH}\\${user._id}\\${parent.path}\\${file.name}`
+        targetPath = `${process.env.FILEPATH}\\${user._id}\\${parent.path}\\${file.name}`
       } else {
-        path = `${process.env.FILEPATH}\\${user._id}\\${file.name}`
+        targetPath = `${process.env.FILEPATH}\\${user._id}\\${file.name}`
       }
 
-      if (fs.existsSync(path)) {
+      if (fs.existsSync(targetPath)) {
         return next(ApiError.BadRequest('Файл уже существует'))
       }
 
-      await file.mv(path)
+      await fs.rename(tempPath, targetPath, (error) => {
+        if (error) {
+          throw new ApiError.internalError('Ошибка загрузки файла', error)
+        }
+      })
 
       const type = file.name.split('.').pop()
       let filePath = file.name
@@ -181,9 +188,17 @@ class FileController {
   async uploadAvatar(req, res, next) {
     try {
       const file = req.files.file
+      const tempPath = file.path
       const user = await User.findById(req.user.id)
       const avatarName = `avatar${uuidv4()}.jpg`
-      file.mv(process.env.STATICPATH + '\\' + avatarName)
+
+      const targetPath = process.env.STATICPATH + '\\' + avatarName
+
+      await fs.rename(tempPath, targetPath, (error) => {
+        if (error) {
+          throw new ApiError.internalError('Ошибка загрузки файла', error)
+        }
+      })
       user.avatar = avatarName
       await user.save()
       const userDto = new UserDto(user)

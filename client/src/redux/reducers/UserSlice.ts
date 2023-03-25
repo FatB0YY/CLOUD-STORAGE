@@ -44,6 +44,12 @@ export const userSlice = createSlice({
       }
     )
     builder.addMatcher(
+      authAPI.endpoints.registration.matchRejected,
+      (state, action) => {
+        // toast.error(action.payload)
+      }
+    )
+    builder.addMatcher(
       authAPI.endpoints.logout.matchFulfilled,
       (state, action) => {
         Cookies.remove('accessToken')

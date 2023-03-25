@@ -13,3 +13,8 @@
 2023-03-14 18:57:02 [31merror[39m: userDto is not defined
 2023-03-14 18:57:02 [31merror[39m: userDto is not defined
 2023-03-14 18:57:02 [31merror[39m: userDto is not defined
+2023-03-20 15:26:29 [31merror[39m: Непредвиденная ошибка: [object Object]
+2023-03-23 12:25:06 [31merror[39m: Непредвиденная ошибка: [object Object]
+2023-03-25 12:35:21 [31merror[39m: filename is not defined
+2023-03-25 12:56:31 [31merror[39m: file.mv is not a function
+2023-03-25 13:00:26 [31merror[39m: Cannot set headers after they are sent to the client

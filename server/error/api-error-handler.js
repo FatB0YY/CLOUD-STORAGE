@@ -3,7 +3,6 @@ const logger = require('../logger/index')
 
 function apiErrorHandler(err, req, res) {
   if (err instanceof ApiError) {
-    logger.error(err)
     return res.status(err.status).json({ message: err.message })
   }
 
@@ -18,8 +17,14 @@ function apiErrorHandler(err, req, res) {
     return res.status(400).json({ message: 'Некорректные параметры запроса' })
   }
 
-  const errorMsg = `Непредвиденная ошибка: ${err}`
-  logger.error(errorMsg, err)
+  // запись в журнал
+  if (Array.isArray(err) && err.length) {
+    err.forEach((error) => {
+      logger.error('Непредвиденная ошибка', { error })
+    })
+  } else {
+    logger.error('Непредвиденная ошибка', err)
+  }
   return res
     .status(500)
     .json({ message: 'Непредвиденная ошибка, повторите попытку позже.' })

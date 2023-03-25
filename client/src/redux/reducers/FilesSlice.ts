@@ -56,8 +56,8 @@ export const filesSlice = createSlice({
     builder.addMatcher(
       filesAPI.endpoints.deleteFile.matchRejected,
       (state, action) => {
-        console.log(action.payload);
-        
+        console.log(action.payload)
+
         // toast.error(action.payload.data.message as any)
       }
     )

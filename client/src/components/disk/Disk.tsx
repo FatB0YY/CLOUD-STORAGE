@@ -20,8 +20,6 @@ const Disk: FC = () => {
 
   const [triggerUploadFile, {}] = useUploadFileMutation()
 
-  // const [searchTimeout, setSearchTimeout] = useState<any>(false)
-
   const { currentDir: dirId } = useAppSelector((state) => state.filesReducer)
   const user = useAppSelector(selectCurrentUser)
   const [dragEnter, setDragEnter] = useState(false)
@@ -54,10 +52,6 @@ const Disk: FC = () => {
     await files.forEach(async (file) => {
       await triggerUploadFile({ file, dirId }).unwrap()
     })
-
-    // await files.forEach(
-    //   async (file) => await FileEncryptor(file)
-    // )
   }
 
   function dragEnterHandler(event: any) {
@@ -108,6 +102,7 @@ const Disk: FC = () => {
             className='disk__upload-input'
             onChange={(event) => fileUploadHandler(event)}
             multiple={true}
+            accept-charset='UTF-8'
           />
         </div>
 

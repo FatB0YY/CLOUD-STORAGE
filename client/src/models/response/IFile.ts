@@ -43,6 +43,7 @@ export enum TypeFile {
   JS = 'js',
   MP3 = 'mp3',
   PDF = 'pdf',
+  PNG = 'png',
   PPT = 'ppt',
   PSD = 'psd',
   RAR = 'rar',
@@ -78,6 +79,7 @@ const extensionIcon: ExtensionIcon = {
   [TypeFile.TXT]: 'icons-file/txt-svgrepo-com.svg',
   [TypeFile.XLS]: 'icons-file/xls-svgrepo-com.svg',
   [TypeFile.XLSX]: 'icons-file/xls-svgrepo-com.svg',
+  [TypeFile.PNG]: 'icons-file/icon-png.png',
 }
 
 export type dirIdType = string | undefined

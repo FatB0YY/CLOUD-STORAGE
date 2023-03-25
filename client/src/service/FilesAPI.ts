@@ -92,7 +92,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
           dispatch(showUploader())
           dispatch(addUploadFile(uploadFile))
 
-          // console.log(Array.from(formData.entries()))
+          console.log(Array.from(formData.entries()))
 
           let response = await axios.post(
             `${config.API_URL}/files/upload`,
@@ -109,8 +109,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
                 }
               },
               headers: {
-                // 'Content-Type': 'multipart/form-data; charset=utf-8',
-                // 'Content-Type': 'multipart/form-data; charset=windows-1251',
+                'Content-Type': 'multipart/form-data; charset=utf-8',
                 Authorization: `Bearer ${Cookies.get('accessToken')}`,
               },
               withCredentials: true,

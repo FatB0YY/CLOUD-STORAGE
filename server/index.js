@@ -7,27 +7,28 @@ const cors = require('cors')
 const authRouter = require('./router/auth.routes')
 const fileRouter = require('./router/file.routes')
 const apiErrorHandler = require('./error/api-error-handler')
+const formData = require('express-form-data')
 
 const app = express()
 const PORT = process.env.PORT
 
-app.use(fileUpload({}))
-app.use(express.json())
-app.use(express.static('static'))
-app.use(cookieParser())
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL
+    origin: process.env.CLIENT_URL,
   })
 )
+app.use(formData.parse())
+app.use(express.json())
+app.use(express.static('static'))
+app.use(cookieParser())
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
 app.use(apiErrorHandler)
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI , {
+    await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

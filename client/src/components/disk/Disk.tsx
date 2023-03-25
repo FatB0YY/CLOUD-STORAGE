@@ -102,7 +102,6 @@ const Disk: FC = () => {
             className='disk__upload-input'
             onChange={(event) => fileUploadHandler(event)}
             multiple={true}
-            accept-charset='UTF-8'
           />
         </div>
 

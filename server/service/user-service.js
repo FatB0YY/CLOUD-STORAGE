@@ -60,13 +60,13 @@ class UserService {
 
   async refresh(refreshToken) {
     if (!refreshToken) {
-      throw ApiError.UnauthorizedError()
+      throw ApiError.unauthorized()
     }
     const userData = tokenService.validateRefreshToken(refreshToken)
     const tokenFromDb = await tokenService.findToken(refreshToken)
 
     if (!userData || !tokenFromDb) {
-      throw ApiError.UnauthorizedError()
+      throw ApiError.unauthorized()
     }
 
     const user = await UserModel.findById(userData.id)
@@ -85,10 +85,7 @@ class UserService {
       const dtoUsers = users.map((user) => new UserDto(user))
       return dtoUsers
     } catch (error) {
-      throw ApiError.internalError(
-        'Не удалось получить список пользователей',
-        error
-      )
+      throw ApiError.internalError(error)
     }
   }
 }

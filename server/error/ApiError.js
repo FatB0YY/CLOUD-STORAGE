@@ -1,5 +1,3 @@
-const logger = require('../logger')
-
 class ApiError extends Error {
   status
   errors
@@ -10,8 +8,12 @@ class ApiError extends Error {
     this.errors = errors
   }
 
-  static BadRequest(message, errors = []) {
+  static BadRequest(message) {
     return new ApiError(400, message)
+  }
+
+  static badValidation(errors = []) {
+    return new ApiError(422, 'Ошибка при валидации', errors)
   }
 
   static unauthorized() {
@@ -30,9 +32,8 @@ class ApiError extends Error {
     return new ApiError(403, 'Запрещенный')
   }
 
-  static internalError(error) {
-    logger.error(error)
-    return new ApiError(500, 'Внутренняя ошибка сервера')
+  static internalError(message, errors) {
+    return new ApiError(500, message, errors)
   }
 }
 

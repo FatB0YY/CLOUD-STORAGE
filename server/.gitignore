@@ -25,3 +25,10 @@ yarn-error.log*
 
 /server/files
 /server/static
+server/files
+server/static
+
+/files
+/static
+files
+static

@@ -76,7 +76,6 @@ const LoginForm: FC = () => {
     }
 
     if (user) navigate('/disk')
-
   }, [navigate, isSuccess, user])
 
   return (

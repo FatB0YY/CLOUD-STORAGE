@@ -62,15 +62,13 @@ class FileController {
 
       return res.json(files)
     } catch (error) {
-      next(ApiError.internalError('Не удалось получить список файлов', error))
+      next(error)
     }
   }
 
   async uploadFile(req, res, next) {
     try {
       const file = req.files.file
-      console.log(file)
-
       const tempPath = file.path
 
       const parent = await File.findOne({
@@ -80,7 +78,8 @@ class FileController {
       const user = await User.findOne({ _id: req.user.id })
 
       if (user.usedSpace + file.size > user.diskSpace) {
-        return next(ApiError.BadRequest('Недостаточно места на диске'))
+        next(ApiError.BadRequest('Недостаточно места на диске'))
+        return
       }
 
       user.usedSpace = user.usedSpace + file.size
@@ -93,12 +92,14 @@ class FileController {
       }
 
       if (fs.existsSync(targetPath)) {
-        return next(ApiError.BadRequest('Файл уже существует'))
+        next(ApiError.BadRequest('Файл уже существует'))
+        return
       }
 
       await fs.rename(tempPath, targetPath, (error) => {
         if (error) {
-          throw new ApiError.internalError('Ошибка загрузки файла', error)
+          next(ApiError.internalError(error))
+          return
         }
       })
 
@@ -125,7 +126,7 @@ class FileController {
 
       return res.json({ file: dbFile, user: userDto })
     } catch (error) {
-      return next(ApiError.internalError(error.message, error))
+      next(error)
     }
   }
 
@@ -137,9 +138,10 @@ class FileController {
       if (fs.existsSync(path)) {
         return res.download(path, file.name)
       }
+
       return ApiError.BadRequest('Ошибка при скачивании')
     } catch (error) {
-      next(ApiError.internalError('Ошибка при скачивании', error))
+      next(error)
     }
   }
 
@@ -181,7 +183,7 @@ class FileController {
         return res.json(files)
       }
     } catch (error) {
-      next(ApiError.BadRequest('Ошибка поиска', error))
+      next(error)
     }
   }
 
@@ -196,7 +198,8 @@ class FileController {
 
       await fs.rename(tempPath, targetPath, (error) => {
         if (error) {
-          throw new ApiError.internalError('Ошибка загрузки файла', error)
+          next(ApiError.internalError(error))
+          return
         }
       })
       user.avatar = avatarName

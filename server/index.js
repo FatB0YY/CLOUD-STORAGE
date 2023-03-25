@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const authRouter = require('./router/auth.routes')
@@ -18,12 +17,13 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 )
-app.use(formData.parse())
 app.use(express.json())
+app.use(formData.parse())
 app.use(express.static('static'))
 app.use(cookieParser())
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
+// обработка ошибок
 app.use(apiErrorHandler)
 
 const start = async () => {

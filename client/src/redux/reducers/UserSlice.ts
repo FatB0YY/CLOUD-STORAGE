@@ -7,6 +7,7 @@ import { RootState } from '../store'
 import { filesAPI } from '../../service/FilesAPI'
 import { userAPI } from '../../service/UserAPI'
 import { toast } from 'react-toastify'
+import { IResponseAction } from '../../models/response/IResponseAction'
 
 interface UserState {
   user: IUser | null
@@ -33,9 +34,13 @@ export const userSlice = createSlice({
         state.user = action.payload.user
       }
     )
-    builder.addMatcher(authAPI.endpoints.login.matchRejected, (state) => {
-      state.user = null
-    })
+    builder.addMatcher(
+      authAPI.endpoints.login.matchRejected,
+      (state, action: PayloadAction<any>) => {
+        toast.error(action.payload.data.message)
+        state.user = null
+      }
+    )
     builder.addMatcher(
       authAPI.endpoints.registration.matchFulfilled,
       (state, action) => {
@@ -45,8 +50,8 @@ export const userSlice = createSlice({
     )
     builder.addMatcher(
       authAPI.endpoints.registration.matchRejected,
-      (state, action) => {
-        // toast.error(action.payload)
+      (state, action: PayloadAction<any>) => {
+        toast.error(action.payload.data.message)
       }
     )
     builder.addMatcher(

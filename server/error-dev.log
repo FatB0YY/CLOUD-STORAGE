@@ -1,20 +1,35 @@
-2023-03-14 18:52:20 [31merror[39m: tokenService.validateToken is not a function
-2023-03-14 18:52:20 [31merror[39m: tokenService.validateToken is not a function
-2023-03-14 18:52:20 [31merror[39m: tokenService.validateToken is not a function
-2023-03-14 18:54:47 [31merror[39m: JsonWebTokenError is not defined
-2023-03-14 18:54:47 [31merror[39m: JsonWebTokenError is not defined
-2023-03-14 18:54:47 [31merror[39m: JsonWebTokenError is not defined
-2023-03-14 18:56:07 [31merror[39m: UserDTO is not defined
-2023-03-14 18:56:07 [31merror[39m: UserDTO is not defined
-2023-03-14 18:56:07 [31merror[39m: UserDTO is not defined
-2023-03-14 18:56:24 [31merror[39m: Cannot access 'userDto' before initialization
-2023-03-14 18:56:24 [31merror[39m: Cannot access 'userDto' before initialization
-2023-03-14 18:56:24 [31merror[39m: Cannot access 'userDto' before initialization
-2023-03-14 18:57:02 [31merror[39m: userDto is not defined
-2023-03-14 18:57:02 [31merror[39m: userDto is not defined
-2023-03-14 18:57:02 [31merror[39m: userDto is not defined
-2023-03-20 15:26:29 [31merror[39m: Непредвиденная ошибка: [object Object]
-2023-03-23 12:25:06 [31merror[39m: Непредвиденная ошибка: [object Object]
-2023-03-25 12:35:21 [31merror[39m: filename is not defined
-2023-03-25 12:56:31 [31merror[39m: file.mv is not a function
-2023-03-25 13:00:26 [31merror[39m: Cannot set headers after they are sent to the client
+2023-03-25 23:01:46 [31merror[39m: Cannot read properties of undefined (reading 'file')
+2023-03-25 23:02:09 [31merror[39m: Cannot read properties of undefined (reading 'file')
+2023-03-25 23:03:19 [31merror[39m: Cannot read properties of undefined (reading 'file')
+2023-03-25 23:04:09 [31merror[39m: Cannot read properties of undefined (reading 'file')
+2023-03-25 23:04:27 [31merror[39m: ApiError.UnauthorizedError is not a function
+2023-03-25 23:04:59 [31merror[39m: Файл уже существует
+2023-03-25 23:06:27 [31merror[39m: Файл уже существует
+2023-03-25 23:15:05 [31merror[39m: Пользователь с таким Email не найден
+2023-03-25 23:15:11 [31merror[39m: Пользователь с таким Email не найден
+2023-03-25 23:16:57 [31merror[39m: Не авторизован
+2023-03-25 23:16:57 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:17:16 [31merror[39m: Не авторизован
+2023-03-25 23:17:16 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:17:27 [31merror[39m: Пользователь с таким Email не найден
+2023-03-25 23:18:25 [31merror[39m: Не авторизован
+2023-03-25 23:18:25 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:18:32 [31merror[39m: Не авторизован
+2023-03-25 23:18:32 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:18:47 [31merror[39m: Не авторизован
+2023-03-25 23:18:47 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:19:01 [31merror[39m: Пользователь с таким Email не найден
+2023-03-25 23:22:04 [31merror[39m: Не авторизован
+2023-03-25 23:22:04 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:22:30 [31merror[39m: Не авторизован
+2023-03-25 23:22:30 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:24:18 [31merror[39m: Пользователь с таким Email не найден
+2023-03-25 23:26:48 [31merror[39m: Не авторизован
+2023-03-25 23:26:48 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:27:00 [31merror[39m: Не авторизован
+2023-03-25 23:27:00 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:28:26 [31merror[39m: Не авторизован
+2023-03-25 23:28:26 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:28:33 [31merror[39m: Не авторизован
+2023-03-25 23:28:33 [31merror[39m: ApiError.Unauthorized is not a function
+2023-03-25 23:28:43 [31merror[39m: Пользователь с таким Email не найден

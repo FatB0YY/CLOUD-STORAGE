@@ -38,7 +38,9 @@ const Disk: FC = () => {
         if (!name || !regex.test(name)) {
           Swal.showValidationMessage('Некорректное название')
         } else {
-          await triggerCreateDir({ name: name.trim(), dirId }).unwrap()
+          try {
+            await triggerCreateDir({ name: name.trim(), dirId }).unwrap()
+          } catch (error) {}
         }
       },
 

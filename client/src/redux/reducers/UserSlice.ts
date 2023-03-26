@@ -7,7 +7,6 @@ import { RootState } from '../store'
 import { filesAPI } from '../../service/FilesAPI'
 import { userAPI } from '../../service/UserAPI'
 import { toast } from 'react-toastify'
-import { IResponseAction } from '../../models/response/IResponseAction'
 
 interface UserState {
   user: IUser | null

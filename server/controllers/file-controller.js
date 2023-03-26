@@ -10,8 +10,10 @@ class FileController {
   async createDir(req, res, next) {
     try {
       const { name, type, parent } = req.body
+
       const file = new File({ name, type, parent, user: req.user.id })
       const parentFile = await File.findOne({ _id: parent })
+
       if (!parentFile) {
         file.path = name
         await fileService.createDir(file)
@@ -122,8 +124,13 @@ class FileController {
       await dbFile.save()
       await user.save()
 
-      const userDto = new UserDto(user)
+      if (parent) {
+        console.log(dbFile)
+        parent.childs.push(dbFile._id)
+        await parent.save()
+      }
 
+      const userDto = new UserDto(user)
       return res.json({ file: dbFile, user: userDto })
     } catch (error) {
       next(error)
@@ -154,17 +161,20 @@ class FileController {
         next(ApiError.BadRequest('Не найден'))
         return
       }
-      fileService.deleteFile(file)
-      user.usedSpace = user.usedSpace - file.size
+
+      if (file.type === 'dir') {
+        await fileService.deleteFolderRecursive(file, user)
+      } else {
+        await fileService.deleteFile(file, user)
+      }
 
       await user.save()
-      await file.remove()
 
       const userDto = new UserDto(user)
 
       return res.json({ message: 'Удален', user: userDto })
     } catch (error) {
-      next(ApiError.BadRequest('Папка не пуста', error))
+      next(error)
     }
   }
 
@@ -231,19 +241,3 @@ module.exports = new FileController()
 // https://www.mousedc.ru/learning/482-rekursivnyy-obkhod-faylov-nodejs/
 // const fs = require("fs");
 // const path = require("path");
-
-// function deleteDirectoryRecursive(dir) {
-//   if (fs.existsSync(dir)) {
-//     fs.readdirSync(dir).forEach(function (file, index) {
-//       const curPath = path.join(dir, file);
-//       if (fs.lstatSync(curPath).isDirectory()) {
-//         // recurse
-//         deleteDirectoryRecursive(curPath);
-//       } else {
-//         // delete file
-//         fs.unlinkSync(curPath);
-//       }
-//     });
-//     fs.rmdirSync(dir);
-//   }
-// }

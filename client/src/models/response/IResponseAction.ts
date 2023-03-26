@@ -1,9 +1,7 @@
-export interface IResponseAction {
+export interface IResponseError {
   data: {
     errors: unknown[]
     message: string
   }
   status: number
 }
-
-export {}

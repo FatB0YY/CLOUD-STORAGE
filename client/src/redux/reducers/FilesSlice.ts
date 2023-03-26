@@ -49,8 +49,8 @@ export const filesSlice = createSlice({
     )
     builder.addMatcher(
       filesAPI.endpoints.uploadFile.matchRejected,
-      (state, action) => {
-        toast.error(action.payload as any)
+      (state, action: any) => {
+        toast.error(action.payload.message)
       }
     )
     builder.addMatcher(
@@ -59,6 +59,12 @@ export const filesSlice = createSlice({
         console.log(action.payload)
 
         // toast.error(action.payload.data.message as any)
+      }
+    )
+    builder.addMatcher(
+      filesAPI.endpoints.createDir.matchRejected,
+      (state, action: any) => {
+        toast.error(action.payload?.data.message)
       }
     )
   },

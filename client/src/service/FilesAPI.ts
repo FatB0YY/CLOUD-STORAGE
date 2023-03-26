@@ -49,15 +49,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
         url: `/files?id=${file._id}`,
         method: 'DELETE',
       }),
-      // transformErrorResponse: (response: {data: {message: string}}, meta, arg) => {
-      //   return response.data.message
-      // },
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
-      // transformResponse: (baseQueryReturnValue: any) => {
-      //   console.log(baseQueryReturnValue)
-
-      //   return baseQueryReturnValue
-      // },
     }),
 
     createDir: build.mutation<IFile, { name: string; dirId: dirIdType }>({

@@ -1,0 +1,81 @@
+.skeleton {
+  width: 100%;
+  margin-bottom: auto;
+}
+
+.skeleton__file-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton__header,
+.skeleton__footer {
+  display: flex;
+  align-items: center;
+}
+
+.skeleton__file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  padding: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.skeleton__file-item:last-child {
+  margin-bottom: 0;
+}
+
+.skeleton__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  margin-right: 16px;
+  background-color: #ccc;
+}
+
+.skeleton__name {
+  width: 250px;
+  height: 16px;
+  background-color: #ccc;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.skeleton__date,
+.skeleton__btn {
+  height: 16px;
+  width: 64px;
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.skeleton__date {
+  margin-right: 44px;
+}
+
+.skeleton__btn {
+  margin-right: 16px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.skeleton__skeleton-animation {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}

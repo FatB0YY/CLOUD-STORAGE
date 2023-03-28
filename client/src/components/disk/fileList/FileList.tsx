@@ -11,8 +11,8 @@ import './fileList.scss'
 import iconnotfound from '../../../assets/img/iconnotfound.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import Loader from '../../loader/Loader'
 import { popDirStack, setCurrentDir } from '../../../redux/reducers/FilesSlice'
+import Skeleton from '../../skeleton/Skeleton'
 
 const FileList: FC = () => {
   const [activeClass, setActiveClass] = useState(false)
@@ -82,8 +82,7 @@ const FileList: FC = () => {
     files.length === 0 && !isLoadingFiles && !isFetchingFiles
       ? renderNotFoundContent()
       : null
-  const spinner =
-    isLoadingFiles || isFetchingFiles ? <Loader type='main' /> : null
+  const spinner = isLoadingFiles || isFetchingFiles ? <Skeleton /> : null
 
   return (
     <div className='fileList'>

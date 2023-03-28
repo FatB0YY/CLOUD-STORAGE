@@ -9,28 +9,27 @@ export interface PropsAccordion {
 
 export const data: IItemAccordion[] = [
   {
-    question: 'Lorem ipsum dolor sit amet consectetur adipisicing elit?',
+    question: 'Возможно ли скачать папку целиком в архиве?',
     answer:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto dolore accusamus saepe maxime recusandae facilis natus nihil mollitia eum rerum obcaecati cumque dolor, quasi, magnam veniam quos corrupti modi ab. Unde suscipit saepe repellendus iure!',
+      'Да, конечно! Мы предоставляем эту возможность для вашего удобства.',
   },
   {
-    question: 'Lorem ipsum dolor sit amet consectetur adipisicing elit?',
-    answer:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto dolore accusamus saepe maxime recusandae facilis natus nihil mollitia eum rerum obcaecati cumque dolor, quasi, magnam veniam quos corrupti modi ab. Unde suscipit saepe repellendus iure!',
+    question: 'Можно ли удалить целую папку?',
+    answer: 'Да, вы можете удалить папку целиком с помощью нашего интерфейса.',
   },
   {
-    question: 'Lorem ipsum dolor sit amet consectetur adipisicing elit?',
+    question: 'Как узнать, сколько свободного места осталось?',
     answer:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto dolore accusamus saepe maxime recusandae facilis natus nihil mollitia eum rerum obcaecati cumque dolor, quasi, magnam veniam quos corrupti modi ab. Unde suscipit saepe repellendus iure!',
+      'Конечно! Мы предоставляем эту информацию для вашего удобства, чтобы вы могли легко управлять своими файлами.',
   },
   {
-    question: 'Lorem ipsum dolor sit amet consectetur adipisicing elit?',
+    question: 'Как просмотреть содержимое папки?',
     answer:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto dolore accusamus saepe maxime recusandae facilis natus nihil mollitia eum rerum obcaecati cumque dolor, quasi, magnam veniam quos corrupti modi ab. Unde suscipit saepe repellendus iure!',
+      'Да, конечно! Вы можете легко просмотреть содержимое папки с помощью нашего интерфейса.',
   },
   {
-    question: 'Lorem ipsum dolor sit amet consectetur adipisicing elit?',
+    question: 'Можно ли изменить аватар своего аккаунта?',
     answer:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto dolore accusamus saepe maxime recusandae facilis natus nihil mollitia eum rerum obcaecati cumque dolor, quasi, magnam veniam quos corrupti modi ab. Unde suscipit saepe repellendus iure!',
+      'Да, конечно! Мы предоставляем возможность изменить аватар вашего аккаунта в любое время.',
   },
 ]

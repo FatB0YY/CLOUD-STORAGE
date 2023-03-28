@@ -5,6 +5,8 @@ const fs = require('fs')
 const ApiError = require('../error/ApiError')
 const UserDto = require('../dtos/user-dto')
 const { v4: uuidv4 } = require('uuid')
+const archiver = require('archiver')
+const path = require('path')
 
 class FileController {
   async createDir(req, res, next) {
@@ -16,10 +18,10 @@ class FileController {
 
       if (!parentFile) {
         file.path = name
-        await fileService.createDir(file)
+        fileService.createDir(file)
       } else {
         file.path = `${parentFile.path}\\${file.name}`
-        await fileService.createDir(file)
+        fileService.createDir(file)
         parentFile.childs.push(file._id)
         await parentFile.save()
       }
@@ -125,7 +127,6 @@ class FileController {
       await user.save()
 
       if (parent) {
-        console.log(dbFile)
         parent.childs.push(dbFile._id)
         await parent.save()
       }
@@ -233,11 +234,66 @@ class FileController {
       next(ApiError.BadRequest('Ошибка удаления аватара', error))
     }
   }
+
+  async downloadFolder(req, res, next) {
+    try {
+      const { folderId } = req.query
+      const rootFolder = await File.findById(folderId)
+      const archiveName = `${rootFolder.name}.zip`
+      const archivePath = path.join(__dirname, '../temp', archiveName)
+
+      const output = fs.createWriteStream(archivePath)
+      const archive = archiver('zip', { zlib: { level: 9 } })
+
+      archive.pipe(output)
+
+      const queue = [rootFolder]
+
+      while (queue.length > 0) {
+        const currentFolder = queue.shift()
+
+        // Добавление файлов в архив
+        for (const fileId of currentFolder.childs) {
+          const file = await File.findById(fileId)
+          const filePath = fileService.getPath(file)
+
+          archive.file(filePath, { name: file.name })
+        }
+
+        // Добавление вложенных папок в очередь
+        for (const folderId of currentFolder.childs) {
+          const folder = await File.findById(folderId)
+
+          if (folder.type === 'dir') {
+            queue.push(folder)
+
+            // Добавление файлов из вложенной папки в архив
+            for (const fileId of folder.childs) {
+              const file = await File.findById(fileId)
+              const filePath = fileService.getPath(file)
+
+              // Добавление файлов в архив, используя его относительный путь во вложенной папке
+              const subfolderPath = path.relative(rootFolder.path, folder.path)
+              archive.file(filePath, {
+                name: path.join(subfolderPath, file.name),
+              })
+            }
+          }
+        }
+      }
+
+      archive.finalize()
+
+      // Ждем завершения архивирования, прежде чем отправлять ответ и удалять архив
+      output.on('close', function () {
+        res.download(archivePath, archiveName, () => {
+          fs.unlinkSync(archivePath)
+        })
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = new FileController()
-
-// рекурсивное удаление
-// https://www.mousedc.ru/learning/482-rekursivnyy-obkhod-faylov-nodejs/
-// const fs = require("fs");
-// const path = require("path");

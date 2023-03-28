@@ -9,10 +9,12 @@ import {
   pushToDirStack,
   setCurrentDir,
 } from '../../../../redux/reducers/FilesSlice'
-import { downloadFile } from '../../../../redux/reducers/ActionCreators'
+import {
+  downloadFile,
+  downloadFolder,
+} from '../../../../redux/reducers/ActionCreators'
 import sizeFormat from '../../../../utils/sizeFormat'
 import { useDeleteFileMutation } from '../../../../service/FilesAPI'
-import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
@@ -42,9 +44,14 @@ const File: FC<Props> = ({ file }) => {
     }
   }
 
-  const downloadClickHandler = (event: any) => {
+  const downloadFileClickHandler = (event: any) => {
     event.stopPropagation()
     dispatch(downloadFile(file))
+  }
+
+  const downloadFolderClickHandler = (event: any) => {
+    event.stopPropagation()
+    dispatch(downloadFolder(file))
   }
 
   const deleteClickHandler = async (event: any) => {
@@ -74,13 +81,18 @@ const File: FC<Props> = ({ file }) => {
         <div className='file__btns'>
           {file.type !== TypeFile.DIR ? (
             <button
-              onClick={(event) => downloadClickHandler(event)}
+              onClick={(event) => downloadFileClickHandler(event)}
               className='file__btn file__download'
             >
               <FontAwesomeIcon icon={solid('download')} className='icon' />
             </button>
           ) : (
-            <div className='file__btn file__btn_none'></div>
+            <button
+              onClick={(event) => downloadFolderClickHandler(event)}
+              className='file__btn file__download'
+            >
+              <FontAwesomeIcon icon={solid('download')} className='icon' />
+            </button>
           )}
 
           {(isLoadingDelete || !isUninitializedDelete) && !isErrorDelete ? (

@@ -7,20 +7,16 @@ class FileService {
   // объект той модели, которую добавляем в бд
   createDir(file) {
     const filePath = this.getPath(file)
-    return new Promise((resolve, reject) => {
-      try {
-        if (!fs.existsSync(filePath)) {
-          fs.mkdirSync(filePath)
-          return resolve({ message: 'Файл создан' })
-        } else {
-          return reject({ message: 'Файл или папка уже существует' })
-        }
-      } catch (error) {
-        return reject({ message: 'Ошибка файла' })
+    try {
+      if (!fs.existsSync(filePath)) {
+        fs.mkdirSync(filePath)
+        return { message: 'Файл создан' }
+      } else {
+        throw ApiError.BadRequest('Файл или папка уже существует.')
       }
-    }).catch((error) => {
+    } catch (error) {
       throw ApiError.internalError(error.message, error)
-    })
+    }
   }
 
   getPath(file) {
@@ -29,6 +25,16 @@ class FileService {
 
   async deleteFile(file, user) {
     user.usedSpace = user.usedSpace - file.size
+
+    const parent = await File.findOne({
+      _id: file.parent,
+    })
+
+    if (parent) {
+      parent.childs = parent.childs.filter((childId) => childId !== file._id)
+      await parent.save()
+    }
+
     const path = this.getPath(file)
     await file.remove()
     fs.unlinkSync(path)

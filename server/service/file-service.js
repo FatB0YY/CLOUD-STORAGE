@@ -5,12 +5,15 @@ const File = require('../models/File')
 class FileService {
   // принимает параметр file, это не физ файл, а
   // объект той модели, которую добавляем в бд
-  createDir(file) {
+  createDir(file, user) {
     const filePath = this.getPath(file)
     try {
       if (!fs.existsSync(filePath)) {
         fs.mkdirSync(filePath)
-        return { message: 'Файл создан' }
+
+        user.files.push(file._id)
+
+        return { message: 'Папка создана' }
       } else {
         throw ApiError.BadRequest('Файл или папка уже существует.')
       }
@@ -25,6 +28,7 @@ class FileService {
 
   async deleteFile(file, user) {
     user.usedSpace = user.usedSpace - file.size
+    user.files = user.files.filter((id) => id !== file._id)
 
     const parent = await File.findOne({
       _id: file.parent,
@@ -44,6 +48,7 @@ class FileService {
     if (folder.childs.length === 0) {
       // если папка пустая, удаляем ее из базы данных и с компьютера
       const folderPath = this.getPath(folder)
+      user.files = user.files.filter((id) => id !== folder._id)
       await folder.remove()
       fs.rmdirSync(folderPath, { recursive: true })
       return
@@ -60,6 +65,7 @@ class FileService {
 
     // после удаления всех файлов и подпапок удаляем саму папку из базы данных и с компьютера
     const folderPath = this.getPath(folder)
+    user.files = user.files.filter((id) => id !== folder._id)
     await folder.remove()
     fs.rmdirSync(folderPath, { recursive: true })
   }

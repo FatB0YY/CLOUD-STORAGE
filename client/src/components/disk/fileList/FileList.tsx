@@ -172,7 +172,7 @@ const FileList: FC = () => {
       >
         {filesList}
         {notFoundContent}
-        {spinner}
+        {/* {spinner} */}
       </div>
     </div>
   )

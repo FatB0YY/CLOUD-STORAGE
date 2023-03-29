@@ -7,6 +7,7 @@ const UserDto = require('../dtos/user-dto')
 const { v4: uuidv4 } = require('uuid')
 const archiver = require('archiver')
 const path = require('path')
+const multer = require('multer')
 
 class FileController {
   async createDir(req, res, next) {
@@ -15,17 +16,20 @@ class FileController {
 
       const file = new File({ name, type, parent, user: req.user.id })
       const parentFile = await File.findOne({ _id: parent })
+      const user = await User.findById(req.user.id)
 
       if (!parentFile) {
         file.path = name
-        fileService.createDir(file)
+        fileService.createDir(file, user)
       } else {
         file.path = `${parentFile.path}\\${file.name}`
-        fileService.createDir(file)
+        fileService.createDir(file, user)
         parentFile.childs.push(file._id)
         await parentFile.save()
       }
       await file.save()
+      await user.save()
+
       return res.json(file)
     } catch (error) {
       next(error)
@@ -122,6 +126,8 @@ class FileController {
         parent: parent?._id,
         user: user._id,
       })
+
+      user.files.push(dbFile._id)
 
       await dbFile.save()
       await user.save()
@@ -290,6 +296,13 @@ class FileController {
           fs.unlinkSync(archivePath)
         })
       })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async uploadFolder(req, res, next) {
+    try {
     } catch (error) {
       next(error)
     }

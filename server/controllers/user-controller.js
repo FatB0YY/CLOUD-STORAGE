@@ -14,7 +14,8 @@ class UserController {
       })
 
       await fileService.createDir(
-        new File({ user: userData.user.id, name: '' })
+        new File({ user: userData.user.id, name: '' }),
+        userData.user
       )
 
       return res.status(201).json(userData)
@@ -45,7 +46,7 @@ class UserController {
       next(error)
     }
   }
-  
+
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies

@@ -16,7 +16,7 @@ const UserSchema = new Schema({
   diskSpace: { type: Number, default: 1024 ** 3 * 10 },
   usedSpace: { type: Number, default: 0 },
   avatar: { type: String, default: null },
-  files: [{ type: Schema.Types.ObjectId, ref: 'File' }],
+  files: [{ type: Schema.Types.ObjectId, ref: 'File', default: [] }],
   isActivated: { type: Boolean, default: false },
   activationLink: { type: String },
 })

@@ -8,8 +8,6 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import userAvatarDefault from '../../assets/img/userAvatarDefault.png'
 import './profileScreen.scss'
 import config from '../../config'
-import { filesAPI } from '../../service/FilesAPI'
-import { TypeSortOption } from '../../models/response/IFile'
 
 const ProfileScreen: FC = () => {
   const user = useAppSelector(selectCurrentUser)
@@ -18,10 +16,6 @@ const ProfileScreen: FC = () => {
   const [uploadAvatar, {}] = userAPI.useUploadAvatarMutation()
   const [deleteAvatar, {}] = userAPI.useDeleteAvatarMutation()
 
-  const { data: files } = filesAPI.useGetAllFilesQuery({
-    dirId: undefined,
-    sortValue: TypeSortOption.TYPE,
-  })
   const [avatar, setAvatar] = useState<string>()
 
   useEffect(() => {
@@ -90,7 +84,7 @@ const ProfileScreen: FC = () => {
           <div className='card__infoBlock'>
             <div>
               <span className='card__number'>
-                {files?.length ? files.length : 0}
+                {user.files.length ? user.files.length : 0}
               </span>
               <span className='card__number-title'>Всего файлов</span>
             </div>

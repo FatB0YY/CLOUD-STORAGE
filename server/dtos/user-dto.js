@@ -4,6 +4,7 @@ module.exports = class UserDto {
   diskSpace
   usedSpace
   avatar
+  files
 
   constructor(model) {
     this.email = model.email
@@ -11,6 +12,7 @@ module.exports = class UserDto {
     this.diskSpace = model.diskSpace
     this.usedSpace = model.usedSpace
     this.avatar = model.avatar
+    this.files = model.files
   }
 }
 

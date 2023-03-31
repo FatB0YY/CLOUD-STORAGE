@@ -30,6 +30,7 @@ const Disk: FC = () => {
       title: 'Создать новую папку',
       input: 'text',
       showCancelButton: true,
+      inputPlaceholder: 'Название папки...',
       cancelButtonText: 'Закрыть',
       confirmButtonText: 'Создать папку',
       showLoaderOnConfirm: true,

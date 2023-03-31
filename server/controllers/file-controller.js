@@ -7,7 +7,7 @@ const UserDto = require('../dtos/user-dto')
 const { v4: uuidv4 } = require('uuid')
 const archiver = require('archiver')
 const path = require('path')
-const multer = require('multer')
+// const multer = require('multer')
 
 class FileController {
   async createDir(req, res, next) {
@@ -30,7 +30,9 @@ class FileController {
       await file.save()
       await user.save()
 
-      return res.json(file)
+      const userDto = new UserDto(user)
+
+      return res.json({ file, user: userDto })
     } catch (error) {
       next(error)
     }
@@ -146,7 +148,7 @@ class FileController {
 
   async downloadFile(req, res, next) {
     try {
-      const file = await File.findOne({ _id: req.query.id, user: req.user.id })
+      const file = undefined
       const path = fileService.getPath(file)
 
       if (fs.existsSync(path)) {
@@ -208,6 +210,7 @@ class FileController {
     try {
       const file = req.files.file
       const tempPath = file.path
+
       const user = await User.findById(req.user.id)
       const avatarName = `avatar${uuidv4()}.jpg`
 
@@ -215,7 +218,7 @@ class FileController {
 
       await fs.rename(tempPath, targetPath, (error) => {
         if (error) {
-          next(ApiError.internalError(error))
+          next(ApiError.internalError('Ошибка загрузки аватара', error))
           return
         }
       })
@@ -224,7 +227,7 @@ class FileController {
       const userDto = new UserDto(user)
       return res.json(userDto)
     } catch (error) {
-      next(ApiError.BadRequest('Ошибка загрузки аватара', error))
+      next(error)
     }
   }
 
@@ -237,7 +240,7 @@ class FileController {
       const userDto = new UserDto(user)
       return res.json(userDto)
     } catch (error) {
-      next(ApiError.BadRequest('Ошибка удаления аватара', error))
+      next(error)
     }
   }
 

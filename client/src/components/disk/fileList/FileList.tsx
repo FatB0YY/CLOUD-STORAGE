@@ -11,15 +11,20 @@ import './fileList.scss'
 import iconnotfound from '../../../assets/img/iconnotfound.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { popDirStack, setCurrentDir } from '../../../redux/reducers/FilesSlice'
+import {
+  popbreadcrumbStack,
+  popDirStack,
+  setCurrentDir,
+} from '../../../redux/reducers/FilesSlice'
 import Skeleton from '../../skeleton/Skeleton'
+import Breadcrumbs from '../../breadcrumbs/Breadcrumbs'
 
 const FileList: FC = () => {
   const [activeClass, setActiveClass] = useState(false)
   const [sortValueTextInSpan, setSortValueTextInSpan] = useState<null | string>(
     null
   )
-
+  const { breadcrumbStack } = useAppSelector((state) => state.filesReducer)
   const [sortValue, setSort] = useState<TypeSortOption>(TypeSortOption.TYPE)
   const { currentDir: dirId, dirStack } = useAppSelector(
     (state) => state.filesReducer
@@ -37,6 +42,7 @@ const FileList: FC = () => {
     const backDirId: dirIdType = copy.pop()
     dispatch(setCurrentDir(backDirId))
     dispatch(popDirStack())
+    dispatch(popbreadcrumbStack())
   }
 
   function changeSortValue(e: any) {
@@ -56,7 +62,7 @@ const FileList: FC = () => {
     refetch()
   }, [sortValue, refetch])
 
-  useEffect(() => {}, [activeClass, sortValueTextInSpan])
+  useEffect(() => {}, [activeClass, sortValueTextInSpan, breadcrumbStack])
 
   function renderNotFoundContent() {
     return (
@@ -97,7 +103,7 @@ const FileList: FC = () => {
               <FontAwesomeIcon icon={solid('arrow-left')} className='icon' />
             </button>
           ) : null}
-          Все файлы
+          {breadcrumbStack.length ? <Breadcrumbs /> : <span>Все файлы</span>}
         </h2>
         <div className='fileList-head__settings'>
           <span className='fileList-head__sort'>

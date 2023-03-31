@@ -109,3 +109,52 @@
 2023-03-29 21:03:22 [31merror[39m: Cannot read properties of undefined (reading 'files')
 2023-03-29 21:04:00 [31merror[39m: Cannot read properties of undefined (reading 'files')
 2023-03-29 21:05:19 [31merror[39m: Cannot read properties of undefined (reading 'push')
+2023-03-30 10:23:56 [31merror[39m: Недействительный токен
+2023-03-30 10:23:56 [31merror[39m: Не авторизован
+2023-03-30 10:38:46 [31merror[39m: Cannot set properties of null (setting 'avatar')
+2023-03-30 10:39:14 [31merror[39m: Cannot set properties of null (setting 'avatar')
+2023-03-30 10:40:30 [31merror[39m: Cannot set properties of null (setting 'avatar')
+2023-03-30 10:41:57 [31merror[39m: Cannot set properties of null (setting 'avatar')
+2023-03-30 10:42:16 [31merror[39m: Ошибка удаления аватара
+2023-03-30 10:42:43 [31merror[39m: Cannot read properties of null (reading 'avatar')
+2023-03-30 10:43:35 [31merror[39m: Cannot destructure property 'sort' of 'req.query.rfrf' as it is undefined.
+2023-03-30 10:44:19 [31merror[39m: Cannot destructure property 'sort' of 'req.query.rfrf' as it is undefined.
+2023-03-30 10:44:30 [31merror[39m: Cannot destructure property 'sort' of 'req.query.rfrf' as it is undefined.
+2023-03-30 10:46:29 [31merror[39m: Cannot read properties of undefined (reading 'path')
+2023-03-30 10:47:00 [31merror[39m: Cannot read properties of undefined (reading 'path')
+2023-03-30 10:48:08 [31merror[39m: Не найден
+2023-03-30 10:48:49 [31merror[39m: Cannot read properties of undefined (reading 'usedSpace')
+2023-03-30 10:49:35 [31merror[39m: Cannot destructure property 'name' of 'req.body.rfrfr' as it is undefined.
+2023-03-30 10:55:16 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 10:55:46 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 10:57:17 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 10:58:59 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 10:59:29 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 10:59:51 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 11:02:30 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 11:02:43 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-03-30 11:09:09 [31merror[39m: Cannot destructure property 'email' of 'req.body.fgtgt' as it is undefined.
+2023-03-30 11:09:29 [31merror[39m: Не авторизован
+2023-03-30 11:09:29 [31merror[39m: Не авторизован
+2023-03-30 11:09:42 [31merror[39m: Не авторизован
+2023-03-30 11:09:42 [31merror[39m: Не авторизован
+2023-03-30 11:10:50 [31merror[39m: Не авторизован
+2023-03-30 11:10:50 [31merror[39m: Не авторизован
+2023-03-30 11:12:41 [31merror[39m: Не авторизован
+2023-03-30 11:12:41 [31merror[39m: Не авторизован
+2023-03-30 11:13:25 [31merror[39m: Не авторизован
+2023-03-30 11:13:25 [31merror[39m: Не авторизован
+2023-03-30 11:13:28 [31merror[39m: Не авторизован
+2023-03-30 11:13:28 [31merror[39m: Не авторизован
+2023-03-30 11:13:30 [31merror[39m: Не авторизован
+2023-03-30 11:13:30 [31merror[39m: Не авторизован
+2023-03-30 11:15:03 [31merror[39m: Пользователь с таким Email не найден
+2023-03-30 11:16:29 [31merror[39m: Пользователь с таким Email не найден
+2023-03-30 11:23:32 [31merror[39m: Cannot destructure property 'name' of 'req.body.rfrfr' as it is undefined.
+2023-03-30 14:01:04 [31merror[39m: Cannot destructure property 'name' of 'req.body.gyhy6h' as it is undefined.
+2023-03-31 12:59:33 [31merror[39m: Не авторизован
+2023-03-31 12:59:33 [31merror[39m: Не авторизован
+2023-03-31 12:59:42 [31merror[39m: Не авторизован
+2023-03-31 12:59:42 [31merror[39m: Не авторизован
+2023-03-31 17:33:40 [31merror[39m: Не авторизован
+2023-03-31 17:33:40 [31merror[39m: Не авторизован

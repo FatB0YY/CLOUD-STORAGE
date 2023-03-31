@@ -24,8 +24,10 @@ const Nav: FC = () => {
   const [logout, {}] = useLogoutMutation()
 
   useEffect(() => {
-    searchFilesTrigger(debounced)
-  }, [debounced, searchFilesTrigger])
+    if (user) {
+      searchFilesTrigger(debounced)
+    }
+  }, [debounced, searchFilesTrigger, user])
 
   const handlerLogout = () => {
     logout().unwrap()

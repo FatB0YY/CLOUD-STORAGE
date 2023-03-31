@@ -1,26 +1,21 @@
-// import { FC } from 'react'
-// import {useLocation} from "react-router-dom"
-// import './breadcrumbs.scss'
-// import Crumb from './crumb/Crumb'
+import { useEffect } from 'react'
+import { useAppSelector } from '../../hooks/redux'
+import { ICrumb } from '../../models/response/ICrumb'
+import Crumb from './Crumb'
+import './breadcrumbs.scss'
 
-// export interface IBreadcrumbsLocationState{
-//     id: string,
-//     path: string,
-//     title: string,
-//     url: string
-// }
+const Breadcrumbs = () => {
+  const { breadcrumbStack } = useAppSelector((state) => state.filesReducer)
 
-// const Breadcrumbs: FC = () => {
-//     const {state} = useLocation<IBreadcrumbsLocationState[]>()
+  useEffect(() => {}, [breadcrumbStack])
 
-//   return <nav className="breadcrumbs">
-//     {state.map(((crumb: IBreadcrumbsLocationState) => (
-//         <Crumb {...crumb} key={crumb.url}/>
-//     )))}
-//   </nav>
-// }
+  return (
+    <nav className='breadcrumb'>
+      {breadcrumbStack.map((crumb: ICrumb, index: number, array: ICrumb[]) => (
+        <Crumb key={crumb.name} crumb={crumb} index={index} />
+      ))}
+    </nav>
+  )
+}
 
-// export default Breadcrumbs
-
-
-export {}
+export default Breadcrumbs

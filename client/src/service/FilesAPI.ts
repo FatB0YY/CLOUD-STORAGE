@@ -52,7 +52,10 @@ export const filesAPI = rtkAPI.injectEndpoints({
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
     }),
 
-    createDir: build.mutation<IFile, { name: string; dirId: dirIdType }>({
+    createDir: build.mutation<
+      { file: IFile; user: IUser },
+      { name: string; dirId: dirIdType }
+    >({
       query: ({ name, dirId }) => ({
         url: `/files`,
         method: 'POST',

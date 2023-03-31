@@ -28,7 +28,7 @@ class FileService {
 
   async deleteFile(file, user) {
     user.usedSpace = user.usedSpace - file.size
-    user.files = user.files.filter((id) => id !== file._id)
+    user.files = user.files.filter((id) => file._id.equals(id))
 
     const parent = await File.findOne({
       _id: file.parent,
@@ -48,8 +48,9 @@ class FileService {
     if (folder.childs.length === 0) {
       // если папка пустая, удаляем ее из базы данных и с компьютера
       const folderPath = this.getPath(folder)
-      user.files = user.files.filter((id) => id !== folder._id)
+      user.files = user.files.filter((id) => folder._id.equals(id))
       await folder.remove()
+      await user.save()
       fs.rmdirSync(folderPath, { recursive: true })
       return
     }
@@ -65,7 +66,8 @@ class FileService {
 
     // после удаления всех файлов и подпапок удаляем саму папку из базы данных и с компьютера
     const folderPath = this.getPath(folder)
-    user.files = user.files.filter((id) => id !== folder._id)
+    user.files = user.files.filter((id) => folder._id.equals(id))
+    await user.save()
     await folder.remove()
     fs.rmdirSync(folderPath, { recursive: true })
   }

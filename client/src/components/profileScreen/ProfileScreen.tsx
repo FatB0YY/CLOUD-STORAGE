@@ -24,7 +24,9 @@ const ProfileScreen: FC = () => {
     } else {
       setAvatar(userAvatarDefault)
     }
-  }, [user, deleteAvatar, avatar, user?.avatar, setAvatar])
+  }, [deleteAvatar, avatar, user?.avatar, setAvatar])
+
+  useEffect(() => {}, [user])
 
   const handleButtonClick = async () => {
     await getAllUsers().unwrap()

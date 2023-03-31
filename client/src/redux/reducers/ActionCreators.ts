@@ -18,11 +18,7 @@ export const downloadFile = createAsyncThunk(
         link.remove()
       }
     } catch (error: any) {
-      if (error.response && error.response.data.message) {
-        return thunkAPI.rejectWithValue(error.response.data.message)
-      } else {
-        return thunkAPI.rejectWithValue(error.message)
-      }
+      return thunkAPI.rejectWithValue({ message: 'Ошибка при скачивании' })
     }
   }
 )
@@ -43,11 +39,7 @@ export const downloadFolder = createAsyncThunk(
         link.remove()
       }
     } catch (error: any) {
-      if (error.response && error.response.data.message) {
-        return thunkAPI.rejectWithValue(error.response.data.message)
-      } else {
-        return thunkAPI.rejectWithValue(error.message)
-      }
+      return thunkAPI.rejectWithValue({ message: 'Ошибка при скачивании' })
     }
   }
 )

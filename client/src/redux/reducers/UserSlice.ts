@@ -26,6 +26,7 @@ export const userSlice = createSlice({
     logOut: () => initialState,
   },
   extraReducers: (builder) => {
+    // Fulfilled
     builder.addMatcher(
       authAPI.endpoints.login.matchFulfilled,
       (state, action) => {
@@ -33,24 +34,12 @@ export const userSlice = createSlice({
         state.user = action.payload.user
       }
     )
-    builder.addMatcher(
-      authAPI.endpoints.login.matchRejected,
-      (state, action: PayloadAction<any>) => {
-        toast.error(action.payload.data.message)
-        state.user = null
-      }
-    )
+
     builder.addMatcher(
       authAPI.endpoints.registration.matchFulfilled,
       (state, action) => {
         Cookies.set('accessToken', action.payload.accessToken, { expires: 7 })
         state.user = action.payload.user
-      }
-    )
-    builder.addMatcher(
-      authAPI.endpoints.registration.matchRejected,
-      (state, action: PayloadAction<any>) => {
-        toast.error(action.payload.data.message)
       }
     )
     builder.addMatcher(
@@ -91,6 +80,29 @@ export const userSlice = createSlice({
       userAPI.endpoints.deleteAvatar.matchFulfilled,
       (state, action) => {
         state.user = action.payload
+      }
+    )
+
+    builder.addMatcher(
+      filesAPI.endpoints.createDir.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload.user
+      }
+    )
+
+    // Rejected
+    builder.addMatcher(
+      authAPI.endpoints.login.matchRejected,
+      (state, action: any) => {
+        toast.error(action.payload?.data.message)
+        state.user = null
+      }
+    )
+
+    builder.addMatcher(
+      authAPI.endpoints.registration.matchRejected,
+      (state, action: any) => {
+        toast.error(action.payload?.data.message)
       }
     )
   },

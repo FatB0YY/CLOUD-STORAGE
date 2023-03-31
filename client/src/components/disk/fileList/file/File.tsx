@@ -6,6 +6,7 @@ import {
 } from '../../../../models/response/IFile'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux'
 import {
+  pushTobreadcrumbStack,
   pushToDirStack,
   setCurrentDir,
 } from '../../../../redux/reducers/FilesSlice'
@@ -39,6 +40,14 @@ const File: FC<Props> = ({ file }) => {
 
   const openDirHandler = (file: IFile) => {
     if (file.type === TypeFile.DIR) {
+      dispatch(
+        pushTobreadcrumbStack({
+          name: file.name,
+          path: file.path,
+          fileId: file._id!,
+        })
+      )
+
       dispatch(pushToDirStack(currentDir))
       dispatch(setCurrentDir(file._id))
     }

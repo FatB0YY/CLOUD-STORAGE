@@ -1,0 +1,23 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+
+  &__crumb {
+    display: flex;
+    align-items: center;
+  }
+
+  &__link {
+    transition: all 0.1s ease;
+    text-decoration: none;
+  }
+
+  &__icon {
+    margin: 0 5px;
+    font-size: 16px;
+  }
+
+  &__link:hover {
+    color: #00b8fa;
+  }
+}

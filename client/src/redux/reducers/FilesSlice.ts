@@ -1,42 +1,67 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
-import { ICrumb } from '../../models/response/ICrumb'
-import { dirIdType } from '../../models/response/IFile'
+import { ICrumb } from '../../models/response/IFile'
 import { filesAPI } from '../../service/FilesAPI'
 import { userAPI } from '../../service/UserAPI'
 import { downloadFile } from './ActionCreators'
 
 interface FileState {
-  currentDir: dirIdType
-  dirStack: string[]
-  breadcrumbStack: ICrumb[]
+  currentDir: ICrumb
+  dirStack: ICrumb[]
+  breadcrumbsStack: ICrumb[]
 }
 
 const initialState: FileState = {
-  currentDir: undefined,
+  currentDir: {
+    dirId: null,
+    name: 'Диск',
+    path: '',
+  },
   dirStack: [],
-  breadcrumbStack: [],
+  breadcrumbsStack: [],
 }
 
 export const filesSlice = createSlice({
   name: 'filesSlice',
   initialState,
   reducers: {
-    setCurrentDir(state, action: PayloadAction<dirIdType>) {
+    setCurrentDir(state, action: PayloadAction<ICrumb>) {
       state.currentDir = action.payload
     },
-    pushToDirStack(state, action) {
+    pushToDirStack(state, action: PayloadAction<ICrumb>) {
       state.dirStack.push(action.payload)
     },
     popDirStack(state) {
       state.dirStack.pop()
     },
+    removeICrumbAfterIndex(state, action: PayloadAction<ICrumb>) {
+      const clickedIndex = state.dirStack.findIndex(
+        (breadcrumb) => breadcrumb.dirId === action.payload.dirId
+      )
 
-    pushTobreadcrumbStack(state, action: PayloadAction<ICrumb>) {
-      state.breadcrumbStack.push(action.payload)
+      // Если элемент найден в массиве, удаляем элементы,
+      // начиная с индекса, соответствующего кликнутому элементу, до конца массива
+      if (clickedIndex !== -1) {
+        state.dirStack.splice(clickedIndex)
+      }
     },
-    popbreadcrumbStack(state) {
-      state.breadcrumbStack.pop()
+    // Breadcrumbs
+    pushToBreadcrumbsStack(state, action: PayloadAction<ICrumb>) {
+      state.breadcrumbsStack.push(action.payload)
+    },
+    popBreadcrumbsStack(state) {
+      state.breadcrumbsStack.pop()
+    },
+    removeBreadcrumbsAfterIndex(state, action: PayloadAction<ICrumb>) {
+      const clickedIndex = state.breadcrumbsStack.findIndex(
+        (breadcrumb) => breadcrumb.dirId === action.payload.dirId
+      )
+
+      // Если элемент найден в массиве, удаляем элементы,
+      // начиная с индекса, соответствующего кликнутому элементу, до конца массива
+      if (clickedIndex !== -1) {
+        state.breadcrumbsStack.splice(clickedIndex + 1)
+      }
     },
   },
   extraReducers: (builder) => {
@@ -91,7 +116,9 @@ export const {
   pushToDirStack,
   setCurrentDir,
   popDirStack,
-  popbreadcrumbStack,
-  pushTobreadcrumbStack,
+  removeICrumbAfterIndex,
+  popBreadcrumbsStack,
+  pushToBreadcrumbsStack,
+  removeBreadcrumbsAfterIndex,
 } = actions
 export default reducer

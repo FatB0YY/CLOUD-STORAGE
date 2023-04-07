@@ -1,8 +1,14 @@
+export interface ICrumb {
+  dirId: string | null
+  path: string
+  name: string
+}
+
 export interface IFile {
   name: string
   type: TypeFile
   accessLink: string
-  _id?: string
+  _id: string
   date: string
   size: number
   path: string
@@ -81,5 +87,3 @@ const extensionIcon: ExtensionIcon = {
   [TypeFile.XLSX]: 'icons-file/xls-svgrepo-com.svg',
   [TypeFile.PNG]: 'icons-file/icon-png.png',
 }
-
-export type dirIdType = string | undefined

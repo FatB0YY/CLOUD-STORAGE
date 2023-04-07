@@ -19,12 +19,12 @@ export const userAPI = rtkAPI.injectEndpoints({
             ]
           : [{ type: 'Users', id: 'LISTUSERS' }],
     }),
-    uploadAvatar: build.mutation<IUser, IFile>({
+    uploadAvatar: build.mutation<IUser, File>({
       async queryFn(file) {
         try {
           const formData = new FormData()
           // blob
-          formData.append('file', file as any)
+          formData.append('file', file)
 
           const response = await axios.post(
             `${config.API_URL}/files/avatar`,
@@ -36,7 +36,7 @@ export const userAPI = rtkAPI.injectEndpoints({
               withCredentials: true,
             }
           )
-          
+
           return { data: response.data }
         } catch (error: any) {
           if (error.response && error.response.data.message) {
@@ -51,12 +51,15 @@ export const userAPI = rtkAPI.injectEndpoints({
     deleteAvatar: build.mutation<IUser, undefined>({
       async queryFn() {
         try {
-          const response = await axios.delete(`${config.API_URL}/files/avatar`, {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('accessToken')}`,
-            },
-            withCredentials: true,
-          })
+          const response = await axios.delete(
+            `${config.API_URL}/files/avatar`,
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('accessToken')}`,
+              },
+              withCredentials: true,
+            }
+          )
 
           return { data: response.data }
         } catch (error: any) {
@@ -71,4 +74,8 @@ export const userAPI = rtkAPI.injectEndpoints({
   }),
 })
 
-export const { useLazyGetAllUsersQuery, useDeleteAvatarMutation, useUploadAvatarMutation } = userAPI
+export const {
+  useLazyGetAllUsersQuery,
+  useDeleteAvatarMutation,
+  useUploadAvatarMutation,
+} = userAPI

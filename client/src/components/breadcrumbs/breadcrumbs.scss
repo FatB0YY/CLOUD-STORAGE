@@ -7,9 +7,15 @@
     align-items: center;
   }
 
+  &__crumb.active &__link {
+    cursor: not-allowed;
+    color: #00b8fa;
+  }
+
   &__link {
     transition: all 0.1s ease;
     text-decoration: none;
+    cursor: pointer;
   }
 
   &__icon {

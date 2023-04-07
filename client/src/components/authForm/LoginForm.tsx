@@ -81,14 +81,14 @@ const LoginForm: FC = () => {
   return (
     <div className='container'>
       <div className='authForm'>
-        <img className='authForm__wave' src={waveImg} />
+        <img className='authForm__wave' src={waveImg} alt='' />
         <div className='containerAuth'>
           <div className='authForm__img'>
-            <img src={secureImg} />
+            <img src={secureImg} alt='' />
           </div>
           <div className='authForm__content'>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <img src={avatarImg} />
+              <img src={avatarImg} alt='' />
               <h2 className='authForm__title'>добро пожаловать!</h2>
 
               <div

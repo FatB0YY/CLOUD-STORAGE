@@ -1,8 +1,9 @@
+import { FC } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/redux'
 import { selectCurrentUser } from '../../redux/reducers/UserSlice'
 
-const PrivateWrapper = () => {
+const PrivateWrapper: FC = () => {
   const user = useAppSelector(selectCurrentUser)
   const location = useLocation()
 

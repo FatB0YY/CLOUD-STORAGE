@@ -158,3 +158,63 @@
 2023-03-31 12:59:42 [31merror[39m: Не авторизован
 2023-03-31 17:33:40 [31merror[39m: Не авторизован
 2023-03-31 17:33:40 [31merror[39m: Не авторизован
+2023-04-02 11:21:09 [31merror[39m: Не авторизован
+2023-04-02 11:21:09 [31merror[39m: Не авторизован
+2023-04-02 11:22:10 [31merror[39m: Не авторизован
+2023-04-02 11:22:10 [31merror[39m: Не авторизован
+2023-04-02 11:22:41 [31merror[39m: Не авторизован
+2023-04-02 11:22:41 [31merror[39m: Не авторизован
+2023-04-02 11:22:45 [31merror[39m: Не авторизован
+2023-04-02 11:22:45 [31merror[39m: Не авторизован
+2023-04-02 11:22:47 [31merror[39m: Не авторизован
+2023-04-02 11:22:47 [31merror[39m: Не авторизован
+2023-04-02 11:26:23 [31merror[39m: Пользователь с таким Email не найден
+2023-04-02 11:38:36 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-02 11:38:40 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-03 14:44:41 [31merror[39m: Cannot destructure property 'email' of 'req.body.rgtgt' as it is undefined.
+2023-04-03 14:53:53 [31merror[39m: Файл или папка уже существует.
+2023-04-03 14:54:05 [31merror[39m: Файл или папка уже существует.
+2023-04-03 14:54:08 [31merror[39m: Файл или папка уже существует.
+2023-04-05 14:14:13 [31merror[39m: Не авторизован
+2023-04-06 09:46:15 [31merror[39m: Пользователь с таким Email не найден
+2023-04-06 21:07:50 [31merror[39m: Недействительный токен
+2023-04-06 21:43:47 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-06 21:44:13 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-06 21:44:29 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-06 21:44:47 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-06 21:45:19 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-06 21:45:27 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-06 21:45:36 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 14:00:53 [31merror[39m: Недействительный токен
+2023-04-07 14:00:53 [31merror[39m: Недействительный токен
+2023-04-07 15:10:02 [31merror[39m: Недействительный токен
+2023-04-07 15:10:44 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 15:15:51 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 15:15:58 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 15:16:14 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 15:24:20 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 15:24:30 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 15:24:30 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
+2023-04-07 17:20:39 [31merror[39m: Не авторизован
+2023-04-07 17:20:39 [31merror[39m: Не авторизован
+2023-04-07 17:21:03 [31merror[39m: Не авторизован
+2023-04-07 17:21:03 [31merror[39m: Не авторизован
+2023-04-07 17:21:04 [31merror[39m: Не авторизован
+2023-04-07 17:21:04 [31merror[39m: Не авторизован
+2023-04-07 17:21:05 [31merror[39m: Не авторизован
+2023-04-07 17:21:05 [31merror[39m: Не авторизован
+2023-04-07 17:21:06 [31merror[39m: Не авторизован
+2023-04-07 17:21:06 [31merror[39m: Не авторизован
+2023-04-07 17:21:07 [31merror[39m: Не авторизован
+2023-04-07 17:21:07 [31merror[39m: Не авторизован
+2023-04-07 20:13:33 [31merror[39m: Не авторизован
+2023-04-07 20:38:02 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-07 20:38:59 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-07 20:39:50 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-07 20:40:47 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-07 20:41:25 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-07 20:41:38 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-04-07 21:30:02 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-04-07 21:30:16 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-04-07 21:31:49 [31merror[39m: Cannot read properties of undefined (reading 'user')
+2023-04-07 22:08:17 [31merror[39m: Недействительный токен

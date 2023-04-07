@@ -2,7 +2,15 @@ import { FC } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
-const ItemAccordion: FC<any> = ({
+interface IItemAccordionProps {
+  answer: string
+  question: string
+  toggle: () => void
+  selected: number | null
+  idx: number
+}
+
+const ItemAccordion: FC<IItemAccordionProps> = ({
   answer,
   question,
   toggle,

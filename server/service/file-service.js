@@ -57,6 +57,7 @@ class FileService {
 
     for (const childId of folder.childs) {
       const child = await File.findById(childId)
+      console.log('child', child)
       if (child.type === 'dir') {
         await this.deleteFolderRecursive(child, user)
       } else {

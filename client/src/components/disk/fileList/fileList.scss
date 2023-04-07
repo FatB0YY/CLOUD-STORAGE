@@ -8,7 +8,6 @@
   &__head {
     display: flex;
     align-items: baseline;
-    flex-wrap: wrap;
     position: relative;
   }
 }
@@ -25,6 +24,9 @@
   &__title {
     display: flex;
     align-items: center;
+    max-width: 75%;
+    width: 100%;
+    flex-wrap: wrap;
   }
 
   &__back {
@@ -88,7 +90,7 @@
     text-align: left;
   }
 
-  &__iconblock_chevron{
+  &__iconblock_chevron {
     height: 100%;
     display: flex;
     align-items: center;
@@ -105,8 +107,8 @@
     transition: all 0.3s ease;
   }
 
-  &__iconblock_chevron.active{
-    transform: rotate(180deg)
+  &__iconblock_chevron.active {
+    transform: rotate(180deg);
   }
 
   &__buttonText {
@@ -125,8 +127,8 @@
   }
 }
 
-.fileList-head-sort{
-  &__popup{
+.fileList-head-sort {
+  &__popup {
     position: absolute;
     z-index: 9999;
     background: #fff;
@@ -138,11 +140,11 @@
     display: none;
   }
 
-  &__popup.active{
+  &__popup.active {
     display: block;
   }
 
-  &__item{
+  &__item {
     cursor: pointer;
     padding: 10px;
     transition: all 0.1s ease;
@@ -151,13 +153,12 @@
     z-index: 1;
   }
 
-  &__text{
+  &__text {
     position: relative;
     z-index: -1;
   }
 
-  &__item:hover{
-
+  &__item:hover {
     background: #e7e7e7;
   }
 }
@@ -193,6 +194,11 @@
     position: relative;
     margin-bottom: 15px;
     right: 15px;
+  }
+
+  &__img {
+    width: 96px;
+    height: 80px;
   }
 
   &__title {

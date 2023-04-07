@@ -5,7 +5,7 @@ const ApiError = require('../error/ApiError')
 const tokenService = require('../service/token-service')
 
 class UserService {
-  async registration(email, password) {
+  async registration(email, password, name, surname) {
     const candidate = await UserModel.findOne({ email })
 
     if (candidate) {
@@ -20,6 +20,8 @@ class UserService {
     const user = await UserModel.create({
       email,
       password: hashPassword,
+      name,
+      surname,
     })
 
     const userDto = new UserDto(user) // email, id, usedSpace, diskSpace...

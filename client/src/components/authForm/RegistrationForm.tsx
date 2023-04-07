@@ -18,14 +18,15 @@ interface IAuthForm {
   email: string
   password: string
   confirm_password: string
+  name: string
+  surname: string
 }
 
 const RegistrationForm: FC = () => {
   const user = useAppSelector(selectCurrentUser)
   const navigate = useNavigate()
 
-  const [registration, { isLoading, isSuccess }] =
-    useRegistrationMutation()
+  const [registration, { isLoading, isSuccess }] = useRegistrationMutation()
 
   const [classEmail, setClassEmail] = useState('authForm__input-div one')
   const [classPassword, setClassPassword] = useState('authForm__input-div pass')
@@ -33,7 +34,7 @@ const RegistrationForm: FC = () => {
     'authForm__input-div pass'
   )
 
-  function focusFunc(type: 'email' | 'password' | 'confirm_password') {
+  function focusFunc(type: keyof IAuthForm) {
     if (type === 'email') {
       setClassEmail('authForm__input-div focus one')
     }
@@ -47,7 +48,7 @@ const RegistrationForm: FC = () => {
     }
   }
 
-  function blurFunc(type: 'email' | 'password' | 'confirm_password') {
+  function blurFunc(type: keyof IAuthForm) {
     if (type === 'email') {
       console.log(getFieldState('email').isDirty)
 
@@ -96,26 +97,53 @@ const RegistrationForm: FC = () => {
   const onSubmit: SubmitHandler<IAuthForm> = async ({
     email,
     password,
+    name,
+    surname,
     confirm_password,
   }) => {
     email = email.toLowerCase()
-    await registration({ email, password }).unwrap()
+    await registration({ email, password, name, surname }).unwrap()
     reset()
   }
 
   return (
     <div className='container'>
       <div className='authForm'>
-        <img className='authForm__wave' src={waveImg} />
+        <img className='authForm__wave' src={waveImg} alt='' />
         <div className='containerAuth'>
           <div className='authForm__img'>
-            <img src={secureImg} />
+            <img src={secureImg} alt='' />
           </div>
           <div className='authForm__content'>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <img src={avatarImg} />
+              <img src={avatarImg} alt='' />
               <h2 className='authForm__title'>Создать аккаунт</h2>
-
+              <div className='authForm__div'>
+                <h5>Имя</h5>
+                <input
+                  {...register('name', {
+                    required: 'Поле обязательно к заполнению',
+                  })}
+                  type='text'
+                  id='name'
+                  className='authForm__input'
+                  onFocus={() => focusFunc('name')}
+                  // onBlur={() => blurFunc('name')}
+                />
+              </div>
+              <div className='authForm__div'>
+                <h5>Фамилия</h5>
+                <input
+                  {...register('surname', {
+                    required: 'Поле обязательно к заполнению',
+                  })}
+                  type='text'
+                  id='surname'
+                  className='authForm__input'
+                  onFocus={() => focusFunc('surname')}
+                  // onBlur={() => blurFunc('surname')}
+                />
+              </div>
               <div
                 className={
                   errors.email ? 'authForm__input-div error one' : classEmail

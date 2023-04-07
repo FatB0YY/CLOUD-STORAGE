@@ -1,4 +1,4 @@
-import { dirIdType, IFile, TypeSortOption } from '../models/response/IFile'
+import { IFile, ICrumb, TypeSortOption } from '../models/response/IFile'
 import {
   addUploadFile,
   changeUploadFile,
@@ -15,11 +15,11 @@ export const filesAPI = rtkAPI.injectEndpoints({
   endpoints: (build) => ({
     getAllFiles: build.query<
       IFile[],
-      { dirId: dirIdType; sortValue: TypeSortOption }
+      { currentDir: ICrumb; sortValue: TypeSortOption }
     >({
-      query: ({ dirId, sortValue }) => ({
-        url: `/files${dirId ? `?parent=${dirId}` : ''}${
-          sortValue ? `${dirId ? '&' : '?'}sort=${sortValue}` : ''
+      query: ({ currentDir, sortValue }) => ({
+        url: `/files${currentDir.dirId ? `?parent=${currentDir.dirId}` : ''}${
+          sortValue ? `${currentDir.dirId ? '&' : '?'}sort=${sortValue}` : ''
         }`,
       }),
       providesTags: (result) =>
@@ -54,14 +54,14 @@ export const filesAPI = rtkAPI.injectEndpoints({
 
     createDir: build.mutation<
       { file: IFile; user: IUser },
-      { name: string; dirId: dirIdType }
+      { name: string; currentDir: ICrumb }
     >({
-      query: ({ name, dirId }) => ({
+      query: ({ name, currentDir }) => ({
         url: `/files`,
         method: 'POST',
         body: {
           name,
-          parent: dirId,
+          parent: currentDir.dirId,
           type: 'dir',
         },
       }),
@@ -70,16 +70,20 @@ export const filesAPI = rtkAPI.injectEndpoints({
 
     uploadFile: build.mutation<
       { file: IFile; user: IUser },
-      { file: IFile; dirId: dirIdType }
+      { file: File; currentDir: ICrumb }
     >({
-      async queryFn({ file, dirId }, { dispatch }) {
+      async queryFn({ file, currentDir }, { dispatch }) {
         try {
+          console.log('file', file)
+
           const formData = new FormData()
           // blob
-          formData.append('file', file as any)
+          formData.append('file', file)
 
-          if (dirId) {
-            formData.append('parent', dirId)
+          console.log('currentDir', currentDir)
+
+          if (currentDir.dirId) {
+            formData.append('parent', currentDir.dirId)
           }
 
           const uploadFile = { name: file.name, progress: 0, id: uuidv4() }

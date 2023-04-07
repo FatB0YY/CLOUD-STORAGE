@@ -1,28 +1,66 @@
-import React, { useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
 import { useAppSelector } from '../../hooks/redux'
 import { useUploadFileMutation } from '../../service/FilesAPI'
+import React, { useCallback, FC } from 'react'
+import {
+  useDropzone,
+  DropzoneRootProps,
+  DropzoneInputProps,
+} from 'react-dropzone'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './dropzone.scss'
 
-const Dropzone = (props: any) => {
-  const [triggerUploadFile, {}] = useUploadFileMutation()
-  const { currentDir: dirId } = useAppSelector((state) => state.filesReducer)
+interface MyDropzoneProps {
+  setDragEnter: React.Dispatch<React.SetStateAction<boolean>>
+  dragStartHandler: (event: React.DragEvent<HTMLDivElement>) => void
+  dragLeaveHandler: (event: React.DragEvent<HTMLDivElement>) => void
+}
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    acceptedFiles.forEach((file: any) => triggerUploadFile({ file, dirId }).unwrap())
-    props.setDragEnter(false)
-  }, [])
+const MyDropzone: FC<MyDropzoneProps> = ({
+  setDragEnter,
+  dragStartHandler,
+  dragLeaveHandler,
+}) => {
+  const [triggerUploadFile, {}] = useUploadFileMutation()
+  const { currentDir } = useAppSelector((state) => state.filesReducer)
+
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      for (const file of acceptedFiles) {
+        await triggerUploadFile({
+          file,
+          // проверить
+          currentDir,
+        }).unwrap()
+      }
+      setDragEnter(false)
+    },
+    [triggerUploadFile, currentDir, setDragEnter]
+  )
+
+  function clickCloseHandler(event: React.MouseEvent<SVGSVGElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    setDragEnter(false)
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   return (
     <section
-      className='drop-area'
-      onDragEnter={props.dragEnterHandler}
-      onDragLeave={props.dragLeaveHandler}
-      onDragOver={props.dragEnterHandler}
+      className='dropzone'
+      onDragStart={dragStartHandler}
+      onDragLeave={dragLeaveHandler}
+      onDragOver={dragStartHandler}
     >
-      <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} className='dropzone__input'/>
+      <div {...getRootProps({ className: 'drop-area' } as DropzoneRootProps)}>
+        <FontAwesomeIcon
+          icon={solid('xmark')}
+          className='dropzone__icon'
+          onClick={clickCloseHandler}
+        />
+        <input {...(getInputProps() as DropzoneInputProps)} />
         {isDragActive ? (
           <p className='dropzone__text'>Отпустите файлы, чтобы загрузить их</p>
         ) : (
@@ -35,4 +73,4 @@ const Dropzone = (props: any) => {
   )
 }
 
-export default Dropzone
+export default MyDropzone

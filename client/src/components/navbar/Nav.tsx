@@ -8,18 +8,18 @@ import Headroom from 'react-headroom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './navbar.scss'
-import { getExtensionIcon } from '../../models/response/IFile'
+import { IFile, getExtensionIcon } from '../../models/response/IFile'
 import { useDebounce } from '../../hooks/debounce'
 import { filesAPI } from '../../service/FilesAPI'
 
 const Nav: FC = () => {
-  const [searchName, setSearchName] = useState('')
-  const debounced = useDebounce(searchName)
+  const [searchName, setSearchName] = useState<string>('')
+  const debounced: string = useDebounce(searchName)
   const [searchFilesTrigger, { data: searchFiles }] =
     filesAPI.endpoints.searchFiles.useLazyQuery()
 
-  const params = useParams()
-  const current = params['*']
+  const params: { [key: string]: string } = useParams()
+  const current: string | undefined = params['*']
   const user = useAppSelector(selectCurrentUser)
   const [logout, {}] = useLogoutMutation()
 
@@ -39,7 +39,7 @@ const Nav: FC = () => {
 
   function renderSearchFiles() {
     return searchFiles
-      ? searchFiles.map((item) => {
+      ? searchFiles.map((item: IFile) => {
           return (
             <div key={item._id} className='navbar-searchBlock__item'>
               <div className='navbar-searchBlock__icon'>

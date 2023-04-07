@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, FC } from 'react'
 import { useAppSelector } from '../../hooks/redux'
 import FileList from './fileList/FileList'
 import Swal from 'sweetalert2'
@@ -13,6 +13,7 @@ import {
 import './disk.scss'
 import { selectCurrentUser } from '../../redux/reducers/UserSlice'
 import sizeFormat from '../../utils/sizeFormat'
+import { IFile, ICrumb } from '../../models/response/IFile'
 
 const Disk: FC = () => {
   const [triggerCreateDir, { isLoading: isLoadingCreateDir }] =
@@ -20,10 +21,11 @@ const Disk: FC = () => {
 
   const [triggerUploadFile, {}] = useUploadFileMutation()
 
-  const { currentDir: dirId } = useAppSelector((state) => state.filesReducer)
+  const { currentDir } = useAppSelector((state) => state.filesReducer)
   const user = useAppSelector(selectCurrentUser)
-  const [dragEnter, setDragEnter] = useState(false)
   const [usedSpacePercentage, setUsedSpacePercentage] = useState(0)
+
+  const [dragEnter, setDragEnter] = useState(false)
 
   const createDirHandler = async () => {
     Swal.fire({
@@ -40,7 +42,11 @@ const Disk: FC = () => {
           Swal.showValidationMessage('Некорректное название')
         } else {
           try {
-            await triggerCreateDir({ name: name.trim(), dirId }).unwrap()
+            await triggerCreateDir({
+              name: name.trim(),
+              // проверить
+              currentDir,
+            }).unwrap()
           } catch (error) {}
         }
       },
@@ -51,13 +57,19 @@ const Disk: FC = () => {
 
   const fileUploadHandler = async (event: any) => {
     // список файлов из инпута
-    const files = [...event.target.files]
-    await files.forEach(async (file) => {
-      await triggerUploadFile({ file, dirId }).unwrap()
-    })
+    const files: File[] = [...event.target.files]
+
+    // проверить проблему здесь (повторный запрос)
+    for (const file of files) {
+      await triggerUploadFile({
+        file,
+        // проверить
+        currentDir,
+      }).unwrap()
+    }
   }
 
-  function dragEnterHandler(event: any) {
+  function dragStartHandler(event: any) {
     event.preventDefault()
     event.stopPropagation()
     setDragEnter(true)
@@ -89,9 +101,9 @@ const Disk: FC = () => {
   return !dragEnter ? (
     <div
       className='disk'
-      onDragEnter={dragEnterHandler}
-      onDragLeave={dragLeaveHandler}
-      onDragOver={dragEnterHandler}
+      onDragStart={(event) => dragStartHandler(event)}
+      onDragLeave={(event) => dragLeaveHandler(event)}
+      onDragOver={(event) => dragStartHandler(event)}
     >
       <div className='disk__btns'>
         <div className='disk__upload'>
@@ -142,7 +154,7 @@ const Disk: FC = () => {
     </div>
   ) : (
     <Dropzone
-      dragEnterHandler={dragEnterHandler}
+      dragStartHandler={dragStartHandler}
       dragLeaveHandler={dragLeaveHandler}
       setDragEnter={setDragEnter}
     />

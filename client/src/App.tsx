@@ -11,6 +11,7 @@ import RegistrationForm from './components/authForm/RegistrationForm'
 import Layout from './components/layout/Layout'
 import { authAPI } from './service/AuthAPI'
 import Cookies from 'js-cookie'
+import { TypesLoader } from './components/loader/Loader'
 import './App.scss'
 
 function App() {
@@ -25,10 +26,10 @@ function App() {
     if (token) {
       checkAuth()
     }
-  }, [])
+  }, [token])
 
   if (isLoading || isFetching) {
-    return <Loader type='main' />
+    return <Loader type={TypesLoader.MAIN} />
   }
 
   return (

@@ -11,6 +11,7 @@ import mainphoto2 from '../../assets/img/mainphoto2.png'
 import mainphoto3 from '../../assets/img/mainphoto3.png'
 import mainphoto4 from '../../assets/img/mainphoto4.png'
 import mainphoto5 from '../../assets/img/mainphoto5.png'
+
 import './home.scss'
 
 const Home: FC = () => {
@@ -36,10 +37,7 @@ const Home: FC = () => {
             </NavLink>
           </div>
           <div className='home__titleblock-img'>
-            <img
-              src={dazzleTeamCelebratingSuccessOfAWorkProject}
-              alt='cs picture'
-            />
+            <img src={dazzleTeamCelebratingSuccessOfAWorkProject} alt='' />
           </div>
         </div>
 
@@ -47,17 +45,17 @@ const Home: FC = () => {
           <div className='home-sizeblock-img'>
             <img
               src={mainphoto5}
-              alt='size picture'
+              alt=''
               className='home-sizeblock__img home-sizeblock__img_5'
             />
             <img
               src={mainphoto1}
-              alt='size picture'
+              alt=''
               className='home-sizeblock__img home-sizeblock__img_1'
             />
             <img
               src={mainphoto2}
-              alt='size picture'
+              alt=''
               className='home-sizeblock__img home-sizeblock__img_2'
             />
           </div>
@@ -76,12 +74,12 @@ const Home: FC = () => {
           <div className='home-sharedblock-img'>
             <img
               src={mainphoto4}
-              alt='size picture'
+              alt=''
               className='home-sizeblock__img home-sizeblock__img_4'
             />
             <img
               src={mainphoto3}
-              alt='shared picture'
+              alt=''
               className='home-sizeblock__img home-sizeblock__img_3'
             />
           </div>
@@ -129,10 +127,7 @@ const Home: FC = () => {
             </ul>
           </div>
           <div className='home-card-img'>
-            <img
-              src={dazzleTeamCelebratingSuccessOfAWorkProject}
-              alt='card picture'
-            />
+            <img src={dazzleTeamCelebratingSuccessOfAWorkProject} alt='' />
           </div>
         </div>
 

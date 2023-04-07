@@ -79,7 +79,7 @@
       border-radius: 16px;
       object-fit: cover;
       box-shadow: 0px 0px 2px hsla(0, 0%, 60%, 0.1),
-      0px 8px 28px hsla(0, 0%, 60%, 0.3);
+        0px 8px 28px hsla(0, 0%, 60%, 0.3);
     }
 
     &__img_1 {
@@ -318,7 +318,6 @@
     }
   }
 }
-
 
 @keyframes spin {
   0% {

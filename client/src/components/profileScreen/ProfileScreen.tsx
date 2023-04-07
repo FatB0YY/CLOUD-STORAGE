@@ -8,6 +8,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import userAvatarDefault from '../../assets/img/userAvatarDefault.png'
 import './profileScreen.scss'
 import config from '../../config'
+import { IUser } from '../../models/response/IUser'
 
 const ProfileScreen: FC = () => {
   const user = useAppSelector(selectCurrentUser)
@@ -36,9 +37,11 @@ const ProfileScreen: FC = () => {
     await deleteAvatar(undefined).unwrap()
   }
 
-  const handleUploadClick = async (e: any) => {
-    const file = e.target.files[0]
-    await uploadAvatar(file).unwrap()
+  const handleUploadClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      await uploadAvatar(file).unwrap()
+    }
   }
 
   if (!user) {
@@ -64,7 +67,9 @@ const ProfileScreen: FC = () => {
                 </label>
               </div>
             </div>
-            <h3 className='card__id'>{user.id}</h3>
+            <h3 className='card__id'>
+              {user?.name} {user?.surname}
+            </h3>
             <h3 className='card__email'>{user.email}</h3>
           </div>
         </div>
@@ -88,7 +93,7 @@ const ProfileScreen: FC = () => {
               <span className='card__number'>
                 {user.files.length ? user.files.length : 0}
               </span>
-              <span className='card__number-title'>Всего файлов</span>
+              <span className='card__number-title'>Всего объектов</span>
             </div>
             <div>
               <span className='card__number'>{sizeFormat(user.diskSpace)}</span>
@@ -109,7 +114,7 @@ const ProfileScreen: FC = () => {
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          data.map((user) => <div key={user.id}>{user.email}</div>)
+          data.map((user: IUser) => <div key={user.id}>{user.email}</div>)
         )}
       </div>
     </div>

@@ -1,5 +1,10 @@
 @import './utils/colors.scss';
 
+html,
+body {
+  min-height: 100vh;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -42,8 +47,6 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
-
 
 .icon {
   color: $font-color;

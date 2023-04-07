@@ -1,20 +1,25 @@
 import { FC } from 'react'
 import './loader.scss'
 
-interface propType {
-  type: string
+export enum TypesLoader {
+  FORM = 'form',
+  MAIN = 'main',
 }
 
-const Loader: FC<propType> = ({ type }) => {
+interface IPropLoader {
+  type: TypesLoader
+}
+
+const Loader: FC<IPropLoader> = ({ type }) => {
   switch (type) {
-    case 'form':
+    case TypesLoader.FORM:
       return (
         <div className='loader loader__form'>
           <div className='lds-dual-ring'></div>
         </div>
       )
 
-    case 'main':
+    case TypesLoader.MAIN:
       return (
         <div className='loader loader__main'>
           <div className='lds-dual-ring'></div>

@@ -6,7 +6,7 @@ import {
 } from '../../../../models/response/IFile'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux'
 import {
-  pushTobreadcrumbStack,
+  pushToBreadcrumbsStack,
   pushToDirStack,
   setCurrentDir,
 } from '../../../../redux/reducers/FilesSlice'
@@ -21,11 +21,11 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import './file.scss'
 
-interface Props {
+interface IFileProps {
   file: IFile
 }
 
-const File: FC<Props> = ({ file }) => {
+const File: FC<IFileProps> = ({ file }) => {
   const [
     deleteTrigger,
     {
@@ -40,30 +40,46 @@ const File: FC<Props> = ({ file }) => {
 
   const openDirHandler = (file: IFile) => {
     if (file.type === TypeFile.DIR) {
+      dispatch(pushToDirStack(currentDir))
+
       dispatch(
-        pushTobreadcrumbStack({
+        pushToBreadcrumbsStack({
+          dirId: file._id,
           name: file.name,
           path: file.path,
-          fileId: file._id!,
         })
       )
 
-      dispatch(pushToDirStack(currentDir))
-      dispatch(setCurrentDir(file._id))
+      dispatch(
+        setCurrentDir({
+          dirId: file._id,
+          name: file.name,
+          path: file.path,
+        })
+      )
     }
   }
 
-  const downloadFileClickHandler = (event: any) => {
+  const downloadFileClickHandler = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault()
     event.stopPropagation()
     dispatch(downloadFile(file))
   }
 
-  const downloadFolderClickHandler = (event: any) => {
+  const downloadFolderClickHandler = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault()
     event.stopPropagation()
     dispatch(downloadFolder(file))
   }
 
-  const deleteClickHandler = async (event: any) => {
+  const deleteClickHandler = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault()
     event.stopPropagation()
     await deleteTrigger(file).unwrap()
   }

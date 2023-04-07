@@ -1,37 +1,35 @@
 @import '../../utils/colors.scss';
 
+.dropzone {
+  max-width: 1140px;
+  padding-top: 30px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 
-.drop-area{
-    max-width: 1140px;
-    width: 100%;
-    height: calc(100vh - 50px - 40px);
-    margin: 20px auto;
-    // margin: 20px;
-    border: dashed $font-color 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    z-index: 1;
-    position: relative;
+  &__icon {
+    position: absolute;
+    top: 0;
+    right: 6px;
+    cursor: pointer;
+  }
 
-    .dropzone{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1;
-    }
+  &__text {
+    z-index: -1;
+  }
+}
 
-    .dropzone__text{
-        z-index: -1;
-    }
-
-    .dropzone__input{
-        position: absolute;
-        z-index: -1;
-        display: none;
-        pointer-events: none;
-    }
+.drop-area {
+  position: relative;
+  width: 100%;
+  height: calc(80vh);
+  border: 2px dashed $font-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
 }

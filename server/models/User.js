@@ -13,6 +13,12 @@ const UserSchema = new Schema({
     required: true,
     minlength: 8,
   },
+  name: {
+    type: String,
+  },
+  surname: {
+    type: String,
+  },
   diskSpace: { type: Number, default: 1024 ** 3 * 10 },
   usedSpace: { type: Number, default: 0 },
   avatar: { type: String, default: null },

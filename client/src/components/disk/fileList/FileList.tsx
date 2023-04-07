@@ -1,10 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux'
-import {
-  dirIdType,
-  IFile,
-  TypeSortOption,
-} from '../../../models/response/IFile'
+import { ICrumb, IFile, TypeSortOption } from '../../../models/response/IFile'
 import File from './file/File'
 import { useGetAllFilesQuery } from '../../../service/FilesAPI'
 import './fileList.scss'
@@ -12,7 +8,7 @@ import iconnotfound from '../../../assets/img/iconnotfound.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import {
-  popbreadcrumbStack,
+  popBreadcrumbsStack,
   popDirStack,
   setCurrentDir,
 } from '../../../redux/reducers/FilesSlice'
@@ -24,25 +20,31 @@ const FileList: FC = () => {
   const [sortValueTextInSpan, setSortValueTextInSpan] = useState<null | string>(
     null
   )
-  const { breadcrumbStack } = useAppSelector((state) => state.filesReducer)
+
   const [sortValue, setSort] = useState<TypeSortOption>(TypeSortOption.TYPE)
-  const { currentDir: dirId, dirStack } = useAppSelector(
-    (state) => state.filesReducer
-  )
+  const { currentDir, dirStack } = useAppSelector((state) => state.filesReducer)
   const {
     data: files = [],
     isLoading: isLoadingFiles,
     isFetching: isFetchingFiles,
     refetch,
-  } = useGetAllFilesQuery({ dirId, sortValue })
+  } = useGetAllFilesQuery({
+    // проверить
+    currentDir,
+    sortValue,
+  })
   const dispatch = useAppDispatch()
 
   const backClickHandler = () => {
     const copy = [...dirStack]
-    const backDirId: dirIdType = copy.pop()
-    dispatch(setCurrentDir(backDirId))
+    const backDir: ICrumb | undefined = copy.pop()
+
+    // if (backDir?.dirId) {
+    dispatch(setCurrentDir(backDir!))
+    // }
+
     dispatch(popDirStack())
-    dispatch(popbreadcrumbStack())
+    dispatch(popBreadcrumbsStack())
   }
 
   function changeSortValue(e: any) {
@@ -62,13 +64,16 @@ const FileList: FC = () => {
     refetch()
   }, [sortValue, refetch])
 
-  useEffect(() => {}, [activeClass, sortValueTextInSpan, breadcrumbStack])
+  useEffect(() => {}, [activeClass, sortValueTextInSpan, dirStack])
 
   function renderNotFoundContent() {
     return (
       <div className='fileList__notfound fileList-notfound'>
         <div className='fileList-notfound__icon'>
-          <img src={iconnotfound} alt='not found files' />
+          <div
+            className='fileList-notfound__img'
+            style={{ backgroundImage: `url(${iconnotfound})` }}
+          ></div>
         </div>
         <h1 className='fileList-notfound__title'>Все файлы</h1>
         <p className='fileList-notfound__desc'>
@@ -94,16 +99,16 @@ const FileList: FC = () => {
     <div className='fileList'>
       <div className='fileList__head fileList-head'>
         <h2 className='fileList-head__title'>
-          {dirId ? (
+          {currentDir.dirId ? (
             <button
-              disabled={!dirId}
+              disabled={!currentDir.dirId}
               className='fileList-head__back'
               onClick={() => backClickHandler()}
             >
               <FontAwesomeIcon icon={solid('arrow-left')} className='icon' />
             </button>
           ) : null}
-          {breadcrumbStack.length ? <Breadcrumbs /> : <span>Все файлы</span>}
+          {dirStack.length ? <Breadcrumbs /> : <span>Все файлы</span>}
         </h2>
         <div className='fileList-head__settings'>
           <span className='fileList-head__sort'>

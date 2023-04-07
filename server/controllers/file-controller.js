@@ -148,7 +148,7 @@ class FileController {
 
   async downloadFile(req, res, next) {
     try {
-      const file = undefined
+      const file = await File.findOne({ _id: req.query.id, user: req.user.id })
       const path = fileService.getPath(file)
 
       if (fs.existsSync(path)) {
@@ -193,12 +193,17 @@ class FileController {
 
       let files = await File.find({ user: req.user.id })
 
-      if (searchName.trim() == '') {
+      if (searchName.trim() === '') {
         return res.json([])
       } else {
-        files = files.filter((file) =>
-          file.name.toLowerCase().includes(searchName.toLowerCase())
+        const searchRegex = new RegExp(
+          searchName
+            .split(/\s+/)
+            .map((word) => `(?=.*${word})`)
+            .join('') + '.*',
+          'i'
         )
+        files = files.filter((file) => searchRegex.test(file.name))
         return res.json(files)
       }
     } catch (error) {

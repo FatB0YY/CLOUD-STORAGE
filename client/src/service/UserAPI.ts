@@ -13,10 +13,7 @@ export const userAPI = rtkAPI.injectEndpoints({
       }),
       providesTags: (result) =>
         result
-          ? [
-              ...result.map(({ id }) => ({ type: 'Users' as const, id })),
-              { type: 'Users', id: 'LISTUSERS' },
-            ]
+          ? [...result.map(({ id }) => ({ type: 'Users' as const, id })), { type: 'Users', id: 'LISTUSERS' }]
           : [{ type: 'Users', id: 'LISTUSERS' }],
     }),
     uploadAvatar: build.mutation<IUser, File>({
@@ -26,16 +23,12 @@ export const userAPI = rtkAPI.injectEndpoints({
           // blob
           formData.append('file', file)
 
-          const response = await axios.post(
-            `${config.API_URL}/files/avatar`,
-            formData,
-            {
-              headers: {
-                Authorization: `Bearer ${Cookies.get('accessToken')}`,
-              },
-              withCredentials: true,
-            }
-          )
+          const response = await axios.post(`${config.API_URL}/files/avatar`, formData, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('accessToken')}`,
+            },
+            withCredentials: true,
+          })
 
           return { data: response.data }
         } catch (error: any) {
@@ -51,15 +44,12 @@ export const userAPI = rtkAPI.injectEndpoints({
     deleteAvatar: build.mutation<IUser, undefined>({
       async queryFn() {
         try {
-          const response = await axios.delete(
-            `${config.API_URL}/files/avatar`,
-            {
-              headers: {
-                Authorization: `Bearer ${Cookies.get('accessToken')}`,
-              },
-              withCredentials: true,
-            }
-          )
+          const response = await axios.delete(`${config.API_URL}/files/avatar`, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('accessToken')}`,
+            },
+            withCredentials: true,
+          })
 
           return { data: response.data }
         } catch (error: any) {
@@ -74,8 +64,4 @@ export const userAPI = rtkAPI.injectEndpoints({
   }),
 })
 
-export const {
-  useLazyGetAllUsersQuery,
-  useDeleteAvatarMutation,
-  useUploadAvatarMutation,
-} = userAPI
+export const { useLazyGetAllUsersQuery, useDeleteAvatarMutation, useUploadAvatarMutation } = userAPI

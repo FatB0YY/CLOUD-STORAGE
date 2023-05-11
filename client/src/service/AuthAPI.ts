@@ -32,9 +32,4 @@ export const authAPI = rtkAPI.injectEndpoints({
   }),
 })
 
-export const {
-  useCheckAuthQuery,
-  useLoginMutation,
-  useRegistrationMutation,
-  useLogoutMutation,
-} = authAPI
+export const { useCheckAuthQuery, useLoginMutation, useRegistrationMutation, useLogoutMutation } = authAPI

@@ -15,15 +15,12 @@ export default class FileService {
   }
 
   static async downloadFolder(file: IFile) {
-    return axios.get(
-      `${config.API_URL}/files/downloadFolder?folderId=${file._id}`,
-      {
-        responseType: 'blob',
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-        withCredentials: true,
-      }
-    )
+    return axios.get(`${config.API_URL}/files/downloadFolder?folderId=${file._id}`, {
+      responseType: 'blob',
+      headers: {
+        Authorization: `Bearer ${Cookies.get('accessToken')}`,
+      },
+      withCredentials: true,
+    })
   }
 }

@@ -1,15 +1,17 @@
 class ApiError extends Error {
   status
   errors
+  name
 
   constructor(status, message, errors = []) {
     super(message)
+    this.name = 'ApiError'
     this.status = status
     this.errors = errors
   }
 
   static BadRequest(message) {
-    return new ApiError(400, message)
+    return new ApiError(400, 'Некорректный запрос', [{ message }])
   }
 
   static badValidation(errors = []) {

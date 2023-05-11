@@ -30,9 +30,7 @@ const RegistrationForm: FC = () => {
 
   const [classEmail, setClassEmail] = useState('authForm__input-div one')
   const [classPassword, setClassPassword] = useState('authForm__input-div pass')
-  const [classPasswordConfirm, setClassPasswordConfirm] = useState(
-    'authForm__input-div pass'
-  )
+  const [classPasswordConfirm, setClassPasswordConfirm] = useState('authForm__input-div pass')
 
   function focusFunc(type: keyof IAuthForm) {
     if (type === 'email') {
@@ -94,13 +92,7 @@ const RegistrationForm: FC = () => {
     }
   }, [navigate, isSuccess, user])
 
-  const onSubmit: SubmitHandler<IAuthForm> = async ({
-    email,
-    password,
-    name,
-    surname,
-    confirm_password,
-  }) => {
+  const onSubmit: SubmitHandler<IAuthForm> = async ({ email, password, name, surname, confirm_password }) => {
     email = email.toLowerCase()
     await registration({ email, password, name, surname }).unwrap()
     reset()
@@ -109,48 +101,91 @@ const RegistrationForm: FC = () => {
   return (
     <div className='container'>
       <div className='authForm'>
-        <img className='authForm__wave' src={waveImg} alt='' />
-        <div className='containerAuth'>
-          <div className='authForm__img'>
-            <img src={secureImg} alt='' />
+        <img
+          className='authForm__wave'
+          src={waveImg}
+          alt=''
+        />
+        <div className='containerAuth containerAuth__regForm'>
+          <div className='authForm__img authForm__imgRegForm'>
+            <img
+              src={secureImg}
+              alt=''
+            />
           </div>
           <div className='authForm__content'>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <img src={avatarImg} alt='' />
+              <img
+                src={avatarImg}
+                alt=''
+              />
               <h2 className='authForm__title'>Создать аккаунт</h2>
-              <div className='authForm__div'>
-                <h5>Имя</h5>
-                <input
-                  {...register('name', {
-                    required: 'Поле обязательно к заполнению',
-                  })}
-                  type='text'
-                  id='name'
-                  className='authForm__input'
-                  onFocus={() => focusFunc('name')}
-                  // onBlur={() => blurFunc('name')}
-                />
-              </div>
-              <div className='authForm__div'>
-                <h5>Фамилия</h5>
-                <input
-                  {...register('surname', {
-                    required: 'Поле обязательно к заполнению',
-                  })}
-                  type='text'
-                  id='surname'
-                  className='authForm__input'
-                  onFocus={() => focusFunc('surname')}
-                  // onBlur={() => blurFunc('surname')}
-                />
-              </div>
-              <div
-                className={
-                  errors.email ? 'authForm__input-div error one' : classEmail
-                }
-              >
+              <div className={errors.name ? 'authForm__input-div' : ''}>
                 <div className='authForm__i'>
-                  <FontAwesomeIcon icon={solid('user')} className='icon' />
+                  <FontAwesomeIcon
+                    icon={solid('user')}
+                    className='icon'
+                  />
+                </div>
+
+                <div className='authForm__div'>
+                  <h5>Имя пользователя</h5>
+                  <input
+                    {...register('name', {
+                      required: 'Поле обязательно к заполнению',
+                      maxLength: {
+                        value: 256,
+                        message: 'Максимум 256 символов',
+                      },
+                      pattern: {
+                        value: /^\D*$/,
+                        message: 'Некорректное имя пользователя',
+                      },
+                    })}
+                    type='text'
+                    id='name'
+                    className='authForm__input'
+                    onFocus={() => focusFunc('name')}
+                    // onBlur={() => blurFunc('name')}
+                  />
+                </div>
+              </div>
+              <div className={errors.name ? 'authForm__input-div' : ''}>
+                <div className='authForm__i'>
+                  <FontAwesomeIcon
+                    icon={solid('user')}
+                    className='icon'
+                  />
+                </div>
+
+                <div className='authForm__div'>
+                  <h5>Фамилия пользователя</h5>
+                  <input
+                    {...register('surname', {
+                      required: 'Поле обязательно к заполнению',
+                      maxLength: {
+                        value: 256,
+                        message: 'Максимум 256 символов',
+                      },
+                      pattern: {
+                        value: /^\D*$/,
+                        message: 'Некорректная фамилия пользователя',
+                      },
+                    })}
+                    type='text'
+                    id='surname'
+                    className='authForm__input'
+                    onFocus={() => focusFunc('surname')}
+                    // onBlur={() => blurFunc('surname')}
+                  />
+                </div>
+              </div>
+              <div className={errors.email ? 'authForm__input-div error one' : classEmail}>
+                <div className='authForm__i'>
+                  <FontAwesomeIcon
+                    icon={solid('user')}
+                    className='icon'
+                  />
                 </div>
 
                 <div className='authForm__div'>
@@ -177,21 +212,14 @@ const RegistrationForm: FC = () => {
                 </div>
               </div>
               <div style={{ height: '20px', marginBottom: '20px' }}>
-                {errors?.email && (
-                  <p style={{ color: 'red' }}>
-                    {errors?.email?.message || 'Неизвестная ошибка'}
-                  </p>
-                )}
+                {errors?.email && <p style={{ color: 'red' }}>{errors?.email?.message || 'Неизвестная ошибка'}</p>}
               </div>
-              <div
-                className={
-                  errors.password
-                    ? 'authForm__input-div error pass'
-                    : classPassword
-                }
-              >
+              <div className={errors.password ? 'authForm__input-div error pass' : classPassword}>
                 <div className='authForm__i'>
-                  <FontAwesomeIcon icon={solid('lock')} className='icon' />
+                  <FontAwesomeIcon
+                    icon={solid('lock')}
+                    className='icon'
+                  />
                 </div>
                 <div className='authForm__div'>
                   <h5>Пароль</h5>
@@ -217,21 +245,16 @@ const RegistrationForm: FC = () => {
               </div>
               <div style={{ height: '20px', marginBottom: '20px' }}>
                 {errors?.password && (
-                  <p style={{ color: 'red' }}>
-                    {errors?.password?.message || 'Неизвестная ошибка'}
-                  </p>
+                  <p style={{ color: 'red' }}>{errors?.password?.message || 'Неизвестная ошибка'}</p>
                 )}
               </div>
 
-              <div
-                className={
-                  errors.confirm_password
-                    ? 'authForm__input-div error pass'
-                    : classPasswordConfirm
-                }
-              >
+              <div className={errors.confirm_password ? 'authForm__input-div error pass' : classPasswordConfirm}>
                 <div className='authForm__i'>
-                  <FontAwesomeIcon icon={solid('lock')} className='icon' />
+                  <FontAwesomeIcon
+                    icon={solid('lock')}
+                    className='icon'
+                  />
                 </div>
                 <div className='authForm__div'>
                   <h5>Подтвердите пароль</h5>
@@ -263,9 +286,7 @@ const RegistrationForm: FC = () => {
 
               <div style={{ height: '20px', marginBottom: '20px' }}>
                 {errors?.confirm_password && (
-                  <p style={{ color: 'red' }}>
-                    {errors?.confirm_password?.message || 'Неизвестная ошибка'}
-                  </p>
+                  <p style={{ color: 'red' }}>{errors?.confirm_password?.message || 'Неизвестная ошибка'}</p>
                 )}
               </div>
 

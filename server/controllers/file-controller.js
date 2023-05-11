@@ -201,7 +201,7 @@ class FileController {
             .split(/\s+/)
             .map((word) => `(?=.*${word})`)
             .join('') + '.*',
-          'i'
+          'i',
         )
         files = files.filter((file) => searchRegex.test(file.name))
         return res.json(files)
@@ -311,6 +311,49 @@ class FileController {
 
   async uploadFolder(req, res, next) {
     try {
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async checkFile(req, res, next) {
+    try {
+      const { name: nameFile, size: sizeFile, parent: parentFile } = req.body
+
+      const parent = await File.findOne({
+        user: req.user.id,
+        _id: parentFile,
+      })
+      const user = await User.findOne({ _id: req.user.id })
+
+      if (!user) {
+        next(ApiError.BadRequest('Пользователь не найден'))
+        return
+      }
+
+      if (sizeFile > 1024 ** 3 * 11) {
+        next(ApiError.BadRequest('Максимальный размер файла 10гб'))
+        return
+      }
+
+      if (user.usedSpace + sizeFile > user.diskSpace) {
+        next(ApiError.BadRequest('Недостаточно места на диске'))
+        return
+      }
+
+      let targetPath
+      if (parent) {
+        targetPath = `${process.env.FILEPATH}\\${user._id}\\${parent.path}\\${nameFile}`
+      } else {
+        targetPath = `${process.env.FILEPATH}\\${user._id}\\${nameFile}`
+      }
+
+      if (fs.existsSync(targetPath)) {
+        next(ApiError.BadRequest('Файл уже существует'))
+        return
+      }
+
+      return res.json({ check: true })
     } catch (error) {
       next(error)
     }

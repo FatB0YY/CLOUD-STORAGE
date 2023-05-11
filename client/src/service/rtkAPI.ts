@@ -1,11 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import config from '../config/index'
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
-import type {
-  BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query'
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { logOut, setUser } from '../redux/reducers/UserSlice'
 import { Mutex } from 'async-mutex'
 import Cookies from 'js-cookie'
@@ -25,11 +21,11 @@ const baseQuery = fetchBaseQuery({
   },
 })
 
-const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions,
+) => {
   // подождем, пока mutex не станет доступен, не блокируя его
   await mutex.waitForUnlock()
   let result = await baseQuery(args, api, extraOptions)
@@ -41,11 +37,7 @@ const baseQueryWithReauth: BaseQueryFn<
         // попытка получить новый токен
         const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
         if (refreshResult.data) {
-          Cookies.set(
-            'accessToken',
-            (refreshResult.data as AuthResponse).accessToken,
-            { expires: 7 }
-          )
+          Cookies.set('accessToken', (refreshResult.data as AuthResponse).accessToken, { expires: 7 })
           // сохраняем
           api.dispatch(setUser(refreshResult.data as AuthResponse))
           // повторяем первоначальный запрос

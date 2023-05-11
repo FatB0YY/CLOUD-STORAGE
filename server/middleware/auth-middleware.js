@@ -1,4 +1,4 @@
-const { JsonWebTokenError } = require('jsonwebtoken')
+const pkg = require('jsonwebtoken')
 const ApiError = require('../error/ApiError')
 const tokenService = require('../service/token-service')
 const UserDto = require('../dtos/user-dto')
@@ -9,23 +9,39 @@ module.exports = function authCheckMiddleware(req, res, next) {
   }
 
   try {
+    // получаем Header Authorization
     const authorizationHeader = req.headers.authorization
     if (!authorizationHeader) {
       return next(ApiError.unauthorized())
     }
 
-    const token = authorizationHeader.split(' ')[1]
-    if (!token) {
+    // проверяем тип токена
+    const bearer = authorizationHeader.split(' ')[0]
+    if (bearer !== 'Bearer') {
+      return next(ApiError.forbiddenError())
+    }
+
+    // проверяем есть ли там токен
+    const accessToken = authorizationHeader.split(' ')[1]
+    if (!accessToken) {
       return next(ApiError.jsonWebTokenError())
     }
 
-    const user = tokenService.validateAccessToken(token)
-    if (!user || user instanceof JsonWebTokenError) {
+    // получаем данные из токена
+    const userTokenData = tokenService.validateAccessToken(accessToken)
+
+    // проверяем есть ли данные
+    if (!userTokenData) {
+      return next(ApiError.forbiddenError())
+    }
+
+    // проверяем токен
+    if (userTokenData instanceof pkg.JsonWebTokenError) {
       return next(ApiError.jsonWebTokenError())
     }
 
-    const userDtoData = new UserDto(user)
-    req.user = userDtoData
+    const userDto = new UserDto(userTokenData)
+    req.user = userDto
     next()
   } catch (error) {
     return next(ApiError.internalError(error))

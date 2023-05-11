@@ -98,13 +98,13 @@
     transition: 0.3s;
   }
 
-  &__input-div.focus >&__i > .icon > path{
-	color: #00b8fa !important;
+  &__input-div.focus > &__i > .icon > path {
+    color: #00b8fa !important;
   }
 
-  &__input-div.error >&__i > .icon > path{
+  &__input-div.error > &__i > .icon > path {
     color: red !important;
-    }
+  }
 
   &__input-div:before,
   &__input-div:after {
@@ -209,7 +209,7 @@
     background-position: right;
   }
 
-  .icon-spinner{
+  .icon-spinner {
     animation: 1s linear 0s normal none infinite running iconSpinnerAnim;
     -webkit-animation: 1s linear 0s normal none infinite running iconSpinnerAnim;
     width: 100px;
@@ -218,6 +218,17 @@
   .icon-spinner > path {
     color: #f3f2f2;
   }
+}
+
+.authForm__imgRegForm {
+  display: none;
+}
+
+.containerAuth__regForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 @keyframes iconSpinnerAnim {

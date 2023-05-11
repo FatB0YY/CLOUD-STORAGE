@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 // import { removeIFileDirAfterIndex } from '../../redux/reducers/FilesSlice'
@@ -47,4 +47,4 @@ const Crumb: FC<IPropsCrumb> = ({ crumb, index }) => {
   )
 }
 
-export default Crumb
+export default memo(Crumb)

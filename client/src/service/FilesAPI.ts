@@ -1,9 +1,5 @@
 import { IFile, ICrumb, TypeSortOption } from '../models/response/IFile'
-import {
-  addUploadFile,
-  changeUploadFile,
-  showUploader,
-} from '../redux/reducers/UploadSlice'
+import { addUploadFile, changeUploadFile, showUploader } from '../redux/reducers/UploadSlice'
 import { rtkAPI } from './rtkAPI'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
@@ -13,10 +9,7 @@ import { IUser } from '../models/response/IUser'
 
 export const filesAPI = rtkAPI.injectEndpoints({
   endpoints: (build) => ({
-    getAllFiles: build.query<
-      IFile[],
-      { currentDir: ICrumb; sortValue: TypeSortOption }
-    >({
+    getAllFiles: build.query<IFile[], { currentDir: ICrumb; sortValue: TypeSortOption }>({
       query: ({ currentDir, sortValue }) => ({
         url: `/files${currentDir.dirId ? `?parent=${currentDir.dirId}` : ''}${
           sortValue ? `${currentDir.dirId ? '&' : '?'}sort=${sortValue}` : ''
@@ -24,10 +17,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
       }),
       providesTags: (result) =>
         result
-          ? [
-              ...result.map(({ _id }) => ({ type: 'Files' as const, _id })),
-              { type: 'Files', id: 'LISTFILES' },
-            ]
+          ? [...result.map(({ _id }) => ({ type: 'Files' as const, _id })), { type: 'Files', id: 'LISTFILES' }]
           : [{ type: 'Files', id: 'LISTFILES' }],
     }),
 
@@ -37,10 +27,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
       }),
       providesTags: (result) =>
         result
-          ? [
-              ...result.map(({ _id }) => ({ type: 'Files' as const, _id })),
-              { type: 'Files', id: 'LISTFILES' },
-            ]
+          ? [...result.map(({ _id }) => ({ type: 'Files' as const, _id })), { type: 'Files', id: 'LISTFILES' }]
           : [{ type: 'Files', id: 'LISTFILES' }],
     }),
 
@@ -52,10 +39,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
     }),
 
-    createDir: build.mutation<
-      { file: IFile; user: IUser },
-      { name: string; currentDir: ICrumb }
-    >({
+    createDir: build.mutation<{ file: IFile; user: IUser }, { name: string; currentDir: ICrumb }>({
       query: ({ name, currentDir }) => ({
         url: `/files`,
         method: 'POST',
@@ -68,19 +52,39 @@ export const filesAPI = rtkAPI.injectEndpoints({
       invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
     }),
 
-    uploadFile: build.mutation<
-      { file: IFile; user: IUser },
-      { file: File; currentDir: ICrumb }
-    >({
+    uploadFile: build.mutation<{ file: IFile; user: IUser }, { file: File; currentDir: ICrumb }>({
       async queryFn({ file, currentDir }, { dispatch }) {
         try {
-          console.log('file', file)
+          let response = await axios.post(
+            `${config.API_URL}/files/checkFile`,
+            {
+              name: file.name,
+              size: file.size,
+              parent: currentDir.dirId,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('accessToken')}`,
+              },
+              withCredentials: true,
+            },
+          )
+
+          console.log('response1', response)
+          // в случае ошибки, код до сюда не дойдет, но пусть будет :)
+          if (!response.data.check) {
+            return {
+              data: {
+                message: 'Ошибка',
+              },
+            }
+          }
+
+          console.log('response2', response)
 
           const formData = new FormData()
           // blob
           formData.append('file', file)
-
-          console.log('currentDir', currentDir)
 
           if (currentDir.dirId) {
             formData.append('parent', currentDir.dirId)
@@ -91,26 +95,20 @@ export const filesAPI = rtkAPI.injectEndpoints({
           dispatch(showUploader())
           dispatch(addUploadFile(uploadFile))
 
-          let response = await axios.post(
-            `${config.API_URL}/files/upload`,
-            formData,
-            {
-              onUploadProgress: (progressEvent) => {
-                const totalLength = progressEvent.total
+          response = await axios.post(`${config.API_URL}/files/upload`, formData, {
+            onUploadProgress: (progressEvent) => {
+              const totalLength = progressEvent.total
 
-                if (totalLength) {
-                  uploadFile.progress = Math.round(
-                    (progressEvent.loaded * 100) / totalLength
-                  )
-                  dispatch(changeUploadFile(uploadFile))
-                }
-              },
-              headers: {
-                Authorization: `Bearer ${Cookies.get('accessToken')}`,
-              },
-              withCredentials: true,
-            }
-          )
+              if (totalLength) {
+                uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
+                dispatch(changeUploadFile(uploadFile))
+              }
+            },
+            headers: {
+              Authorization: `Bearer ${Cookies.get('accessToken')}`,
+            },
+            withCredentials: true,
+          })
 
           return { data: response.data }
         } catch (error: any) {

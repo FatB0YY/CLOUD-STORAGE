@@ -39,9 +39,7 @@ const FileList: FC = () => {
     const copy = [...dirStack]
     const backDir: ICrumb | undefined = copy.pop()
 
-    // if (backDir?.dirId) {
     dispatch(setCurrentDir(backDir!))
-    // }
 
     dispatch(popDirStack())
     dispatch(popBreadcrumbsStack())

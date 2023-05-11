@@ -18,7 +18,13 @@ const initialState: FileState = {
     path: '',
   },
   dirStack: [],
-  breadcrumbsStack: [],
+  breadcrumbsStack: [
+    {
+      dirId: null,
+      name: 'Диск',
+      path: '',
+    },
+  ],
 }
 
 export const filesSlice = createSlice({

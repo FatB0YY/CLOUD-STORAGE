@@ -13,10 +13,17 @@ class FileController {
   async createDir(req, res, next) {
     try {
       const { name, type, parent } = req.body
+      const userId = req.user.id
 
-      const file = new File({ name, type, parent, user: req.user.id })
+      const user = await User.findById(userId)
+
+      if (!user) {
+        next(ApiError.BadRequest('Пользователь не найден!'))
+        return
+      }
+
+      const file = new File({ name, type, parent, user: userId })
       const parentFile = await File.findOne({ _id: parent })
-      const user = await User.findById(req.user.id)
 
       if (!parentFile) {
         file.path = name
@@ -27,6 +34,7 @@ class FileController {
         parentFile.childs.push(file._id)
         await parentFile.save()
       }
+
       await file.save()
       await user.save()
 
@@ -40,35 +48,10 @@ class FileController {
 
   async getFiles(req, res, next) {
     try {
-      const { sort } = req.query
-      let files
+      const { sort, parent } = req.query
+      const userId = req.user.id
 
-      switch (sort) {
-        case 'name':
-          files = await File.find({
-            user: req.user.id,
-            parent: req.query.parent,
-          }).sort({ name: 1 })
-          break
-        case 'type':
-          files = await File.find({
-            user: req.user.id,
-            parent: req.query.parent,
-          }).sort({ type: 1 })
-          break
-        case 'date':
-          files = await File.find({
-            user: req.user.id,
-            parent: req.query.parent,
-          }).sort({ date: 1 })
-          break
-
-        default:
-          files = await File.find({
-            user: req.user.id,
-            parent: req.query.parent,
-          })
-      }
+      const files = await fileService.getFiles(sort, parent, userId)
 
       return res.json(files)
     } catch (error) {
@@ -80,17 +63,13 @@ class FileController {
     try {
       const file = req.files.file
       const tempPath = file.path
+      const userId = req.user.id
 
       const parent = await File.findOne({
-        user: req.user.id,
+        user: userId,
         _id: req.body.parent,
       })
-      const user = await User.findOne({ _id: req.user.id })
-
-      if (user.usedSpace + file.size > user.diskSpace) {
-        next(ApiError.BadRequest('Недостаточно места на диске'))
-        return
-      }
+      const user = await User.findOne({ _id: userId })
 
       user.usedSpace = user.usedSpace + file.size
 
@@ -99,11 +78,6 @@ class FileController {
         targetPath = `${process.env.FILEPATH}\\${user._id}\\${parent.path}\\${file.name}`
       } else {
         targetPath = `${process.env.FILEPATH}\\${user._id}\\${file.name}`
-      }
-
-      if (fs.existsSync(targetPath)) {
-        next(ApiError.BadRequest('Файл уже существует'))
-        return
       }
 
       await fs.rename(tempPath, targetPath, (error) => {
@@ -149,6 +123,12 @@ class FileController {
   async downloadFile(req, res, next) {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id })
+
+      if (!file) {
+        next(ApiError.BadRequest('Файл не найден'))
+        return
+      }
+
       const path = fileService.getPath(file)
 
       if (fs.existsSync(path)) {
@@ -165,6 +145,11 @@ class FileController {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id })
       const user = await User.findOne({ _id: req.user.id })
+
+      if (!user) {
+        next(ApiError.BadRequest('Пользователь не найден'))
+        return
+      }
 
       if (!file) {
         next(ApiError.BadRequest('Не найден'))
@@ -190,22 +175,24 @@ class FileController {
   async searchFile(req, res, next) {
     try {
       const searchName = req.query.search
-
-      let files = await File.find({ user: req.user.id })
+      const userId = req.user.id
 
       if (searchName.trim() === '') {
         return res.json([])
-      } else {
-        const searchRegex = new RegExp(
-          searchName
-            .split(/\s+/)
-            .map((word) => `(?=.*${word})`)
-            .join('') + '.*',
-          'i',
-        )
-        files = files.filter((file) => searchRegex.test(file.name))
-        return res.json(files)
       }
+
+      const searchRegex = new RegExp(
+        searchName
+          .split(/\s+/)
+          .map((word) => `(?=.*${word})`)
+          .join('') + '.*',
+        'i',
+      )
+
+      // Поиск по регулярному выражению
+      const files = await File.find({ name: { $regex: searchRegex }, user: userId })
+
+      return res.json(files)
     } catch (error) {
       next(error)
     }
@@ -319,20 +306,21 @@ class FileController {
   async checkFile(req, res, next) {
     try {
       const { name: nameFile, size: sizeFile, parent: parentFile } = req.body
+      const userId = req.user.id
 
       const parent = await File.findOne({
-        user: req.user.id,
+        user: userId,
         _id: parentFile,
       })
-      const user = await User.findOne({ _id: req.user.id })
+      const user = await User.findOne({ _id: userId })
 
       if (!user) {
         next(ApiError.BadRequest('Пользователь не найден'))
         return
       }
 
-      if (sizeFile > 1024 ** 3 * 11) {
-        next(ApiError.BadRequest('Максимальный размер файла 10гб'))
+      if (sizeFile > 1024 ** 3 * 10) {
+        next(ApiError.BadRequest('Максимальный размер файла 10ГБ'))
         return
       }
 

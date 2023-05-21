@@ -15,20 +15,22 @@ export const filesAPI = rtkAPI.injectEndpoints({
           sortValue ? `${currentDir.dirId ? '&' : '?'}sort=${sortValue}` : ''
         }`,
       }),
-      providesTags: (result) =>
-        result
-          ? [...result.map(({ _id }) => ({ type: 'Files' as const, _id })), { type: 'Files', id: 'LISTFILES' }]
-          : [{ type: 'Files', id: 'LISTFILES' }],
+      // providesTags: (result) =>
+      //   result
+      //     ? [...result.map(({ _id }) => ({ type: 'Files' as const, _id })), { type: 'Files', id: 'LISTFILES' }]
+      //     : [{ type: 'Files', id: 'LISTFILES' }],
+      providesTags: ['Files'],
     }),
 
     searchFiles: build.query<IFile[], string>({
       query: (searchName) => ({
         url: `/files/search?search=${searchName}`,
       }),
-      providesTags: (result) =>
-        result
-          ? [...result.map(({ _id }) => ({ type: 'Files' as const, _id })), { type: 'Files', id: 'LISTFILES' }]
-          : [{ type: 'Files', id: 'LISTFILES' }],
+      // providesTags: (result) =>
+      //   result
+      //     ? [...result.map(({ _id }) => ({ type: 'Files' as const, _id })), { type: 'Files', id: 'LISTFILES' }]
+      //     : [{ type: 'Files', id: 'LISTFILES' }],
+      providesTags: ['Files'],
     }),
 
     deleteFile: build.mutation<{ message: string; user: IUser }, IFile>({
@@ -36,7 +38,8 @@ export const filesAPI = rtkAPI.injectEndpoints({
         url: `/files?id=${file._id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      // invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      invalidatesTags: ['Files'],
     }),
 
     createDir: build.mutation<{ file: IFile; user: IUser }, { name: string; currentDir: ICrumb }>({
@@ -49,7 +52,8 @@ export const filesAPI = rtkAPI.injectEndpoints({
           type: 'dir',
         },
       }),
-      invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      // invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      invalidatesTags: ['Files'],
     }),
 
     uploadFile: build.mutation<{ file: IFile; user: IUser }, { file: File; currentDir: ICrumb }>({
@@ -69,18 +73,6 @@ export const filesAPI = rtkAPI.injectEndpoints({
               withCredentials: true,
             },
           )
-
-          console.log('response1', response)
-          // в случае ошибки, код до сюда не дойдет, но пусть будет :)
-          if (!response.data.check) {
-            return {
-              data: {
-                message: 'Ошибка',
-              },
-            }
-          }
-
-          console.log('response2', response)
 
           const formData = new FormData()
           // blob
@@ -112,14 +104,11 @@ export const filesAPI = rtkAPI.injectEndpoints({
 
           return { data: response.data }
         } catch (error: any) {
-          if (error.response && error.response.data.message) {
-            return { error: error.response.data.message }
-          } else {
-            return { error: error.message }
-          }
+          return { error: error.response.data.errors[0].message }
         }
       },
-      invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      // invalidatesTags: [{ type: 'Files', id: 'LISTFILES' }],
+      invalidatesTags: ['Files'],
     }),
   }),
 })

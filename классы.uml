@@ -1,0 +1,105 @@
+@startuml
+
+class UserController
+{
+    + registration(req, res, next)
+    + login(req, res, next)
+    + logout(req, res, next)
+    + refresh(req, res, next)
+    + getUsers(req, res, next)
+}
+
+class FileController
+{
+    + createDir(req, res, next)
+    + getFiles(req, res, next)
+    + uploadFile(req, res, next)
+    + downloadFile(req, res, next)
+    + deleteFile(req, res, next)
+    + searchFile(req, res, next)
+    + uploadAvatar(req, res, next)
+    + deleteAvatar(req, res, next)
+    + downloadFolder(req, res, next)
+    + uploadFolder(req, res, next)
+    + checkFile(req, res, next)
+}
+
+class ApiError
+{
+    + BadRequest(message: String)
+    + badValidation(errors: unknown[])
+    + unauthorized()
+    + tokenExpiredError()
+    + jsonWebTokenError()
+    + forbiddenError()
+    + internalError()
+}
+
+class UserDTO 
+{
+ - id: Number
+ - email: String
+ - password: String
+ - surname: String
+ - name: String
+ - usedSpace: Number
+ - diskSpace: Number
+ - avatar: String
+ - files: String[]
+}
+
+class UserService
+{
+    + registration(email: string, password: string, roles: IRole[])
+    + login(email: string, password: string)
+    + logout(refreshToken: string)
+    + refresh(refreshToken: string)
+    + getAllUsers()
+}
+
+class TokenService
+{
+    + generateTokens(payload: UserDTO) 
+    + saveToken(userId: number, refreshToken: string) 
+    + removeToken(refreshToken: string) 
+    + findToken(refreshToken: string) 
+    + validateAccessToken(token: string)
+    + validateRefreshToken(token: string)
+}
+
+class FileService
+{
+    + createDir(file: IFile, user: IUser)
+    + getPath(file: IFile)
+    + deleteFile(file: IFile, user: IUser)
+    + deleteFolderRecursive(folder, user)
+}
+
+
+
+UserController .. UserService
+FileController .. FileService
+
+
+UserService .. TokenService
+TokenService .. UserDTO
+
+UserController .. ApiError
+FileController .. ApiError
+FileService .. ApiError
+UserService .. ApiError
+TokenService .. ApiError
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml

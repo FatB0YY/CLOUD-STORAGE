@@ -11,7 +11,7 @@ function apiErrorHandler(err, req, res, next) {
     logger.error(err)
   }
 
-  if (err instanceof ApiError) {
+  if (err instanceof ApiError && err.status !== 500) {
     res.status(err.status).json({ message: err.message, errors: err.errors })
     return
   }
@@ -27,9 +27,7 @@ function apiErrorHandler(err, req, res, next) {
     return
   }
 
-  res
-    .status(500)
-    .json({ message: 'Непредвиденная ошибка, повторите попытку позже.' })
+  res.status(500).json({ message: 'Непредвиденная ошибка, повторите попытку позже.' })
 }
 
 module.exports = apiErrorHandler

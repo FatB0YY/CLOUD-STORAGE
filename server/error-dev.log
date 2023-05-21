@@ -1,223 +1,39 @@
-2023-03-25 23:01:46 [31merror[39m: Cannot read properties of undefined (reading 'file')
-2023-03-25 23:02:09 [31merror[39m: Cannot read properties of undefined (reading 'file')
-2023-03-25 23:03:19 [31merror[39m: Cannot read properties of undefined (reading 'file')
-2023-03-25 23:04:09 [31merror[39m: Cannot read properties of undefined (reading 'file')
-2023-03-25 23:04:27 [31merror[39m: ApiError.UnauthorizedError is not a function
-2023-03-25 23:04:59 [31merror[39m: Файл уже существует
-2023-03-25 23:06:27 [31merror[39m: Файл уже существует
-2023-03-25 23:15:05 [31merror[39m: Пользователь с таким Email не найден
-2023-03-25 23:15:11 [31merror[39m: Пользователь с таким Email не найден
-2023-03-25 23:16:57 [31merror[39m: Не авторизован
-2023-03-25 23:16:57 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:17:16 [31merror[39m: Не авторизован
-2023-03-25 23:17:16 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:17:27 [31merror[39m: Пользователь с таким Email не найден
-2023-03-25 23:18:25 [31merror[39m: Не авторизован
-2023-03-25 23:18:25 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:18:32 [31merror[39m: Не авторизован
-2023-03-25 23:18:32 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:18:47 [31merror[39m: Не авторизован
-2023-03-25 23:18:47 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:19:01 [31merror[39m: Пользователь с таким Email не найден
-2023-03-25 23:22:04 [31merror[39m: Не авторизован
-2023-03-25 23:22:04 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:22:30 [31merror[39m: Не авторизован
-2023-03-25 23:22:30 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:24:18 [31merror[39m: Пользователь с таким Email не найден
-2023-03-25 23:26:48 [31merror[39m: Не авторизован
-2023-03-25 23:26:48 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:27:00 [31merror[39m: Не авторизован
-2023-03-25 23:27:00 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:28:26 [31merror[39m: Не авторизован
-2023-03-25 23:28:26 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:28:33 [31merror[39m: Не авторизован
-2023-03-25 23:28:33 [31merror[39m: ApiError.Unauthorized is not a function
-2023-03-25 23:28:43 [31merror[39m: Пользователь с таким Email не найден
-2023-03-26 17:33:43 [31merror[39m: Недействительный токен
-2023-03-26 17:33:43 [31merror[39m: Не авторизован
-2023-03-26 17:48:43 [31merror[39m: Папка не пуста
-2023-03-26 17:50:28 [31merror[39m: deleteFolderRecursive is not defined
-2023-03-26 17:51:05 [31merror[39m: Файл уже существует
-2023-03-26 18:06:57 [31merror[39m: getPath is not defined
-2023-03-26 18:07:53 [31merror[39m: getPath is not defined
-2023-03-26 18:11:57 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-26 18:16:11 [31merror[39m: getPath is not defined
-2023-03-26 18:16:42 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-26 18:16:46 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-26 18:16:55 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-26 18:17:15 [31merror[39m: Файл уже существует
-2023-03-26 18:17:36 [31merror[39m: Файл уже существует
-2023-03-26 18:30:21 [31merror[39m: Файл уже существует
-2023-03-26 18:35:53 [31merror[39m: deleteFolderRecursive is not defined
-2023-03-26 20:48:17 [31merror[39m: Недействительный токен
-2023-03-26 21:18:50 [31merror[39m: Файл уже существует
-2023-03-26 21:20:18 [31merror[39m: Не авторизован
-2023-03-26 21:20:28 [31merror[39m: Файл уже существует
-2023-03-26 21:21:11 [31merror[39m: Не авторизован
-2023-03-26 21:21:17 [31merror[39m: Файл уже существует
-2023-03-26 21:21:46 [31merror[39m: Файл уже существует
-2023-03-26 21:23:44 [31merror[39m: Файл уже существует
-2023-03-26 21:32:15 [31merror[39m: Файл уже существует
-2023-03-26 21:32:30 [31merror[39m: Файл уже существует
-2023-03-26 21:34:00 [31merror[39m: Файл уже существует
-2023-03-26 21:34:54 [31merror[39m: Файл уже существует
-2023-03-26 21:35:17 [31merror[39m: Файл уже существует
-2023-03-26 21:37:49 [31merror[39m: Файл или папка уже существует
-2023-03-26 21:38:20 [31merror[39m: Файл или папка уже существует
-2023-03-26 21:52:40 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-26 21:53:16 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-26 21:53:35 [31merror[39m: Cannot read properties of null (reading 'childs')
-2023-03-26 21:54:06 [31merror[39m: Cannot read properties of null (reading 'childs')
-2023-03-26 21:54:42 [31merror[39m: Файл уже существует
-2023-03-27 10:58:37 [31merror[39m: Недействительный токен
-2023-03-27 10:58:37 [31merror[39m: Не авторизован
-2023-03-27 10:59:17 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-27 10:59:32 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-27 11:28:59 [31merror[39m: Недействительный токен
-2023-03-27 11:40:03 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-03-27 11:40:23 [31merror[39m: Файл или папка уже существует
-2023-03-27 12:24:13 [31merror[39m: Недействительный токен
-2023-03-27 14:08:10 [31merror[39m: Недействительный токен
-2023-03-27 14:08:10 [31merror[39m: Недействительный токен
-2023-03-27 14:08:10 [31merror[39m: Не авторизован
-2023-03-27 14:08:10 [31merror[39m: Не авторизован
-2023-03-27 14:42:48 [31merror[39m: Недействительный токен
-2023-03-27 14:42:48 [31merror[39m: Не авторизован
-2023-03-27 17:22:21 [31merror[39m: Недействительный токен
-2023-03-27 17:22:21 [31merror[39m: Не авторизован
-2023-03-27 17:22:50 [31merror[39m: path is not defined
-2023-03-28 12:48:50 [31merror[39m: Недействительный токен
-2023-03-28 12:48:50 [31merror[39m: Не авторизован
-2023-03-29 15:27:09 [31merror[39m: Недействительный токен
-2023-03-29 15:27:09 [31merror[39m: Не авторизован
-2023-03-29 15:36:04 [31merror[39m: Файл или папка уже существует.
-2023-03-29 15:39:49 [31merror[39m: Cannot read properties of undefined (reading 'push')
-2023-03-29 15:40:45 [31merror[39m: Файл или папка уже существует.
-2023-03-29 15:40:48 [31merror[39m: Cannot read properties of undefined (reading 'push')
-2023-03-29 20:32:43 [31merror[39m: Недействительный токен
-2023-03-29 20:32:43 [31merror[39m: Не авторизован
-2023-03-29 20:35:37 [31merror[39m: user.save is not a function
-2023-03-29 20:37:51 [31merror[39m: user.save is not a function
-2023-03-29 20:38:37 [31merror[39m: user.save is not a function
-2023-03-29 20:58:23 [31merror[39m: Не авторизован
-2023-03-29 20:58:23 [31merror[39m: Не авторизован
-2023-03-29 20:58:48 [31merror[39m: Не авторизован
-2023-03-29 20:58:48 [31merror[39m: Не авторизован
-2023-03-29 20:59:20 [31merror[39m: Cannot read properties of undefined (reading 'files')
-2023-03-29 21:00:27 [31merror[39m: Пользователь с почтовым адресом test1@mail.ru уже существует
-2023-03-29 21:00:33 [31merror[39m: Cannot read properties of undefined (reading 'files')
-2023-03-29 21:03:22 [31merror[39m: Cannot read properties of undefined (reading 'files')
-2023-03-29 21:04:00 [31merror[39m: Cannot read properties of undefined (reading 'files')
-2023-03-29 21:05:19 [31merror[39m: Cannot read properties of undefined (reading 'push')
-2023-03-30 10:23:56 [31merror[39m: Недействительный токен
-2023-03-30 10:23:56 [31merror[39m: Не авторизован
-2023-03-30 10:38:46 [31merror[39m: Cannot set properties of null (setting 'avatar')
-2023-03-30 10:39:14 [31merror[39m: Cannot set properties of null (setting 'avatar')
-2023-03-30 10:40:30 [31merror[39m: Cannot set properties of null (setting 'avatar')
-2023-03-30 10:41:57 [31merror[39m: Cannot set properties of null (setting 'avatar')
-2023-03-30 10:42:16 [31merror[39m: Ошибка удаления аватара
-2023-03-30 10:42:43 [31merror[39m: Cannot read properties of null (reading 'avatar')
-2023-03-30 10:43:35 [31merror[39m: Cannot destructure property 'sort' of 'req.query.rfrf' as it is undefined.
-2023-03-30 10:44:19 [31merror[39m: Cannot destructure property 'sort' of 'req.query.rfrf' as it is undefined.
-2023-03-30 10:44:30 [31merror[39m: Cannot destructure property 'sort' of 'req.query.rfrf' as it is undefined.
-2023-03-30 10:46:29 [31merror[39m: Cannot read properties of undefined (reading 'path')
-2023-03-30 10:47:00 [31merror[39m: Cannot read properties of undefined (reading 'path')
-2023-03-30 10:48:08 [31merror[39m: Не найден
-2023-03-30 10:48:49 [31merror[39m: Cannot read properties of undefined (reading 'usedSpace')
-2023-03-30 10:49:35 [31merror[39m: Cannot destructure property 'name' of 'req.body.rfrfr' as it is undefined.
-2023-03-30 10:55:16 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 10:55:46 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 10:57:17 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 10:58:59 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 10:59:29 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 10:59:51 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 11:02:30 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 11:02:43 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-03-30 11:09:09 [31merror[39m: Cannot destructure property 'email' of 'req.body.fgtgt' as it is undefined.
-2023-03-30 11:09:29 [31merror[39m: Не авторизован
-2023-03-30 11:09:29 [31merror[39m: Не авторизован
-2023-03-30 11:09:42 [31merror[39m: Не авторизован
-2023-03-30 11:09:42 [31merror[39m: Не авторизован
-2023-03-30 11:10:50 [31merror[39m: Не авторизован
-2023-03-30 11:10:50 [31merror[39m: Не авторизован
-2023-03-30 11:12:41 [31merror[39m: Не авторизован
-2023-03-30 11:12:41 [31merror[39m: Не авторизован
-2023-03-30 11:13:25 [31merror[39m: Не авторизован
-2023-03-30 11:13:25 [31merror[39m: Не авторизован
-2023-03-30 11:13:28 [31merror[39m: Не авторизован
-2023-03-30 11:13:28 [31merror[39m: Не авторизован
-2023-03-30 11:13:30 [31merror[39m: Не авторизован
-2023-03-30 11:13:30 [31merror[39m: Не авторизован
-2023-03-30 11:15:03 [31merror[39m: Пользователь с таким Email не найден
-2023-03-30 11:16:29 [31merror[39m: Пользователь с таким Email не найден
-2023-03-30 11:23:32 [31merror[39m: Cannot destructure property 'name' of 'req.body.rfrfr' as it is undefined.
-2023-03-30 14:01:04 [31merror[39m: Cannot destructure property 'name' of 'req.body.gyhy6h' as it is undefined.
-2023-03-31 12:59:33 [31merror[39m: Не авторизован
-2023-03-31 12:59:33 [31merror[39m: Не авторизован
-2023-03-31 12:59:42 [31merror[39m: Не авторизован
-2023-03-31 12:59:42 [31merror[39m: Не авторизован
-2023-03-31 17:33:40 [31merror[39m: Не авторизован
-2023-03-31 17:33:40 [31merror[39m: Не авторизован
-2023-04-02 11:21:09 [31merror[39m: Не авторизован
-2023-04-02 11:21:09 [31merror[39m: Не авторизован
-2023-04-02 11:22:10 [31merror[39m: Не авторизован
-2023-04-02 11:22:10 [31merror[39m: Не авторизован
-2023-04-02 11:22:41 [31merror[39m: Не авторизован
-2023-04-02 11:22:41 [31merror[39m: Не авторизован
-2023-04-02 11:22:45 [31merror[39m: Не авторизован
-2023-04-02 11:22:45 [31merror[39m: Не авторизован
-2023-04-02 11:22:47 [31merror[39m: Не авторизован
-2023-04-02 11:22:47 [31merror[39m: Не авторизован
-2023-04-02 11:26:23 [31merror[39m: Пользователь с таким Email не найден
-2023-04-02 11:38:36 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-02 11:38:40 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-03 14:44:41 [31merror[39m: Cannot destructure property 'email' of 'req.body.rgtgt' as it is undefined.
-2023-04-03 14:53:53 [31merror[39m: Файл или папка уже существует.
-2023-04-03 14:54:05 [31merror[39m: Файл или папка уже существует.
-2023-04-03 14:54:08 [31merror[39m: Файл или папка уже существует.
-2023-04-05 14:14:13 [31merror[39m: Не авторизован
-2023-04-06 09:46:15 [31merror[39m: Пользователь с таким Email не найден
-2023-04-06 21:07:50 [31merror[39m: Недействительный токен
-2023-04-06 21:43:47 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-06 21:44:13 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-06 21:44:29 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-06 21:44:47 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-06 21:45:19 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-06 21:45:27 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-06 21:45:36 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 14:00:53 [31merror[39m: Недействительный токен
-2023-04-07 14:00:53 [31merror[39m: Недействительный токен
-2023-04-07 15:10:02 [31merror[39m: Недействительный токен
-2023-04-07 15:10:44 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 15:15:51 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 15:15:58 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 15:16:14 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 15:24:20 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 15:24:30 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 15:24:30 [31merror[39m: Cast to ObjectId failed for value "[object Object]" (type string) at path "parent" for model "File"
-2023-04-07 17:20:39 [31merror[39m: Не авторизован
-2023-04-07 17:20:39 [31merror[39m: Не авторизован
-2023-04-07 17:21:03 [31merror[39m: Не авторизован
-2023-04-07 17:21:03 [31merror[39m: Не авторизован
-2023-04-07 17:21:04 [31merror[39m: Не авторизован
-2023-04-07 17:21:04 [31merror[39m: Не авторизован
-2023-04-07 17:21:05 [31merror[39m: Не авторизован
-2023-04-07 17:21:05 [31merror[39m: Не авторизован
-2023-04-07 17:21:06 [31merror[39m: Не авторизован
-2023-04-07 17:21:06 [31merror[39m: Не авторизован
-2023-04-07 17:21:07 [31merror[39m: Не авторизован
-2023-04-07 17:21:07 [31merror[39m: Не авторизован
-2023-04-07 20:13:33 [31merror[39m: Не авторизован
-2023-04-07 20:38:02 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-07 20:38:59 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-07 20:39:50 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-07 20:40:47 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-07 20:41:25 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-07 20:41:38 [31merror[39m: Cannot read properties of null (reading 'type')
-2023-04-07 21:30:02 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-04-07 21:30:16 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-04-07 21:31:49 [31merror[39m: Cannot read properties of undefined (reading 'user')
-2023-04-07 22:08:17 [31merror[39m: Недействительный токен
-2023-04-17 20:22:46 [31merror[39m: Некорректный запрос
-2023-05-11 11:08:45 [31merror[39m: Некорректный запрос
-2023-05-11 11:11:45 [31merror[39m: Некорректный запрос
+2023-05-19 14:47:31 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\dir1\dir 1 in dir 1\dir 1 in "dir 1 in dir 1"'
+2023-05-19 14:48:10 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\dir1\dir 1 in dir 1\""'
+2023-05-19 14:48:58 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:49:37 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:50:31 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:50:52 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\"""'
+2023-05-19 14:51:21 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:52:43 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:54:26 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:55:16 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\""'
+2023-05-19 14:58:08 [31merror[39m: EINVAL: invalid argument, mkdir 'C:\\Users\\rodio\\OneDrive\\Desktop\\CLOUD-STORAGE\\server\\files\646761b67ef38e56d273c9ea\"""'
+2023-05-19 15:03:37 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-05-19 15:03:50 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-05-19 15:04:24 [31merror[39m: Cannot read properties of null (reading 'type')
+2023-05-19 15:38:10 [31merror[39m: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+2023-05-19 15:38:12 [31merror[39m: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+2023-05-19 15:38:13 [31merror[39m: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+2023-05-19 15:40:14 [31merror[39m: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle
+2023-05-19 15:40:15 [31merror[39m: Converting circular structure to JSON
+    --> starting at object with constructor 'MongoClient'
+    |     property 's' -> object with constructor 'Object'
+    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
+    --- property 'client' closes the circle

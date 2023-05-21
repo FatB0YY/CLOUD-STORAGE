@@ -11,10 +11,11 @@ export const userAPI = rtkAPI.injectEndpoints({
       query: () => ({
         url: 'auth/users',
       }),
-      providesTags: (result) =>
-        result
-          ? [...result.map(({ id }) => ({ type: 'Users' as const, id })), { type: 'Users', id: 'LISTUSERS' }]
-          : [{ type: 'Users', id: 'LISTUSERS' }],
+      // providesTags: (result) =>
+      //   result
+      //     ? [...result.map(({ id }) => ({ type: 'Users' as const, id })), { type: 'Users', id: 'LISTUSERS' }]
+      //     : [{ type: 'Users', id: 'LISTUSERS' }],
+      providesTags: ['Users'],
     }),
     uploadAvatar: build.mutation<IUser, File>({
       async queryFn(file) {

@@ -28,14 +28,14 @@ class FileService {
 
   async deleteFile(file, user) {
     user.usedSpace = user.usedSpace - file.size
-    user.files = user.files.filter((id) => file._id.equals(id))
+    user.files = user.files.filter((id) => !file._id.equals(id))
 
     const parent = await File.findOne({
       _id: file.parent,
     })
 
     if (parent) {
-      parent.childs = parent.childs.filter((childId) => childId !== file._id)
+      parent.childs = parent.childs.filter((childId) => !file._id.equals(childId))
       await parent.save()
     }
 
@@ -48,7 +48,7 @@ class FileService {
     if (folder.childs.length === 0) {
       // если папка пустая, удаляем ее из базы данных и с компьютера
       const folderPath = this.getPath(folder)
-      user.files = user.files.filter((id) => folder._id.equals(id))
+      user.files = user.files.filter((id) => !folder._id.equals(id))
       await folder.remove()
       await user.save()
       fs.rmdirSync(folderPath, { recursive: true })
@@ -57,7 +57,6 @@ class FileService {
 
     for (const childId of folder.childs) {
       const child = await File.findById(childId)
-      console.log('child', child)
       if (child.type === 'dir') {
         await this.deleteFolderRecursive(child, user)
       } else {
@@ -67,10 +66,43 @@ class FileService {
 
     // после удаления всех файлов и подпапок удаляем саму папку из базы данных и с компьютера
     const folderPath = this.getPath(folder)
-    user.files = user.files.filter((id) => folder._id.equals(id))
+    user.files = user.files.filter((id) => !folder._id.equals(id))
     await user.save()
     await folder.remove()
     fs.rmdirSync(folderPath, { recursive: true })
+  }
+
+  async getFiles(sort, parent, userId) {
+    let files = null
+
+    switch (sort) {
+      case 'name':
+        files = await File.find({
+          user: userId,
+          parent: parent,
+        }).sort({ name: 1 })
+        break
+      case 'type':
+        files = await File.find({
+          user: userId,
+          parent: parent,
+        }).sort({ type: 1 })
+        break
+      case 'date':
+        files = await File.find({
+          user: userId,
+          parent: parent,
+        }).sort({ date: 1 })
+        break
+
+      default:
+        files = await File.find({
+          user: userId,
+          parent: parent,
+        })
+    }
+
+    return files
   }
 }
 

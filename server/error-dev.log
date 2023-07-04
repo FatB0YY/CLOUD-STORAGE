@@ -37,3 +37,7 @@
     |     property 's' -> object with constructor 'Object'
     |     property 'sessionPool' -> object with constructor 'ServerSessionPool'
     --- property 'client' closes the circle
+2023-06-12 22:56:02 [31merror[39m: Не авторизован
+2023-06-12 22:56:02 [31merror[39m: Не авторизован
+2023-06-12 22:56:16 [31merror[39m: Некорректный запрос
+2023-06-12 22:56:23 [31merror[39m: Некорректный запрос

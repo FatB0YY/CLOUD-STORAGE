@@ -16,8 +16,11 @@ root.render(
     <BrowserRouter>
       <ToastContainer />
       <Routes>
-        <Route path='/*' element={<App />} />
+        <Route
+          path='/*'
+          element={<App />}
+        />
       </Routes>
     </BrowserRouter>
-  </Provider>
+  </Provider>,
 )

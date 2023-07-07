@@ -94,7 +94,12 @@ const RegistrationForm: FC = () => {
 
   const onSubmit: SubmitHandler<IAuthForm> = async ({ email, password, name, surname, confirm_password }) => {
     email = email.toLowerCase()
-    await registration({ email, password, name, surname }).unwrap()
+    await registration({ email, password, name, surname })
+      .unwrap()
+      .catch((error) => {
+        console.error(error)
+        // Обработка ошибки
+      })
     reset()
   }
 

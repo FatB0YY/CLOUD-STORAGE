@@ -11,7 +11,7 @@ const initialState: UploadState = {
   isVisible: false,
 }
 
-export const uploadSlice = createSlice({
+const uploadSlice = createSlice({
   name: 'filesSlice',
   initialState,
   reducers: {
@@ -30,9 +30,7 @@ export const uploadSlice = createSlice({
     changeUploadFile(state, action) {
       state.files = [
         ...state.files.map((file) =>
-          file.id == action.payload.id
-            ? { ...file, progress: action.payload.progress }
-            : { ...file }
+          file.id == action.payload.id ? { ...file, progress: action.payload.progress } : { ...file },
         ),
       ]
     },
@@ -40,12 +38,4 @@ export const uploadSlice = createSlice({
   extraReducers: {},
 })
 
-const { actions, reducer } = uploadSlice
-export const {
-  changeUploadFile,
-  addUploadFile,
-  hideUploader,
-  removeUploadFile,
-  showUploader,
-} = actions
-export default reducer
+export const { reducer: uploadReducer, actions: uploadActions } = uploadSlice

@@ -65,7 +65,12 @@ const LoginForm: FC = () => {
 
   const onSubmit: SubmitHandler<IAuthForm> = async ({ email, password }) => {
     email = email.toLowerCase()
-    await login({ email, password }).unwrap()
+    await login({ email, password })
+      .unwrap()
+      .catch((error) => {
+        console.error(error)
+        // Обработка ошибки
+      })
     reset()
   }
 
@@ -81,23 +86,32 @@ const LoginForm: FC = () => {
   return (
     <div className='container'>
       <div className='authForm'>
-        <img className='authForm__wave' src={waveImg} alt='' />
+        <img
+          className='authForm__wave'
+          src={waveImg}
+          alt=''
+        />
         <div className='containerAuth'>
           <div className='authForm__img'>
-            <img src={secureImg} alt='' />
+            <img
+              src={secureImg}
+              alt=''
+            />
           </div>
           <div className='authForm__content'>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <img src={avatarImg} alt='' />
+              <img
+                src={avatarImg}
+                alt=''
+              />
               <h2 className='authForm__title'>добро пожаловать!</h2>
 
-              <div
-                className={
-                  errors.email ? 'authForm__input-div error one' : classEmail
-                }
-              >
+              <div className={errors.email ? 'authForm__input-div error one' : classEmail}>
                 <div className='authForm__i'>
-                  <FontAwesomeIcon icon={solid('user')} className='icon' />
+                  <FontAwesomeIcon
+                    icon={solid('user')}
+                    className='icon'
+                  />
                 </div>
                 <div className='authForm__div'>
                   <h5>Электронная почта</h5>
@@ -123,22 +137,15 @@ const LoginForm: FC = () => {
                 </div>
               </div>
               <div style={{ height: '20px', marginBottom: '20px' }}>
-                {errors?.email && (
-                  <p style={{ color: 'red' }}>
-                    {errors?.email?.message || 'Неизвестная ошибка'}
-                  </p>
-                )}
+                {errors?.email && <p style={{ color: 'red' }}>{errors?.email?.message || 'Неизвестная ошибка'}</p>}
               </div>
 
-              <div
-                className={
-                  errors.password
-                    ? 'authForm__input-div error pass'
-                    : classPassword
-                }
-              >
+              <div className={errors.password ? 'authForm__input-div error pass' : classPassword}>
                 <div className='authForm__i'>
-                  <FontAwesomeIcon icon={solid('lock')} className='icon' />
+                  <FontAwesomeIcon
+                    icon={solid('lock')}
+                    className='icon'
+                  />
                 </div>
                 <div className='authForm__div'>
                   <h5>Пароль</h5>
@@ -165,9 +172,7 @@ const LoginForm: FC = () => {
 
               <div style={{ height: '20px' }}>
                 {errors?.password && (
-                  <p style={{ color: 'red' }}>
-                    {errors?.password?.message || 'Неизвестная ошибка'}
-                  </p>
+                  <p style={{ color: 'red' }}>{errors?.password?.message || 'Неизвестная ошибка'}</p>
                 )}
               </div>
 

@@ -6,22 +6,18 @@ import Dropzone from '../dropzone/Dropzone'
 import Uploader from '../uploader/Uploader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import {
-  useCreateDirMutation,
-  useUploadFileMutation,
-} from '../../service/FilesAPI'
+import { useCreateDirMutation, useUploadFileMutation } from '../../service/FilesAPI'
 import './disk.scss'
 import { selectCurrentUser } from '../../redux/reducers/UserSlice'
 import sizeFormat from '../../utils/sizeFormat'
 import { IFile, ICrumb } from '../../models/response/IFile'
 
 const Disk: FC = () => {
-  const [triggerCreateDir, { isLoading: isLoadingCreateDir }] =
-    useCreateDirMutation()
+  const [triggerCreateDir, { isLoading: isLoadingCreateDir }] = useCreateDirMutation()
 
   const [triggerUploadFile, {}] = useUploadFileMutation()
 
-  const { currentDir } = useAppSelector((state) => state.filesReducer)
+  const currentDir = useAppSelector((state) => state.files.currentDir)
   const user = useAppSelector(selectCurrentUser)
   const [usedSpacePercentage, setUsedSpacePercentage] = useState(0)
 
@@ -41,13 +37,16 @@ const Disk: FC = () => {
         if (!name || !regex.test(name)) {
           Swal.showValidationMessage('Некорректное название')
         } else {
-          try {
-            await triggerCreateDir({
-              name: name.trim(),
-              // проверить
-              currentDir,
-            }).unwrap()
-          } catch (error) {}
+          await triggerCreateDir({
+            name: name.trim(),
+            // проверить
+            currentDir,
+          })
+            .unwrap()
+            .catch((error) => {
+              console.error(error)
+              // Обработка ошибки
+            })
         }
       },
 
@@ -65,7 +64,12 @@ const Disk: FC = () => {
         file,
         // проверить
         currentDir,
-      }).unwrap()
+      })
+        .unwrap()
+        .catch((error) => {
+          console.error(error)
+          // Обработка ошибки
+        })
     }
   }
 
@@ -83,9 +87,7 @@ const Disk: FC = () => {
 
   useEffect(() => {
     if (user) {
-      const percentage = Math.abs(
-        Number(((user.usedSpace / user.diskSpace) * 100).toFixed(2))
-      )
+      const percentage = Math.abs(Number(((user.usedSpace / user.diskSpace) * 100).toFixed(2)))
       setUsedSpacePercentage(percentage)
     }
   }, [user])
@@ -107,8 +109,14 @@ const Disk: FC = () => {
     >
       <div className='disk__btns'>
         <div className='disk__upload'>
-          <label htmlFor='disk__upload-input' className='disk__upload-label'>
-            <FontAwesomeIcon icon={solid('cloud-arrow-up')} className='icon' />
+          <label
+            htmlFor='disk__upload-input'
+            className='disk__upload-label'
+          >
+            <FontAwesomeIcon
+              icon={solid('cloud-arrow-up')}
+              className='icon'
+            />
             Загрузить файл
           </label>
           <input
@@ -125,7 +133,10 @@ const Disk: FC = () => {
           className='disk__create'
           onClick={() => createDirHandler()}
         >
-          <FontAwesomeIcon icon={solid('plus')} className='icon' />
+          <FontAwesomeIcon
+            icon={solid('plus')}
+            className='icon'
+          />
           Создать папку
         </button>
 

@@ -1,5 +1,5 @@
 import { IFile, ICrumb, TypeSortOption } from '../models/response/IFile'
-import { addUploadFile, changeUploadFile, showUploader } from '../redux/reducers/UploadSlice'
+import { uploadActions } from '../redux/reducers/UploadSlice'
 import { rtkAPI } from './rtkAPI'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
@@ -84,8 +84,8 @@ export const filesAPI = rtkAPI.injectEndpoints({
 
           const uploadFile = { name: file.name, progress: 0, id: uuidv4() }
 
-          dispatch(showUploader())
-          dispatch(addUploadFile(uploadFile))
+          dispatch(uploadActions.showUploader())
+          dispatch(uploadActions.addUploadFile(uploadFile))
 
           response = await axios.post(`${config.API_URL}/files/upload`, formData, {
             onUploadProgress: (progressEvent) => {
@@ -93,7 +93,7 @@ export const filesAPI = rtkAPI.injectEndpoints({
 
               if (totalLength) {
                 uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
-                dispatch(changeUploadFile(uploadFile))
+                dispatch(uploadActions.changeUploadFile(uploadFile))
               }
             },
             headers: {

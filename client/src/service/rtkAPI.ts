@@ -2,7 +2,6 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import config from '../config/index'
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { logOut, setUser } from '../redux/reducers/UserSlice'
 import { Mutex } from 'async-mutex'
 import Cookies from 'js-cookie'
 import { AuthResponse } from '../models/response/AuthResponse'
@@ -35,15 +34,16 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
       const release = await mutex.acquire()
       try {
         // попытка получить новый токен
-        const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
+        const refreshResult = await baseQuery('user/refresh', api, extraOptions)
         if (refreshResult.data) {
           Cookies.set('accessToken', (refreshResult.data as AuthResponse).accessToken, { expires: 7 })
           // сохраняем
-          api.dispatch(setUser(refreshResult.data as AuthResponse))
+          baseQueryWithReauth(args, api, extraOptions)
+          api.dispatch({ type: 'userSlice/setUser', payload: refreshResult.data })
           // повторяем первоначальный запрос
           result = await baseQuery(args, api, extraOptions)
         } else {
-          api.dispatch(logOut())
+          api.dispatch({ type: 'userSlice/logOut' })
         }
       } finally {
         // release должен быть вызван один раз, когда mutex должен быть запущен снова.

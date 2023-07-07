@@ -15,8 +15,7 @@ import { filesAPI } from '../../service/FilesAPI'
 const Nav: FC = () => {
   const [searchName, setSearchName] = useState<string>('')
   const debounced: string = useDebounce(searchName)
-  const [searchFilesTrigger, { data: searchFiles }] =
-    filesAPI.endpoints.searchFiles.useLazyQuery()
+  const [searchFilesTrigger, { data: searchFiles }] = filesAPI.endpoints.searchFiles.useLazyQuery()
 
   const params: { [key: string]: string } = useParams()
   const current: string | undefined = params['*']
@@ -30,7 +29,12 @@ const Nav: FC = () => {
   }, [debounced, searchFilesTrigger, user])
 
   const handlerLogout = () => {
-    logout().unwrap()
+    logout()
+      .unwrap()
+      .catch((error) => {
+        console.error(error)
+        // Обработка ошибки
+      })
   }
 
   function searchChangeHandler(e: ChangeEvent<HTMLInputElement>) {
@@ -41,7 +45,10 @@ const Nav: FC = () => {
     return searchFiles
       ? searchFiles.map((item: IFile) => {
           return (
-            <div key={item._id} className='navbar-searchBlock__item'>
+            <div
+              key={item._id}
+              className='navbar-searchBlock__item'
+            >
               <div className='navbar-searchBlock__icon'>
                 <img
                   src={getExtensionIcon(item.type)}
@@ -64,7 +71,10 @@ const Nav: FC = () => {
     <Headroom disable={current ? true : false}>
       <div className={current === 'disk' ? 'navbar navbar-disk' : 'navbar'}>
         <div className='container'>
-          <Link to={user ? '/disk' : '/'} className='navbar__linklogo'>
+          <Link
+            to={user ? '/disk' : '/'}
+            className='navbar__linklogo'
+          >
             <img
               className='navbar__logo'
               src={Cloudstoragelogo}
@@ -75,10 +85,16 @@ const Nav: FC = () => {
 
           {!user ? (
             <div className='navbar__authbtns navbar__authbtns_home'>
-              <NavLink className='navbar__login' to={'/login'}>
+              <NavLink
+                className='navbar__login'
+                to={'/login'}
+              >
                 Войти
               </NavLink>
-              <NavLink className='navbar__registration' to={'/registration'}>
+              <NavLink
+                className='navbar__registration'
+                to={'/registration'}
+              >
                 Создать аккаунт
               </NavLink>
             </div>
@@ -94,7 +110,10 @@ const Nav: FC = () => {
                     type='text'
                   />
                   <div className='navbar-searchBlock__iconBlock'>
-                    <FontAwesomeIcon icon={solid('search')} className='icon' />
+                    <FontAwesomeIcon
+                      icon={solid('search')}
+                      className='icon'
+                    />
                   </div>
                 </form>
 
@@ -105,19 +124,23 @@ const Nav: FC = () => {
                       : 'navbar-searchBlock__searchBlockFiles'
                   }
                 >
-                  <div className='navbar-searchBlock__searchResult'>
-                    {searchFilesList}
-                  </div>
+                  <div className='navbar-searchBlock__searchResult'>{searchFilesList}</div>
                 </div>
               </div>
-              <NavLink className='navbar__registration' to={'/userProfile'}>
+              <NavLink
+                className='navbar__registration'
+                to={'/userProfile'}
+              >
                 <FontAwesomeIcon
                   icon={solid('user')}
                   className='icon navbar__icon'
                 />
                 Аккаунт
               </NavLink>
-              <NavLink className='navbar__registration' to={'/disk'}>
+              <NavLink
+                className='navbar__registration'
+                to={'/disk'}
+              >
                 <FontAwesomeIcon
                   icon={solid('cloud')}
                   className='icon navbar__icon'

@@ -1,11 +1,7 @@
 import { useAppSelector } from '../../hooks/redux'
 import { useUploadFileMutation } from '../../service/FilesAPI'
 import React, { useCallback, FC } from 'react'
-import {
-  useDropzone,
-  DropzoneRootProps,
-  DropzoneInputProps,
-} from 'react-dropzone'
+import { useDropzone, DropzoneRootProps, DropzoneInputProps } from 'react-dropzone'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './dropzone.scss'
@@ -16,13 +12,9 @@ interface MyDropzoneProps {
   dragLeaveHandler: (event: React.DragEvent<HTMLDivElement>) => void
 }
 
-const MyDropzone: FC<MyDropzoneProps> = ({
-  setDragEnter,
-  dragStartHandler,
-  dragLeaveHandler,
-}) => {
+const MyDropzone: FC<MyDropzoneProps> = ({ setDragEnter, dragStartHandler, dragLeaveHandler }) => {
   const [triggerUploadFile, {}] = useUploadFileMutation()
-  const { currentDir } = useAppSelector((state) => state.filesReducer)
+  const currentDir = useAppSelector((state) => state.files.currentDir)
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -31,11 +23,16 @@ const MyDropzone: FC<MyDropzoneProps> = ({
           file,
           // проверить
           currentDir,
-        }).unwrap()
+        })
+          .unwrap()
+          .catch((error) => {
+            console.error(error)
+            // Обработка ошибки
+          })
       }
       setDragEnter(false)
     },
-    [triggerUploadFile, currentDir, setDragEnter]
+    [triggerUploadFile, currentDir, setDragEnter],
   )
 
   function clickCloseHandler(event: React.MouseEvent<SVGSVGElement>) {
@@ -64,9 +61,7 @@ const MyDropzone: FC<MyDropzoneProps> = ({
         {isDragActive ? (
           <p className='dropzone__text'>Отпустите файлы, чтобы загрузить их</p>
         ) : (
-          <p className='dropzone__text'>
-            Перетащите несколько файлов сюда или нажмите, чтобы выбрать файлы
-          </p>
+          <p className='dropzone__text'>Перетащите несколько файлов сюда или нажмите, чтобы выбрать файлы</p>
         )}
       </div>
     </section>

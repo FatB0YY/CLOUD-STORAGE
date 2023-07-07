@@ -27,7 +27,7 @@ const initialState: FileState = {
   ],
 }
 
-export const filesSlice = createSlice({
+const filesSlice = createSlice({
   name: 'filesSlice',
   initialState,
   reducers: {
@@ -41,9 +41,7 @@ export const filesSlice = createSlice({
       state.dirStack.pop()
     },
     removeICrumbAfterIndex(state, action: PayloadAction<ICrumb>) {
-      const clickedIndex = state.dirStack.findIndex(
-        (breadcrumb) => breadcrumb.dirId === action.payload.dirId
-      )
+      const clickedIndex = state.dirStack.findIndex((breadcrumb) => breadcrumb.dirId === action.payload.dirId)
 
       // Если элемент найден в массиве, удаляем элементы,
       // начиная с индекса, соответствующего кликнутому элементу, до конца массива
@@ -59,9 +57,7 @@ export const filesSlice = createSlice({
       state.breadcrumbsStack.pop()
     },
     removeBreadcrumbsAfterIndex(state, action: PayloadAction<ICrumb>) {
-      const clickedIndex = state.breadcrumbsStack.findIndex(
-        (breadcrumb) => breadcrumb.dirId === action.payload.dirId
-      )
+      const clickedIndex = state.breadcrumbsStack.findIndex((breadcrumb) => breadcrumb.dirId === action.payload.dirId)
 
       // Если элемент найден в массиве, удаляем элементы,
       // начиная с индекса, соответствующего кликнутому элементу, до конца массива
@@ -78,53 +74,25 @@ export const filesSlice = createSlice({
     // builder.addCase(downloadFolder.rejected.type, (state, action: any) => {
     //   toast.error(action.payload.message)
     // })
-    builder.addMatcher(
-      userAPI.endpoints.uploadAvatar.matchRejected,
-      (state, action: any) => {
-        toast.error(action.payload)
-      }
-    )
-    builder.addMatcher(
-      userAPI.endpoints.deleteAvatar.matchRejected,
-      (state, action: any) => {
-        toast.error(action.payload)
-      }
-    )
-    builder.addMatcher(
-      filesAPI.endpoints.getAllFiles.matchRejected,
-      (state, action: any) => {
-        toast.error(action.payload?.data.message)
-      }
-    )
-    builder.addMatcher(
-      filesAPI.endpoints.uploadFile.matchRejected,
-      (state, action: any) => {
-        toast.error(action.payload)
-      }
-    )
-    builder.addMatcher(
-      filesAPI.endpoints.deleteFile.matchRejected,
-      (state, action: any) => {
-        toast.error(action.payload?.data.message)
-      }
-    )
-    builder.addMatcher(
-      filesAPI.endpoints.createDir.matchRejected,
-      (state, action: any) => {
-        toast.error(action.payload?.data.message)
-      }
-    )
+    builder.addMatcher(userAPI.endpoints.uploadAvatar.matchRejected, (state, action: any) => {
+      toast.error(action.payload)
+    })
+    builder.addMatcher(userAPI.endpoints.deleteAvatar.matchRejected, (state, action: any) => {
+      toast.error(action.payload)
+    })
+    builder.addMatcher(filesAPI.endpoints.getAllFiles.matchRejected, (state, action: any) => {
+      toast.error(action.payload?.data.message)
+    })
+    builder.addMatcher(filesAPI.endpoints.uploadFile.matchRejected, (state, action: any) => {
+      toast.error(action.payload)
+    })
+    builder.addMatcher(filesAPI.endpoints.deleteFile.matchRejected, (state, action: any) => {
+      toast.error(action.payload?.data.message)
+    })
+    builder.addMatcher(filesAPI.endpoints.createDir.matchRejected, (state, action: any) => {
+      toast.error(action.payload?.data.message)
+    })
   },
 })
 
-const { actions, reducer } = filesSlice
-export const {
-  pushToDirStack,
-  setCurrentDir,
-  popDirStack,
-  removeICrumbAfterIndex,
-  popBreadcrumbsStack,
-  pushToBreadcrumbsStack,
-  removeBreadcrumbsAfterIndex,
-} = actions
-export default reducer
+export const { reducer: filesReducer, actions: filesActions } = filesSlice

@@ -12,8 +12,7 @@ import { IUser } from '../../models/response/IUser'
 
 const ProfileScreen: FC = () => {
   const user = useAppSelector(selectCurrentUser)
-  const [getAllUsers, { data = [], isLoading }] =
-    userAPI.useLazyGetAllUsersQuery()
+  const [getAllUsers, { data = [], isLoading }] = userAPI.useLazyGetAllUsersQuery()
   const [uploadAvatar, {}] = userAPI.useUploadAvatarMutation()
   const [deleteAvatar, {}] = userAPI.useDeleteAvatarMutation()
 
@@ -30,17 +29,32 @@ const ProfileScreen: FC = () => {
   useEffect(() => {}, [user])
 
   const handleButtonClick = async () => {
-    await getAllUsers().unwrap()
+    await getAllUsers()
+      .unwrap()
+      .catch((error) => {
+        console.error(error)
+        // Обработка ошибки
+      })
   }
 
   const handleDeleteClick = async () => {
-    await deleteAvatar(undefined).unwrap()
+    await deleteAvatar(undefined)
+      .unwrap()
+      .catch((error) => {
+        console.error(error)
+        // Обработка ошибки
+      })
   }
 
   const handleUploadClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      await uploadAvatar(file).unwrap()
+      await uploadAvatar(file)
+        .unwrap()
+        .catch((error) => {
+          console.error(error)
+          // Обработка ошибки
+        })
     }
   }
 
@@ -54,7 +68,10 @@ const ProfileScreen: FC = () => {
         <div className='card__header'>
           <div className='card__main'>
             <div className='card__image'>
-              <img src={avatar} alt='avatar user' />
+              <img
+                src={avatar}
+                alt='avatar user'
+              />
               <div className='card__hover'>
                 <label>
                   <input
@@ -63,7 +80,10 @@ const ProfileScreen: FC = () => {
                     onChange={(e) => handleUploadClick(e)}
                     accept='image/*'
                   />
-                  <FontAwesomeIcon icon={solid('camera')} className='icon' />
+                  <FontAwesomeIcon
+                    icon={solid('camera')}
+                    className='icon'
+                  />
                 </label>
               </div>
             </div>
@@ -76,9 +96,7 @@ const ProfileScreen: FC = () => {
         <div className='card__content'>
           <div className='card__descBlock'>
             <h3 className='card__title'>Ваша карточка</h3>
-            <p className='card__description'>
-              Нажмите на аватарку, чтобы ее поменять
-            </p>
+            <p className='card__description'>Нажмите на аватарку, чтобы ее поменять</p>
             <button
               style={{
                 display: `${avatar === userAvatarDefault ? 'none' : 'block'}`,
@@ -90,9 +108,7 @@ const ProfileScreen: FC = () => {
           </div>
           <div className='card__infoBlock'>
             <div>
-              <span className='card__number'>
-                {user.files.length ? user.files.length : 0}
-              </span>
+              <span className='card__number'>{user.files.length ? user.files.length : 0}</span>
               <span className='card__number-title'>Всего объектов</span>
             </div>
             <div>
@@ -108,14 +124,13 @@ const ProfileScreen: FC = () => {
       </div>
 
       <div>
-        <button style={{ display: 'none' }} onClick={handleButtonClick}>
+        <button
+          style={{ display: 'none' }}
+          onClick={handleButtonClick}
+        >
           Получить пользователей
         </button>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          data.map((user: IUser) => <div key={user.id}>{user.email}</div>)
-        )}
+        {isLoading ? <div>Loading...</div> : data.map((user: IUser) => <div key={user.id}>{user.email}</div>)}
       </div>
     </div>
   )

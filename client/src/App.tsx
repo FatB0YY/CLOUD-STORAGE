@@ -20,7 +20,12 @@ function App() {
 
   useEffect(() => {
     async function checkAuth() {
-      await trigger().unwrap()
+      await trigger()
+        .unwrap()
+        .catch((error) => {
+          console.error(error)
+          // Обработка ошибки
+        })
     }
 
     if (token) {
@@ -34,17 +39,38 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<Layout />}>
+      <Route
+        path='/'
+        element={<Layout />}
+      >
         {/* public routes */}
-        <Route index element={<Home />} />
-        <Route path='login' element={<LoginForm />} />
-        <Route path='registration' element={<RegistrationForm />} />
-        <Route path='*' element={<NotFoundPage />} />
+        <Route
+          index
+          element={<Home />}
+        />
+        <Route
+          path='login'
+          element={<LoginForm />}
+        />
+        <Route
+          path='registration'
+          element={<RegistrationForm />}
+        />
+        <Route
+          path='*'
+          element={<NotFoundPage />}
+        />
 
         {/* private routes */}
         <Route element={<PrivateWrapper />}>
-          <Route path='disk' element={<Disk />} />
-          <Route path='userProfile' element={<ProfileScreen />} />
+          <Route
+            path='disk'
+            element={<Disk />}
+          />
+          <Route
+            path='userProfile'
+            element={<ProfileScreen />}
+          />
         </Route>
       </Route>
     </Routes>

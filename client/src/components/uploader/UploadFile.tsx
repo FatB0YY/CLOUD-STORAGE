@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { useAppDispatch } from '../../hooks/redux'
 import { IUploadFile } from '../../models/response/IUploadFile'
-import { removeUploadFile } from '../../redux/reducers/UploadSlice'
+import { uploadActions } from '../../redux/reducers/UploadSlice'
 import './uploader.scss'
+import { useActionCreators } from '../../hooks/redux'
 
 interface propsUpload {
   file: IUploadFile
@@ -10,7 +10,7 @@ interface propsUpload {
 
 const UploadFile: FC<propsUpload> = ({ file }) => {
   const [name, setName] = useState(file.name)
-  const dispatch = useAppDispatch()
+  const actionsUpload = useActionCreators(uploadActions)
 
   useEffect(() => {
     if (file.name.length > 25) {
@@ -19,10 +19,10 @@ const UploadFile: FC<propsUpload> = ({ file }) => {
 
     if (file.progress == 100) {
       setTimeout(() => {
-        dispatch(removeUploadFile(file.id))
+        actionsUpload.removeUploadFile(file.id)
       }, 5000)
     }
-  }, [file.progress, dispatch, file.id])
+  }, [file.progress, file.id])
 
   return (
     <div className='upload-file'>

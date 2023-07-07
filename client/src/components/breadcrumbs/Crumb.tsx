@@ -2,13 +2,9 @@ import { FC, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 // import { removeIFileDirAfterIndex } from '../../redux/reducers/FilesSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux'
+import { useActionCreators, useAppSelector } from '../../hooks/redux'
 import { ICrumb } from '../../models/response/IFile'
-import {
-  removeBreadcrumbsAfterIndex,
-  removeICrumbAfterIndex,
-  setCurrentDir,
-} from '../../redux/reducers/FilesSlice'
+import { filesActions } from '../../redux/reducers/FilesSlice'
 
 interface IPropsCrumb {
   crumb: ICrumb
@@ -16,24 +12,20 @@ interface IPropsCrumb {
 }
 
 const Crumb: FC<IPropsCrumb> = ({ crumb, index }) => {
-  const { currentDir } = useAppSelector((state) => state.filesReducer)
-  const dispatch = useAppDispatch()
+  const currentDir = useAppSelector((state) => state.files.currentDir)
+  const actionsFiles = useActionCreators(filesActions)
 
   const clickCrumbHandler = () => {
     if (crumb.dirId !== currentDir.dirId) {
-      dispatch(setCurrentDir(crumb))
-      dispatch(removeICrumbAfterIndex(crumb))
-      dispatch(removeBreadcrumbsAfterIndex(crumb))
+      actionsFiles.setCurrentDir(crumb)
+      actionsFiles.removeICrumbAfterIndex(crumb)
+      actionsFiles.removeBreadcrumbsAfterIndex(crumb)
     }
   }
 
   return (
     <span
-      className={
-        crumb.dirId === currentDir.dirId
-          ? 'breadcrumb__crumb active'
-          : 'breadcrumb__crumb'
-      }
+      className={crumb.dirId === currentDir.dirId ? 'breadcrumb__crumb active' : 'breadcrumb__crumb'}
       onClick={clickCrumbHandler}
     >
       {index > 0 && (
